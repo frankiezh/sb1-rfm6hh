@@ -135,7 +135,7 @@ export default function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleWhatsAppClick}
-                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base"
+                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
                 >
                   <MessageCircle className="h-4 w-4 text-[#25D366]" />
                   <span className="font-medium">WhatsApp</span>
