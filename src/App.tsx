@@ -124,7 +124,7 @@ export default function App() {
                 <a
                   href="tel:+41797389751"
                   onClick={handleCallClick}
-                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 ml-4 md:ml-8 text-sm md:text-base"
+                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 ml-4 md:ml-8 text-sm md:text-base whitespace-nowrap"
                 >
                   <Phone className="h-4 w-4" />
                   <span className="font-medium">Jetzt anrufen</span>
