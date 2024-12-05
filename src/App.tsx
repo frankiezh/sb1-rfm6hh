@@ -154,13 +154,13 @@ export default function App() {
         </header>
 
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform md:translate-y-full transition-transform duration-300 ease-in-out" id="floating-buttons">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-3">
+          <div className="container mx-auto px-4 py-2 flex items-center justify-center gap-3">
             <a
               href="tel:+41797389751"
               onClick={handleCallClick}
-              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#2A3C35] hover:bg-[#374F45] text-white px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-3.5 w-3.5" />
               <span className="font-medium">Jetzt anrufen</span>
             </a>
 
@@ -169,9 +169,9 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleWhatsAppClick}
-              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
             >
-              <MessageCircle className="h-4 w-4 text-[#25D366]" />
+              <MessageCircle className="h-3.5 w-3.5 text-[#25D366]" />
               <span className="font-medium">WhatsApp</span>
             </a>
           </div>
@@ -225,9 +225,9 @@ export default function App() {
                 <a
                   href="tel:+41797389751"
                   onClick={handleCallClick}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-[#4A665B] px-6 md:px-8 py-3 rounded-md transition-all duration-200 hover:scale-105 text-base md:text-lg whitespace-nowrap"
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#2A3C35] hover:bg-[#374F45] text-white px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
                 >
-                  <Phone className="h-5 w-5" />
+                  <Phone className="h-4 w-4" />
                   <span className="font-medium">Jetzt anrufen</span>
                 </a>
 
@@ -236,9 +236,9 @@ export default function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleWhatsAppClick}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-[#4A665B] px-6 md:px-8 py-3 rounded-md transition-all duration-200 hover:scale-105 text-base md:text-lg whitespace-nowrap"
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white/80 hover:bg-white text-[#4A665B] px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
                 >
-                  <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                  <MessageCircle className="h-4 w-4 text-[#25D366]" />
                   <span className="font-medium">WhatsApp</span>
                 </a>
               </motion.div>
