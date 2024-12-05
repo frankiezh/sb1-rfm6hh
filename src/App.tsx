@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Logo } from '@/components/Logo';
 import { ServiceCard } from '@/components/ServiceCard';
@@ -8,10 +8,42 @@ import { translations } from '@/lib/translations';
 import { Mail, MapPin, Phone, AtSign, MessageCircle } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 import { Helmet } from 'react-helmet-async';
+import { motion } from 'framer-motion';
 
 export default function App() {
   const [currentLang, setCurrentLang] = useState<'de' | 'en'>('de');
   const t = translations[currentLang];
+
+  useEffect(() => {
+    // Add smooth scroll behavior to html element
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    return () => {
+      // Clean up
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSection = document.querySelector('section') as HTMLElement;
+      const floatingButtons = document.getElementById('floating-buttons');
+      
+      if (heroSection && floatingButtons) {
+        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+        const scrollPosition = window.scrollY + window.innerHeight;
+        
+        if (scrollPosition > heroBottom) {
+          floatingButtons.style.transform = 'translateY(0)';
+        } else {
+          floatingButtons.style.transform = 'translateY(100%)';
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const portfolioItems = t.portfolio.items.map(item => {
     if (item.type === 'before-after') {
@@ -50,18 +82,16 @@ export default function App() {
   return (
     <>
       <Helmet>
-        <title>Atelier Grünenwald | Antique Furniture Restoration Zürich</title>
-        <meta name="description" content="Expert furniture restoration and antique repair in Zürich. Specializing in Victorian, Art Deco, and period furniture restoration, upholstery, and refinishing." />
-        <meta name="keywords" content="furniture restoration, antique repair, Zürich, upholstery, wood refinishing, Victorian furniture, Art Deco restoration" />
-        <link rel="canonical" href="https://www.ateliergruenenwald.ch" />
+        <title>Polsterei am HB Zürich | Atelier Grünenwald</title>
+        <meta name="description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
+        <meta name="keywords" content="polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" />
+        <link rel="canonical" href="https://www.polsterei-hb-zuerich.ch" />
         
-        {/* Open Graph tags for social sharing */}
-        <meta property="og:title" content="Atelier Grünenwald | Antique Furniture Restoration Zürich" />
-        <meta property="og:description" content="Expert furniture restoration and antique repair in Zürich." />
+        <meta property="og:title" content="Polsterei am HB Zürich | Atelier Grünenwald" />
+        <meta property="og:description" content="Professionelle Polsterei in Zürich. 2 Minuten vom Hauptbahnhof." />
         <meta property="og:image" content="/path-to-your-logo-or-featured-image.jpg" />
-        <meta property="og:url" content="https://www.ateliergruenenwald.ch" />
+        <meta property="og:url" content="https://www.polsterei-hb-zuerich.ch" />
         
-        {/* Schema.org markup for rich results */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -119,31 +149,33 @@ export default function App() {
                 <a href="#portfolio" className="hover:text-neutral-500 transition">{t.nav.portfolio}</a>
                 <a href="#contact" className="hover:text-neutral-500 transition">{t.nav.contact}</a>
               </nav>
-              
-              <div className="flex items-center gap-2">
-                <a
-                  href="tel:+41797389751"
-                  onClick={handleCallClick}
-                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 ml-4 md:ml-8 text-sm md:text-base whitespace-nowrap"
-                >
-                  <Phone className="h-4 w-4" />
-                  <span className="font-medium">Jetzt anrufen</span>
-                </a>
-
-                <a
-                  href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleWhatsAppClick}
-                  className="inline-flex items-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
-                >
-                  <MessageCircle className="h-4 w-4 text-[#25D366]" />
-                  <span className="font-medium">WhatsApp</span>
-                </a>
-              </div>
             </div>
           </div>
         </header>
+
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform md:translate-y-full transition-transform duration-300 ease-in-out" id="floating-buttons">
+          <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-3">
+            <a
+              href="tel:+41797389751"
+              onClick={handleCallClick}
+              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="font-medium">Jetzt anrufen</span>
+            </a>
+
+            <a
+              href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleWhatsAppClick}
+              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#4A665B] hover:bg-[#5B7D6F] text-white px-3 md:px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+            >
+              <MessageCircle className="h-4 w-4 text-[#25D366]" />
+              <span className="font-medium">WhatsApp</span>
+            </a>
+          </div>
+        </div>
 
         {/* Hero Section */}
         <section className="relative h-screen">
@@ -157,19 +189,59 @@ export default function App() {
           </div>
           
           <div className="absolute inset-0 flex items-center justify-center text-white">
-            <AnimatedSection className="text-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl md:text-5xl font-light tracking-wider">
-                  {t.hero.title}
+            <AnimatedSection className="text-center">
+              <motion.div 
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ 
+                  duration: 0.8,
+                  ease: "easeOut"
+                }}
+                className="flex flex-col items-center"
+              >
+                <h1 className="text-3xl md:text-5xl font-light tracking-wider mb-2">
+                  Polsterei am HB Zürich
                 </h1>
-                <div className="text-4xl md:text-6xl font-light">
-                  {t.hero.subtitle}
+                <div className="relative">
+                  <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80">
+                    by
+                  </span>
+                  <h2 className="text-4xl md:text-6xl font-light tracking-wider">
+                    ATELIER GRÜNENWALD
+                  </h2>
                 </div>
-              </div>
-              <div className="text-lg md:text-xl font-light tracking-wide mt-8 space-y-1">
-                <p>{t.hero.tagline.line1}</p>
-                <p>{t.hero.tagline.line2}</p>
-              </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ 
+                  duration: 0.8,
+                  ease: "easeOut",
+                  delay: 0.4
+                }}
+                className="flex flex-col md:flex-row items-center justify-center gap-3 mt-12"
+              >
+                <a
+                  href="tel:+41797389751"
+                  onClick={handleCallClick}
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-[#4A665B] px-6 md:px-8 py-3 rounded-md transition-all duration-200 hover:scale-105 text-base md:text-lg whitespace-nowrap"
+                >
+                  <Phone className="h-5 w-5" />
+                  <span className="font-medium">Jetzt anrufen</span>
+                </a>
+
+                <a
+                  href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleWhatsAppClick}
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-[#4A665B] px-6 md:px-8 py-3 rounded-md transition-all duration-200 hover:scale-105 text-base md:text-lg whitespace-nowrap"
+                >
+                  <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                  <span className="font-medium">WhatsApp</span>
+                </a>
+              </motion.div>
             </AnimatedSection>
           </div>
         </section>
