@@ -31,15 +31,18 @@ export default function App() {
       
       if (heroSection && floatingButtons) {
         const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        const scrollPosition = window.scrollY + window.innerHeight;
+        const scrollPosition = window.scrollY;
         
-        if (scrollPosition > heroBottom) {
+        if (scrollPosition > heroBottom - 100) {
           floatingButtons.style.transform = 'translateY(0)';
         } else {
           floatingButtons.style.transform = 'translateY(100%)';
         }
       }
     };
+
+    // Initial check
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -78,6 +81,9 @@ export default function App() {
       label: 'Header WhatsApp Button'
     });
   };
+
+  // Add state for mobile menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <>
@@ -143,17 +149,35 @@ export default function App() {
             
             <div className="flex items-center">
               <nav className="hidden md:flex items-center space-x-8 text-sm font-medium" aria-label="Main navigation">
-                <a href="#services" className="hover:text-neutral-500 transition" aria-label="View our services">
-                  {t.nav.services}
-                </a>
+                <a href="#services" className="hover:text-neutral-500 transition">{t.nav.services}</a>
                 <a href="#portfolio" className="hover:text-neutral-500 transition">{t.nav.portfolio}</a>
                 <a href="#contact" className="hover:text-neutral-500 transition">{t.nav.contact}</a>
               </nav>
+              
+              {/* Mobile menu button */}
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2"
+                aria-label="Toggle menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                </svg>
+              </button>
             </div>
           </div>
         </header>
 
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform md:translate-y-full transition-transform duration-300 ease-in-out" id="floating-buttons">
+        {/* Mobile menu */}
+        <div className={`md:hidden fixed inset-x-0 top-20 bg-white/95 backdrop-blur-sm transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+          <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 text-sm font-medium">
+            <a href="#services" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.services}</a>
+            <a href="#portfolio" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
+            <a href="#contact" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
+          </nav>
+        </div>
+
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform translate-y-full transition-transform duration-300 ease-in-out md:translate-y-full" id="floating-buttons">
           <div className="container mx-auto px-4 py-2 flex items-center justify-center gap-3">
             <a
               href="tel:+41797389751"
@@ -297,7 +321,7 @@ export default function App() {
                 <h2 className="text-3xl font-light tracking-wide">{t.contact.subtitle}</h2>
                 <p className="text-neutral-600 max-w-2xl">{t.contact.description}</p>
               </div>
-              <div className="flex items-center" style={{ transform: 'scale(1.5)' }}>
+              <div className="flex items-center justify-center md:justify-end" style={{ transform: 'scale(2)' }}>
                 <img 
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Artboard%2018%20copy-mkGJ2YCAJdOhaws0ST1zvrqbmvcE3d.svg"
                   alt="Atelier Grünenwald Logo"
@@ -311,13 +335,17 @@ export default function App() {
               <div>
                 <h2 className="text-xl font-medium mb-4">Adresse</h2>
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-5 w-5 flex-shrink-0" />
-                    <span>{t.contact.address.street1}</span>
+                  <div className="flex items-start space-x-2">
+                    <MapPin className="h-5 w-5 flex-shrink-0 mt-1" />
+                    <div className="flex-1">
+                      <span>{t.contact.address.street1}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Mail className="h-5 w-5 flex-shrink-0" />
-                    <span>{t.contact.address.street2}</span>
+                  <div className="flex items-start space-x-2">
+                    <Mail className="h-5 w-5 flex-shrink-0 mt-1" />
+                    <div className="flex-1">
+                      <span>{t.contact.address.street2}</span>
+                    </div>
                   </div>
                 </div>
               </div>
