@@ -6,8 +6,12 @@ export const translations = {
       contact: 'KONTAKT'
     },
     hero: {
-      title: 'ATELIER GRÜNENWALD',
-      subtitle: 'Polsterei am HB Zürich'
+      title: 'POLSTEREI AM HB ZÜRICH',
+      subtitle: 'ATELIER GRÜNENWALD',
+      tagline: {
+        line1: 'TRADITIONELLES HANDWERK',
+        line2: 'TRIFFT MODERNE EXPERTISE'
+      }
     },
     services: {
       title: 'LEISTUNGEN',
@@ -45,6 +49,36 @@ export const translations = {
     },
     footer: {
       copyright: '© {year} Atelier Grünenwald. All rights reserved.'
+    },
+    portfolio: {
+      items: [
+        {
+          type: 'before-after' as const,
+          title: 'Victorian Chair Restoration',
+          description: 'Complete restoration of a Victorian era chair, including structural repairs and reupholstery.',
+          altBefore: 'Your new alt text here',
+          altAfter: 'Your new alt text here'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Antique Dining Table',
+          description: 'Meticulous restoration of an 18th century dining table.',
+          alt: 'Restaurierter Esstisch aus dem 18. Jahrhundert mit detaillierter Holzarbeit und verfeinerter Oberfläche'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'French Armoire',
+          description: 'Complete refinishing of a French provincial armoire.',
+          alt: 'Aufgearbeiteter französischer Provinzschrank mit detaillierter Holzarbeit und verfeinerter Oberfläche'
+        },
+        {
+          type: 'before-after' as const,
+          title: 'Art Deco Sofa',
+          description: 'Erhaltung und Neupolsterung eines Art Deco Sofas.',
+          altBefore: 'Antikes Art Deco Sofa vor der Restaurierung, mit abgenutzter Polsterung',
+          altAfter: 'Wunderschön restauriertes Art Deco Sofa mit neuer Polsterung und aufgearbeitetem Holz'
+        }
+      ]
     }
   },
   en: {
@@ -54,8 +88,12 @@ export const translations = {
       contact: 'CONTACT'
     },
     hero: {
-      title: 'ATELIER GRÜNENWALD',
-      subtitle: 'FINE FURNITURE & UPHOLSTERY'
+      title: 'UPHOLSTERY AT HB ZURICH',
+      subtitle: 'ATELIER GRÜNENWALD',
+      tagline: {
+        line1: 'TRADITIONAL CRAFTSMANSHIP',
+        line2: 'MEETS MODERN EXPERTISE'
+      }
     },
     services: {
       title: 'SERVICES',
@@ -93,6 +131,36 @@ export const translations = {
     },
     footer: {
       copyright: '© {year} Atelier Grünenwald. All rights reserved.'
+    },
+    portfolio: {
+      items: [
+        {
+          type: 'before-after' as const,
+          title: 'Victorian Chair Restoration',
+          description: 'Complete restoration of a Victorian era chair, including structural repairs and reupholstery.',
+          altBefore: 'Your new alt text here',
+          altAfter: 'Your new alt text here'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Antique Dining Table',
+          description: 'Meticulous restoration of an 18th century dining table.',
+          alt: 'Restored 18th century dining table showing detailed woodwork and refined finish'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'French Armoire',
+          description: 'Complete refinishing of a French provincial armoire.',
+          alt: 'Refinished French provincial armoire showing detailed woodwork and refined finish'
+        },
+        {
+          type: 'before-after' as const,
+          title: 'Art Deco Sofa',
+          description: 'Preservation and reupholstery of an Art Deco period sofa.',
+          altBefore: 'Antique Art Deco sofa before restoration, showing worn upholstery',
+          altAfter: 'Beautifully restored Art Deco sofa with new upholstery and refinished woodwork'
+        }
+      ]
     }
   }
 };
