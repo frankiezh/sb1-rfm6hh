@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Logo } from '@/components/Logo';
 import { ServiceCard } from '@/components/ServiceCard';
@@ -13,6 +13,9 @@ import { motion } from 'framer-motion';
 export default function App() {
   const [currentLang, setCurrentLang] = useState<'de' | 'en'>('de');
   const t = translations[currentLang];
+
+  const textBlockRef = useRef<HTMLDivElement>(null);
+  const [textBlockHeight, setTextBlockHeight] = useState('auto');
 
   useEffect(() => {
     // Add smooth scroll behavior to html element
@@ -46,6 +49,18 @@ export default function App() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (textBlockRef.current) {
+        setTextBlockHeight(`${textBlockRef.current.offsetHeight}px`);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
   const portfolioItems = t.portfolio.items.map(item => {
@@ -316,16 +331,19 @@ export default function App() {
         <section id="contact" className="py-24">
           <div className="container mx-auto px-4">
             {/* Title and Logo Row */}
-            <div className="flex items-stretch justify-between gap-12 mb-12">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-light tracking-wide">{t.contact.subtitle}</h2>
-                <p className="text-neutral-600 max-w-2xl">{t.contact.description}</p>
+            <div className="flex items-start gap-4 md:gap-8 mb-12">
+              {/* Text block - Use as height reference */}
+              <div className="flex-1 min-w-0" ref={textBlockRef}>
+                <h2 className="text-3xl font-light tracking-wide mb-4">{t.contact.subtitle}</h2>
+                <p className="text-neutral-600">{t.contact.description}</p>
               </div>
-              <div className="flex items-center justify-center md:justify-end" style={{ transform: 'scale(2)' }}>
+              
+              {/* Logo container - Match height with text block */}
+              <div className="flex-shrink-0 flex items-center h-full" style={{ height: textBlockHeight }}>
                 <img 
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Artboard%2018%20copy-mkGJ2YCAJdOhaws0ST1zvrqbmvcE3d.svg"
                   alt="Atelier Grünenwald Logo"
-                  className="h-full w-auto flex-shrink-0 min-h-[80px]"
+                  className="h-full w-auto object-contain"
                 />
               </div>
             </div>
