@@ -166,11 +166,16 @@ export default function App() {
                   {t.hero.subtitle}
                 </div>
               </div>
-              <div className="text-lg md:text-xl font-light tracking-wide mt-8 space-y-1">
-                <p>{t.hero.tagline.line1}</p>
-                <p>{t.hero.tagline.line2}</p>
-              </div>
             </AnimatedSection>
+          </div>
+
+          {/* Updated tagline container */}
+          <div className="absolute bottom-12 left-0 right-0">
+            <div className="container mx-auto px-4">
+              <p className="text-[#8A9389] text-center text-xl md:text-2xl font-light tracking-wide">
+                Traditionelles Handwerk trifft moderne Expertise.
+              </p>
+            </div>
           </div>
         </section>
 
