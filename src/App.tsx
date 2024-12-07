@@ -224,70 +224,103 @@ export default function App() {
               alt="Luxury Furniture"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
           
-          <div className="absolute inset-0 flex items-center justify-center text-white">
-            <AnimatedSection className="text-center">
-              <motion.div 
-                initial={{ x: -100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ 
-                  duration: 0.8,
-                  ease: "easeOut"
-                }}
-                className="flex flex-col items-center"
-              >
-                <h1 className="text-3xl md:text-5xl font-light tracking-wider mb-2">
-                  Polsterei am HB Zürich
-                </h1>
-                <div className="relative">
-                  <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80">
-                    by
-                  </span>
-                  <h2 className="text-4xl md:text-6xl font-light tracking-wider">
-                    ATELIER GRÜNENWALD
-                  </h2>
-                </div>
-              </motion.div>
+          <div className="absolute inset-0 flex flex-col justify-between text-white">
+            <div className="flex items-center justify-center flex-1">
+              <AnimatedSection className="text-center">
+                <motion.div 
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ 
+                    duration: 0.8,
+                    ease: "easeOut"
+                  }}
+                  className="flex flex-col items-center"
+                >
+                  <h1 className="text-3xl md:text-5xl font-light tracking-wider mb-2">
+                    Polsterei am HB Zürich
+                  </h1>
+                  <div className="relative">
+                    <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80">
+                      by
+                    </span>
+                    <h2 className="text-4xl md:text-6xl font-light tracking-wider">
+                      ATELIER GRÜNENWALD
+                    </h2>
+                  </div>
+                </motion.div>
 
+                <motion.div
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ 
+                    duration: 0.8,
+                    ease: "easeOut",
+                    delay: 0.4
+                  }}
+                  className="flex flex-col md:flex-row items-center justify-center gap-3 mt-12"
+                >
+                  <a
+                    href="tel:+41797389751"
+                    onClick={handleCallClick}
+                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+                  >
+                    <Phone className="h-4 w-4" />
+                    <span className="font-medium">Jetzt anrufen</span>
+                  </a>
+
+                  <a
+                    href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleWhatsAppClick}
+                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+                  >
+                    <MessageCircle className="h-4 w-4 text-[#25D366]" />
+                    <span className="font-medium">WhatsApp</span>
+                  </a>
+                </motion.div>
+              </AnimatedSection>
+            </div>
+
+            {/* New tagline section - with improved responsive scaling */}
+            <div className="w-full overflow-hidden">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ 
                   duration: 0.8,
                   ease: "easeOut",
-                  delay: 0.4
+                  delay: 0.6
                 }}
-                className="flex flex-col md:flex-row items-center justify-center gap-3 mt-12"
+                className="container mx-auto px-4 py-6"
               >
-                <a
-                  href="tel:+41797389751"
-                  onClick={handleCallClick}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
+                <h2 className="font-light tracking-wider text-[#8A9A8E] text-center whitespace-nowrap 
+                  text-[min(3.5vw,1.875rem)] md:text-[min(3vw,3rem)]"
                 >
-                  <Phone className="h-4 w-4" />
-                  <span className="font-medium">Jetzt anrufen</span>
-                </a>
-
-                <a
-                  href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleWhatsAppClick}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
-                >
-                  <MessageCircle className="h-4 w-4 text-[#25D366]" />
-                  <span className="font-medium">WhatsApp</span>
-                </a>
+                  {t.hero.tagline}
+                </h2>
               </motion.div>
-            </AnimatedSection>
+            </div>
           </div>
         </section>
 
         {/* Services Section */}
-        <section id="services" className="py-24" aria-labelledby="services-title">
-          <div className="container mx-auto px-4">
+        <section 
+          id="services" 
+          className="py-24 relative" 
+          aria-labelledby="services-title"
+          style={{
+            backgroundImage: 'url("/background.jpg")',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '300px',
+          }}
+        >
+          {/* Light overlay */}
+          <div className="absolute inset-0 bg-[#f8f8f8]/90" />
+          <div className="container mx-auto px-4 relative">
             <AnimatedSection className="text-center mb-16">
               <h2 id="services-title" className="text-3xl font-light tracking-wide">
                 {t.services.title}
@@ -309,10 +342,22 @@ export default function App() {
         </section>
 
         {/* Portfolio Section */}
-        <section id="portfolio" className="py-24 bg-white">
-          <div className="container mx-auto px-4">
+        <section 
+          id="portfolio" 
+          className="py-24 relative" 
+          style={{
+            backgroundImage: 'url("/background.jpg")',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '300px',
+          }}
+        >
+          {/* Darker overlay */}
+          <div className="absolute inset-0 bg-[#f8f8f8]/75" />
+          <div className="container mx-auto px-4 relative">
             <AnimatedSection className="text-center mb-16">
-              <h2 className="text-3xl font-light tracking-wide">PORTFOLIO</h2>
+              <h2 className="text-3xl font-light tracking-wide">
+                PORTFOLIO
+              </h2>
             </AnimatedSection>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -328,13 +373,25 @@ export default function App() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-24">
-          <div className="container mx-auto px-4">
+        <section 
+          id="contact" 
+          className="py-24 relative"
+          style={{
+            backgroundImage: 'url("/background.jpg")',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '300px',
+          }}
+        >
+          {/* Light overlay */}
+          <div className="absolute inset-0 bg-[#f8f8f8]/90" />
+          <div className="container mx-auto px-4 relative">
             {/* Title and Logo Row */}
             <div className="flex items-start gap-4 md:gap-8 mb-12">
               {/* Text block - Use as height reference */}
               <div className="flex-1 min-w-0" ref={textBlockRef}>
-                <h2 className="text-3xl font-light tracking-wide mb-4">{t.contact.subtitle}</h2>
+                <h2 className="text-3xl font-light tracking-wide mb-4">
+                  {t.contact.subtitle}
+                </h2>
                 <p className="text-neutral-600">{t.contact.description}</p>
               </div>
               

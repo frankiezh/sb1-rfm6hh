@@ -84,11 +84,11 @@ export function ServiceCard({ title, description, image, className, index = 0 }:
           />
         </motion.div>
         <motion.div 
-          className="p-8 flex flex-col justify-center"
+          className="p-8 flex flex-col justify-center bg-[#8A9A8E] text-white"
           variants={childVariants}
         >
           <h3 className="text-xl font-light mb-4 tracking-wide">{title}</h3>
-          <p className="text-neutral-600 leading-relaxed">{description}</p>
+          <p className="leading-relaxed">{description}</p>
         </motion.div>
       </div>
     </motion.div>
