@@ -17,39 +17,54 @@ export default function App() {
   const textBlockRef = useRef<HTMLDivElement>(null);
   const [textBlockHeight, setTextBlockHeight] = useState('auto');
 
+  // Create a ref to store the scroll handler
+  const scrollHandlerRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
     // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
     
-    return () => {
-      // Clean up
-      document.documentElement.style.scrollBehavior = 'auto';
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const heroSection = document.querySelector('section') as HTMLElement;
+    // Create the scroll handler function and store it in the ref
+    scrollHandlerRef.current = () => {
+      const heroSection = document.querySelector('section');
       const floatingButtons = document.getElementById('floating-buttons');
       
       if (heroSection && floatingButtons) {
         const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
         const scrollPosition = window.scrollY;
         
-        if (scrollPosition > heroBottom - 100) {
-          floatingButtons.style.transform = 'translateY(0)';
-        } else {
-          floatingButtons.style.transform = 'translateY(100%)';
-        }
+        requestAnimationFrame(() => {
+          if (scrollPosition > heroBottom - 100) {
+            floatingButtons.style.transform = 'translateY(0)';
+          } else {
+            floatingButtons.style.transform = 'translateY(100%)';
+          }
+        });
       }
     };
 
-    // Initial check
-    handleScroll();
+    // Add event listener using the ref's current value
+    if (scrollHandlerRef.current) {
+      window.addEventListener('scroll', scrollHandlerRef.current, { passive: true });
+      // Initial check
+      scrollHandlerRef.current();
+    }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    // Cleanup function
+    return () => {
+      // Remove event listener using the ref's current value
+      if (scrollHandlerRef.current) {
+        window.removeEventListener('scroll', scrollHandlerRef.current);
+      }
+      document.documentElement.style.scrollBehavior = 'auto';
+      
+      // Reset floating buttons state
+      const floatingButtons = document.getElementById('floating-buttons');
+      if (floatingButtons) {
+        floatingButtons.style.transform = 'translateY(100%)';
+      }
+    };
+  }, []); // Empty dependency array
 
   useEffect(() => {
     const updateHeight = () => {
@@ -151,7 +166,7 @@ export default function App() {
         </script>
       </Helmet>
       
-      <div className="min-h-screen bg-[#f8f8f8] text-neutral-800">
+      <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b">
           <div className="container mx-auto px-4 h-20 flex items-center justify-between">
@@ -164,15 +179,15 @@ export default function App() {
             
             <div className="flex items-center">
               <nav className="hidden md:flex items-center space-x-8 text-sm font-medium" aria-label="Main navigation">
-                <a href="#services" className="hover:text-neutral-500 transition">{t.nav.services}</a>
-                <a href="#portfolio" className="hover:text-neutral-500 transition">{t.nav.portfolio}</a>
-                <a href="#contact" className="hover:text-neutral-500 transition">{t.nav.contact}</a>
+                <a href="#services" className="text-[#2B1810] hover:text-[#334B40] transition">{t.nav.services}</a>
+                <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition">{t.nav.portfolio}</a>
+                <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition">{t.nav.contact}</a>
               </nav>
               
               {/* Mobile menu button */}
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2"
+                className="md:hidden p-2 text-[#2B1810]"
                 aria-label="Toggle menu"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,9 +201,9 @@ export default function App() {
         {/* Mobile menu */}
         <div className={`md:hidden fixed inset-x-0 top-20 bg-white/95 backdrop-blur-sm transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
           <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 text-sm font-medium">
-            <a href="#services" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.services}</a>
-            <a href="#portfolio" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
-            <a href="#contact" className="hover:text-neutral-500 transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
+            <a href="#services" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.services}</a>
+            <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
+            <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
           </nav>
         </div>
 
@@ -217,18 +232,18 @@ export default function App() {
         </div>
 
         {/* Hero Section */}
-        <section className="relative h-screen">
+        <section className="relative min-h-[100svh] md:h-[90vh] flex flex-col">
           <div className="absolute inset-0">
             <img 
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
               alt="Luxury Furniture"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center md:object-bottom"
             />
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/40" />
           </div>
           
-          <div className="absolute inset-0 flex flex-col justify-between text-white">
-            <div className="flex items-center justify-center flex-1">
+          <div className="relative flex-1 flex flex-col justify-between text-white">
+            <div className="flex items-center justify-center flex-1 mt-24 md:mt-20">
               <AnimatedSection className="text-center">
                 <motion.div 
                   initial={{ x: -100, opacity: 0 }}
@@ -285,7 +300,7 @@ export default function App() {
               </AnimatedSection>
             </div>
 
-            {/* New tagline section - with improved responsive scaling */}
+            {/* Tagline section */}
             <div className="w-full overflow-hidden">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
@@ -295,12 +310,16 @@ export default function App() {
                   ease: "easeOut",
                   delay: 0.6
                 }}
-                className="container mx-auto px-4 py-6"
+                className="container mx-auto px-4 pb-4 md:pb-8"
               >
-                <h2 className="font-light tracking-wider text-[#8A9A8E] text-center whitespace-nowrap 
-                  text-[min(3.5vw,1.875rem)] md:text-[min(3vw,3rem)]"
+                <h2 className="font-light tracking-wider text-[#B8A164] text-center flex flex-col md:block
+                  text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
                 >
-                  {t.hero.tagline}
+                  <span className="block md:inline">{t.hero.tagline.line1}</span>
+                  <span className="mt-1 md:mt-0 md:inline">
+                    <span className="hidden md:inline mx-2">-</span>
+                    {t.hero.tagline.line2}
+                  </span>
                 </h2>
               </motion.div>
             </div>
@@ -318,8 +337,8 @@ export default function App() {
             backgroundSize: '300px',
           }}
         >
-          {/* Light overlay */}
-          <div className="absolute inset-0 bg-[#f8f8f8]/90" />
+          {/* Light overlay - changed opacity to match portfolio */}
+          <div className="absolute inset-0 bg-[#f8f8f8]/75" />
           <div className="container mx-auto px-4 relative">
             <AnimatedSection className="text-center mb-16">
               <h2 id="services-title" className="text-3xl font-light tracking-wide">

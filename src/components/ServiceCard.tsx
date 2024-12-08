@@ -12,9 +12,9 @@ interface ServiceCardProps {
 
 export function ServiceCard({ title, description, image, className, index = 0 }: ServiceCardProps) {
   const [ref, inView] = useInView({
-    threshold: 0.25,
+    threshold: 0.1,
     triggerOnce: false,
-    rootMargin: "-100px 0px"
+    rootMargin: "50px 0px -50px 0px"
   });
 
   const containerVariants = {
@@ -22,17 +22,17 @@ export function ServiceCard({ title, description, image, className, index = 0 }:
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.2,
+        duration: 0.8,
         ease: [0.22, 1, 0.36, 1],
-        delay: index * 0.2,
-        staggerChildren: 0.15
+        delay: index * 0.15,
+        staggerChildren: 0.1
       }
     },
     hidden: {
       opacity: 0,
-      y: 40,
+      y: 20,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.22, 1, 0.36, 1]
       }
     }
@@ -43,15 +43,15 @@ export function ServiceCard({ title, description, image, className, index = 0 }:
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.2,
+        duration: 0.8,
         ease: [0.22, 1, 0.36, 1]
       }
     },
     hidden: {
       opacity: 0,
-      y: 20,
+      y: 10,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.22, 1, 0.36, 1]
       }
     }
@@ -64,13 +64,13 @@ export function ServiceCard({ title, description, image, className, index = 0 }:
       animate={inView ? "visible" : "hidden"}
       variants={containerVariants}
       className={cn(
-        "bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-700 overflow-hidden",
+        "overflow-hidden text-[#2B1810]",
         className
       )}
     >
       <div className="grid md:grid-cols-2 gap-8">
         <motion.div 
-          className="aspect-[3/2] overflow-hidden"
+          className="aspect-[3/2] overflow-hidden rounded-lg"
           variants={childVariants}
         >
           <motion.img 
@@ -84,7 +84,7 @@ export function ServiceCard({ title, description, image, className, index = 0 }:
           />
         </motion.div>
         <motion.div 
-          className="p-8 flex flex-col justify-center bg-[#8A9A8E] text-white"
+          className="p-8 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg"
           variants={childVariants}
         >
           <h3 className="text-xl font-light mb-4 tracking-wide">{title}</h3>
