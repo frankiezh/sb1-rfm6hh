@@ -6,91 +6,56 @@ interface ServiceCardProps {
   title: string;
   description: string;
   image: string;
-  className?: string;
   index?: number;
 }
 
-export function ServiceCard({ title, description, image, className, index = 0 }: ServiceCardProps) {
+export function ServiceCard({ title, description, image, index = 0 }: ServiceCardProps) {
   const [ref, inView] = useInView({
-    threshold: 0.1,
+    threshold: 0.2,
     triggerOnce: false,
-    rootMargin: "50px 0px -50px 0px"
   });
 
-  const containerVariants = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-        delay: index * 0.15,
-        staggerChildren: 0.1
-      }
-    },
-    hidden: {
-      opacity: 0,
-      y: 20,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
-
-  const childVariants = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    },
-    hidden: {
-      opacity: 0,
-      y: 10,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
-
   return (
-    <motion.div
+    <motion.div 
       ref={ref}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      variants={containerVariants}
+      variants={{
+        visible: { 
+          opacity: 1, 
+          scale: 1,
+          transition: {
+            duration: 0.8,
+            delay: index * 0.2
+          }
+        },
+        hidden: { opacity: 0, scale: 0.95 }
+      }}
       className={cn(
-        "overflow-hidden text-[#2B1810]",
-        className
+        "grid md:grid-cols-2 gap-8",
+        index % 2 === 1 ? "[grid-template-areas:'text_image']" : "[grid-template-areas:'image_text']"
       )}
     >
-      <div className="grid md:grid-cols-2 gap-8">
-        <motion.div 
-          className="aspect-[3/2] overflow-hidden rounded-lg"
-          variants={childVariants}
-        >
-          <motion.img 
-            src={image} 
-            alt={title}
-            className="w-full h-full object-cover"
-            whileHover={{ 
-              scale: 1.05,
-              transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
-            }}
-          />
-        </motion.div>
-        <motion.div 
-          className="p-8 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg"
-          variants={childVariants}
-        >
-          <h3 className="text-xl font-light mb-4 tracking-wide">{title}</h3>
-          <p className="leading-relaxed">{description}</p>
-        </motion.div>
-      </div>
+      <motion.div 
+        className="aspect-[16/10] overflow-hidden rounded-lg [grid-area:image]"
+        whileHover={{ 
+          scale: 1.02,
+          transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+        }}
+      >
+        <img 
+          src={image} 
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+      
+      <motion.div 
+        className="p-8 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg [grid-area:text]"
+      >
+        <h3 className="text-xl font-light mb-4 tracking-wide">{title}</h3>
+        <p className="leading-relaxed">{description}</p>
+      </motion.div>
     </motion.div>
   );
 }

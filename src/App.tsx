@@ -83,15 +83,12 @@ export default function App() {
       return {
         ...item,
         type: 'before-after' as const,
-        imageBefore: 'https://images.unsplash.com/photo-1581428982868-e410dd047a90',
-        imageAfter: 'https://images.unsplash.com/photo-1549187774-b4e9b0445b41',
         keywords: ['antique restoration', 'furniture repair', 'upholstery'] as string[]
       };
     }
     return {
       ...item,
       type: 'showcase' as const,
-      image: 'https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc',
       keywords: ['antique restoration', 'furniture repair', 'upholstery'] as string[]
     };
   });

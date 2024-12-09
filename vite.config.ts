@@ -12,4 +12,11 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  publicDir: 'public',
+  server: {
+    fs: {
+      strict: false,
+      allow: ['..']
+    }
+  }
 });

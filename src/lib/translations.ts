@@ -19,17 +19,17 @@ export const translations = {
         {
           title: 'Möbelrestaurierung',
           description: 'Sorgfältige Instandsetzung und Renovierung von Möbeln mit traditionellen Techniken und hochwertigen Materialien.',
-          image: 'https://theoakandpinebarn.co.uk/wp-content/uploads/2024/01/lacquer-finish.jpg'
+          image: '/images/services/furniture-restoration.jpg'
         },
         {
           title: 'Polsterarbeiten',
           description: 'Umfassende Polsterarbeiten, inklusive Neupolsterung und maßgeschneiderte Bezüge mit hochwertigen Stoffen und Materialien.',
-          image: 'https://images.unsplash.com/photo-1550226891-ef816aed4a98'
+          image: '/images/services/upholstery-work.jpg'
         },
         {
           title: 'Antiquitätenpflege',
           description: 'Spezialisierte Pflege von Antiquitäten durch Reinigung, Konservierung und Restaurierung mit traditionellen Techniken.',
-          image: 'https://images.unsplash.com/photo-1579656381226-5fc0f0100c3b'
+          image: '/images/services/antique-care.jpg'
         }
       ]
     },
@@ -54,29 +54,89 @@ export const translations = {
       items: [
         {
           type: 'before-after' as const,
-          title: 'Victorian Chair Restoration',
-          description: 'Complete restoration of a Victorian era chair, including structural repairs and reupholstery.',
-          altBefore: 'Your new alt text here',
-          altAfter: 'Your new alt text here'
+          title: 'Sessel Restaurierung',
+          description: 'Vollständige Restaurierung eines klassischen Sessels mit traditioneller Polsterung',
+          altBefore: 'Klassischer Sessel vor der Restaurierung',
+          altAfter: 'Klassischer Sessel nach der Restaurierung',
+          imageBefore: '/images/portfolio/before/armchair-restoration-before.jpg',
+          imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
         },
         {
           type: 'showcase' as const,
-          title: 'Antique Dining Table',
-          description: 'Meticulous restoration of an 18th century dining table.',
-          alt: 'Restaurierter Esstisch aus dem 18. Jahrhundert mit detaillierter Holzarbeit und verfeinerter Oberfläche'
+          title: 'Baroque Sofa',
+          description: 'Restoration of a baroque sofa with gold details',
+          alt: 'Restored baroque sofa with detailed gold ornaments',
+          image: '/images/portfolio/showcase/showcase-1.jpg'
         },
         {
           type: 'showcase' as const,
-          title: 'French Armoire',
-          description: 'Complete refinishing of a French provincial armoire.',
-          alt: 'Aufgearbeiteter französischer Provinzschrank mit detaillierter Holzarbeit und verfeinerter Oberfläche'
+          title: 'Victorian Chair',
+          description: 'Traditional upholstery of a Victorian chair',
+          alt: 'Victorian chair with new upholstery',
+          image: '/images/portfolio/showcase/showcase-2.jpg'
         },
         {
-          type: 'before-after' as const,
-          title: 'Art Deco Sofa',
-          description: 'Erhaltung und Neupolsterung eines Art Deco Sofas.',
-          altBefore: 'Antikes Art Deco Sofa vor der Restaurierung, mit abgenutzter Polsterung',
-          altAfter: 'Wunderschön restauriertes Art Deco Sofa mit neuer Polsterung und aufgearbeitetem Holz'
+          type: 'showcase' as const,
+          title: 'Antique Cabinet',
+          description: 'Restoration and conservation of an antique cabinet',
+          alt: 'Restored antique cabinet',
+          image: '/images/portfolio/showcase/showcase-3.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Chesterfield Sofa',
+          description: 'Classic Chesterfield upholstery with leather',
+          alt: 'Chesterfield sofa with new leather upholstery',
+          image: '/images/portfolio/showcase/showcase-4.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Dining Chairs',
+          description: 'Set of six restored dining chairs',
+          alt: 'Restored antique dining chairs',
+          image: '/images/portfolio/showcase/showcase-5.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'French Armchair',
+          description: 'Restoration of a French armchair',
+          alt: 'French armchair after restoration',
+          image: '/images/portfolio/showcase/showcase-6.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Vintage Settee',
+          description: 'Reupholstery of a vintage two-seater',
+          alt: 'Restored vintage settee',
+          image: '/images/portfolio/showcase/showcase-7.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Art Deco Chair',
+          description: 'Restoration of an Art Deco chair',
+          alt: 'Restored Art Deco chair',
+          image: '/images/portfolio/showcase/showcase-8.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Bergère Chair',
+          description: 'Classic restoration of a Bergère chair',
+          alt: 'Restored Bergère chair',
+          image: '/images/portfolio/showcase/showcase-9.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Wingback Chair',
+          description: 'Complete restoration of an antique wingback chair',
+          alt: 'Restored antique wingback chair',
+          image: '/images/portfolio/showcase/showcase-10.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Louis XV Sofa',
+          description: 'Restoration of a Louis XV sofa with silk upholstery',
+          alt: 'Restored Louis XV sofa',
+          image: '/images/portfolio/showcase/showcase-11.jpg'
         }
       ]
     }
@@ -101,17 +161,17 @@ export const translations = {
         {
           title: 'Furniture Restoration',
           description: 'Careful repair and renovation of furniture using traditional techniques and high-quality materials.',
-          image: 'https://theoakandpinebarn.co.uk/wp-content/uploads/2024/01/lacquer-finish.jpg'
+          image: '/images/services/furniture-restoration.jpg'
         },
         {
           title: 'Upholstery Work',
           description: 'Comprehensive upholstery services, including re-upholstery and custom covers with premium fabrics and materials.',
-          image: 'https://images.unsplash.com/photo-1550226891-ef816aed4a98'
+          image: '/images/services/upholstery-work.jpg'
         },
         {
           title: 'Antique Care',
           description: 'Specialized care for antiques through cleaning, conservation, and restoration using traditional techniques.',
-          image: 'https://images.unsplash.com/photo-1579656381226-5fc0f0100c3b'
+          image: '/images/services/antique-care.jpg'
         }
       ]
     },
@@ -136,29 +196,89 @@ export const translations = {
       items: [
         {
           type: 'before-after' as const,
-          title: 'Victorian Chair Restoration',
-          description: 'Complete restoration of a Victorian era chair, including structural repairs and reupholstery.',
-          altBefore: 'Your new alt text here',
-          altAfter: 'Your new alt text here'
+          title: 'Sessel Restaurierung',
+          description: 'Vollständige Restaurierung eines klassischen Sessels mit traditioneller Polsterung',
+          altBefore: 'Klassischer Sessel vor der Restaurierung',
+          altAfter: 'Klassischer Sessel nach der Restaurierung',
+          imageBefore: '/images/portfolio/before/armchair-restoration-before.jpg',
+          imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
         },
         {
           type: 'showcase' as const,
-          title: 'Antique Dining Table',
-          description: 'Meticulous restoration of an 18th century dining table.',
-          alt: 'Restored 18th century dining table showing detailed woodwork and refined finish'
+          title: 'Baroque Sofa',
+          description: 'Restoration of a baroque sofa with gold details',
+          alt: 'Restored baroque sofa with detailed gold ornaments',
+          image: '/images/portfolio/showcase/showcase-1.jpg'
         },
         {
           type: 'showcase' as const,
-          title: 'French Armoire',
-          description: 'Complete refinishing of a French provincial armoire.',
-          alt: 'Refinished French provincial armoire showing detailed woodwork and refined finish'
+          title: 'Victorian Chair',
+          description: 'Traditional upholstery of a Victorian chair',
+          alt: 'Victorian chair with new upholstery',
+          image: '/images/portfolio/showcase/showcase-2.jpg'
         },
         {
-          type: 'before-after' as const,
-          title: 'Art Deco Sofa',
-          description: 'Preservation and reupholstery of an Art Deco period sofa.',
-          altBefore: 'Antique Art Deco sofa before restoration, showing worn upholstery',
-          altAfter: 'Beautifully restored Art Deco sofa with new upholstery and refinished woodwork'
+          type: 'showcase' as const,
+          title: 'Antique Cabinet',
+          description: 'Restoration and conservation of an antique cabinet',
+          alt: 'Restored antique cabinet',
+          image: '/images/portfolio/showcase/showcase-3.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Chesterfield Sofa',
+          description: 'Classic Chesterfield upholstery with leather',
+          alt: 'Chesterfield sofa with new leather upholstery',
+          image: '/images/portfolio/showcase/showcase-4.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Dining Chairs',
+          description: 'Set of six restored dining chairs',
+          alt: 'Restored antique dining chairs',
+          image: '/images/portfolio/showcase/showcase-5.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'French Armchair',
+          description: 'Restoration of a French armchair',
+          alt: 'French armchair after restoration',
+          image: '/images/portfolio/showcase/showcase-6.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Vintage Settee',
+          description: 'Reupholstery of a vintage two-seater',
+          alt: 'Restored vintage settee',
+          image: '/images/portfolio/showcase/showcase-7.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Art Deco Chair',
+          description: 'Restoration of an Art Deco chair',
+          alt: 'Restored Art Deco chair',
+          image: '/images/portfolio/showcase/showcase-8.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Bergère Chair',
+          description: 'Classic restoration of a Bergère chair',
+          alt: 'Restored Bergère chair',
+          image: '/images/portfolio/showcase/showcase-9.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Wingback Chair',
+          description: 'Complete restoration of an antique wingback chair',
+          alt: 'Restored antique wingback chair',
+          image: '/images/portfolio/showcase/showcase-10.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Louis XV Sofa',
+          description: 'Restoration of a Louis XV sofa with silk upholstery',
+          alt: 'Restored Louis XV sofa',
+          image: '/images/portfolio/showcase/showcase-11.jpg'
         }
       ]
     }
