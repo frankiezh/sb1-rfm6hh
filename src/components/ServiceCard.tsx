@@ -57,7 +57,7 @@ export function ServiceCard({ title, description, image, reverse = false, index 
       <motion.div 
         className="p-4 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg flex-1"
       >
-        <h3 className="text-xl font-light mb-2 tracking-wide">{title}</h3>
+        <h3 className="text-xl font-medium md:font-light mb-3 tracking-wide">{title}</h3>
         <p className="leading-relaxed">{description}</p>
       </motion.div>
     </motion.div>
