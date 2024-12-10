@@ -229,13 +229,12 @@ export default function App() {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[70vh] md:min-h-screen flex flex-col">
+        <section className="relative min-h-screen flex flex-col">
           <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
-              alt="Luxury Furniture"
-              className="w-full h-full object-cover"
-            />
+            <div 
+              className="w-full h-full bg-cover bg-center" 
+              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace")' }}
+            ></div>
             <div className="absolute inset-0 bg-black/40" />
           </div>
           
@@ -404,9 +403,9 @@ export default function App() {
           <div className="absolute inset-0 bg-[#f8f8f8]/90" />
           <div className="container mx-auto px-4 relative">
             {/* Title and Logo Row */}
-            <div className="flex items-start gap-4 md:gap-8 mb-12">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8 mb-12">
               {/* Text block - Use as height reference */}
-              <div className="flex-1 min-w-0" ref={textBlockRef}>
+              <div className="w-full md:flex-1 min-w-0 text-center md:text-left" ref={textBlockRef}>
                 <h2 className="text-3xl font-light tracking-wide mb-4">
                   {t.contact.subtitle}
                 </h2>
@@ -414,11 +413,11 @@ export default function App() {
               </div>
               
               {/* Logo container - Match height with text block */}
-              <div className="flex-shrink-0 flex items-center h-full" style={{ height: textBlockHeight }}>
+              <div className="w-32 md:w-48 flex-shrink-0">
                 <img 
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Artboard%2018%20copy-mkGJ2YCAJdOhaws0ST1zvrqbmvcE3d.svg"
                   alt="Atelier Grünenwald Logo"
-                  className="h-full w-auto object-contain"
+                  className="w-full h-auto object-contain"
                 />
               </div>
             </div>
