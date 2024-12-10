@@ -195,7 +195,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
           "p-4 flex flex-col gap-2 overflow-y-auto",
           props.type === 'before-after'
             ? "w-[90vw] max-w-6xl max-h-[90vh]"
-            : "w-fit max-w-[90vw] max-h-[90vh]"
+            : "w-[90vw] md:w-fit max-w-[90vw] max-h-[90vh]"
         )}
         aria-describedby={`portfolio-item-${index}-description`}
       >
@@ -251,17 +251,17 @@ export function PortfolioCard(props: PortfolioCardProps) {
             >
               {props.description}
             </p>
-            <div className="w-fit" ref={imageRef}>
+            <div className="w-full md:w-fit" ref={imageRef}>
               <Image
                 src={props.image}
                 alt={props.title}
-                className="w-auto max-h-[85vh] object-cover"
+                className="w-full md:w-auto max-h-[85vh] object-cover"
               />
             </div>
             <p
               id={`portfolio-item-${index}-description`}
               className="text-neutral-600 text-base hidden md:block"
-              style={{ width: textWidth ? `${textWidth}px` : 'auto' }}
+              style={{ width: textWidth && !isMobile ? `${textWidth}px` : 'auto' }}
             >
               {props.description}
             </p>
