@@ -181,7 +181,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
                 >
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <h3 className="text-lg font-light mb-2">{props.title}</h3>
-                    <p className="text-sm text-white/90">{props.description}</p>
+                    <p className="hidden md:block text-sm text-white/90">{props.description}</p>
                   </div>
                 </motion.div>
               )}
@@ -192,7 +192,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
 
       <DialogContent
         className={cn(
-          "p-4 flex flex-col gap-2",
+          "p-4 flex flex-col gap-2 overflow-y-auto",
           props.type === 'before-after'
             ? "w-[90vw] max-w-6xl max-h-[90vh]"
             : "w-fit max-w-[90vw] max-h-[90vh]"
@@ -208,7 +208,13 @@ export function PortfolioCard(props: PortfolioCardProps) {
         
         {props.type === "before-after" ? (
           <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <p
+              id={`portfolio-item-${index}-description`}
+              className="text-neutral-600 mb-4 text-sm md:hidden"
+            >
+              {props.description}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col">
                 <div className="relative" style={{ paddingBottom: '100%' }}>
                   <Image
@@ -232,13 +238,19 @@ export function PortfolioCard(props: PortfolioCardProps) {
             </div>
             <p
               id={`portfolio-item-${index}-description`}
-              className="text-neutral-600 mt-2"
+              className="text-neutral-600 mt-4 text-base hidden md:block"
             >
               {props.description}
             </p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
+            <p
+              id={`portfolio-item-${index}-description`}
+              className="text-neutral-600 mb-4 text-sm md:hidden"
+            >
+              {props.description}
+            </p>
             <div className="w-fit" ref={imageRef}>
               <Image
                 src={props.image}
@@ -248,7 +260,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
             </div>
             <p
               id={`portfolio-item-${index}-description`}
-              className="text-neutral-600"
+              className="text-neutral-600 text-base hidden md:block"
               style={{ width: textWidth ? `${textWidth}px` : 'auto' }}
             >
               {props.description}

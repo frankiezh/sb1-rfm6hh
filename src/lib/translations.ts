@@ -79,10 +79,19 @@ export const translations = {
         },
         {
           type: 'showcase' as const,
-          title: 'Viktorianisches Sofa',
-          description: 'Komplette Restaurierung eines viktorianischen Sofas',
-          alt: 'Restauriertes viktorianisches Sofa',
-          image: '/images/portfolio/showcase/showcase-14.jpg'
+          title: 'Louis XVI Sessel mit Kalligrafie-Samt',
+          description: 'Vollständige Restaurierung eines antiken Louis XVI Sessels aus dem 18. Jahrhundert, neu bezogen mit einem exklusiven, von Kalligrafie inspirierten Braunton-Samt. Traditionelle Restaurierungstechniken kombiniert mit zeitgenössischem Design.',
+          alt: 'Antiker Louis XVI Sessel restauriert und neu bezogen mit abstraktem Kalligrafie-inspiriertem verbranntem Samtstoff - Restaurierung von Atelier Grünenwald Zürich',
+          image: '/images/portfolio/showcase/antique-louis-xvi-armchair-calligraphy-velvet-restoration.jpg',
+          keywords: ['Louis XVI Sessel', 'Antike Möbel Restaurierung', 'Polsterarbeiten Zürich', 'Kalligrafie Samt']
+        },
+        {
+          type: 'showcase' as const,
+          title: '1950er Küchenstühle im American Diner Stil',
+          description: 'Kreative Neugestaltung eines Vintage Küchenstuhl-Paares aus den 1950er Jahren. Hochwertige Lederpolsterung im klassischen American Diner Stil, kombiniert mit originalgetreuer Restaurierung der Chromgestelle.',
+          alt: 'Vintage Küchenstühle aus den 1950er Jahren, restauriert und neu bezogen mit hochwertigem Leder im American Diner Stil - Restaurierung von Atelier Grünenwald Zürich',
+          image: '/images/portfolio/showcase/1950s-kitchen-chairs-american-diner-leather-restoration.jpg',
+          keywords: ['1950er Küchenstühle', 'American Diner Stil', 'Vintage Restaurierung', 'Lederpolsterung', 'Chromgestell']
         },
         {
           type: 'showcase' as const,
@@ -244,10 +253,19 @@ export const translations = {
         },
         {
           type: 'showcase' as const,
-          title: 'Viktorianisches Sofa',
-          description: 'Komplette Restaurierung eines viktorianischen Sofas',
-          alt: 'Restauriertes viktorianisches Sofa',
-          image: '/images/portfolio/showcase/showcase-14.jpg'
+          title: 'Louis XVI Armchair with Calligraphy Velvet',
+          description: 'Complete restoration of an 18th century antique Louis XVI armchair, reupholstered with exclusive calligraphy-inspired burnt velvet fabric. Traditional restoration techniques combined with contemporary design.',
+          alt: 'Antique Louis XVI armchair restored and reupholstered with abstract calligraphy-inspired burnt velvet fabric - restoration by Atelier Grünenwald Zurich',
+          image: '/images/portfolio/showcase/antique-louis-xvi-armchair-calligraphy-velvet-restoration.jpg',
+          keywords: ['Louis XVI armchair', 'antique furniture restoration', 'upholstery Zurich', 'calligraphy velvet']
+        },
+        {
+          type: 'showcase' as const,
+          title: '1950s Kitchen Chairs in American Diner Style',
+          description: 'Creative transformation of a pair of vintage 1950s kitchen chairs. Premium leather upholstery in classic American diner style, combined with authentic restoration of the chrome frames.',
+          alt: 'Vintage 1950s kitchen chairs restored and reupholstered with premium leather in American diner style - restoration by Atelier Grünenwald Zurich',
+          image: '/images/portfolio/showcase/1950s-kitchen-chairs-american-diner-leather-restoration.jpg',
+          keywords: ['1950s kitchen chairs', 'American diner style', 'vintage restoration', 'leather upholstery', 'chrome frame']
         },
         {
           type: 'showcase' as const,
