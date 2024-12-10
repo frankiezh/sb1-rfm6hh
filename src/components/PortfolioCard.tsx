@@ -1,16 +1,17 @@
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Image } from './Image';
+import { X } from 'lucide-react';
+import { useMediaQuery } from 'react-responsive';
 
 interface BasePortfolioCardProps {
   title: string;
   description: string;
   className?: string;
   index?: number;
-  keywords?: string[];
 }
 
 interface BeforeAfterCardProps extends BasePortfolioCardProps {
@@ -36,6 +37,9 @@ export function PortfolioCard(props: PortfolioCardProps) {
     threshold: 0.2,
     triggerOnce: false,
   });
+  const imageRef = useRef<HTMLDivElement>(null);
+  const [textWidth, setTextWidth] = useState<number | null>(null);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   // Update the sequence to wait for zoom
   useEffect(() => {
@@ -62,6 +66,22 @@ export function PortfolioCard(props: PortfolioCardProps) {
       if (beforeTimeoutId) clearTimeout(beforeTimeoutId);
     };
   }, [isHovered, props.type]);
+
+  // Add this useEffect to update text width when image loads
+  useEffect(() => {
+    if (props.type === 'showcase' && imageRef.current) {
+      const updateWidth = () => {
+        const width = imageRef.current?.offsetWidth;
+        if (width) {
+          setTextWidth(width);
+        }
+      };
+
+      updateWidth();
+      window.addEventListener('resize', updateWidth);
+      return () => window.removeEventListener('resize', updateWidth);
+    }
+  }, [props.type]);
 
   const index = props.index ?? 0;
 
@@ -150,7 +170,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
             )}
 
             <AnimatePresence>
-              {isHovered && (
+              {(isHovered || isMobile) && (
                 <motion.div
                   key="overlay"
                   className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
@@ -171,51 +191,70 @@ export function PortfolioCard(props: PortfolioCardProps) {
       </DialogTrigger>
 
       <DialogContent
-        className="max-w-4xl"
+        className={cn(
+          "p-4 flex flex-col gap-2",
+          props.type === 'before-after'
+            ? "w-[90vw] max-w-6xl max-h-[90vh]"
+            : "w-fit max-w-[90vw] max-h-[90vh]"
+        )}
         aria-describedby={`portfolio-item-${index}-description`}
       >
-        <DialogTitle className="sr-only">{props.title}</DialogTitle>
+        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-neutral-500">
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+        
+        <DialogTitle className="text-xl font-semibold mb-2">{props.title}</DialogTitle>
+        
         {props.type === "before-after" ? (
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Image
-                src={props.imageBefore}
-                alt={`${props.title} - Before`}
-                className="w-full rounded-lg"
-              />
-              <p className="mt-2 text-center text-sm text-neutral-500">
-                Before
-              </p>
+          <div className="w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="flex flex-col">
+                <div className="relative" style={{ paddingBottom: '100%' }}>
+                  <Image
+                    src={props.imageBefore}
+                    alt={`${props.title} - Before`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-center text-sm text-neutral-500">Before</p>
+              </div>
+              <div className="flex flex-col">
+                <div className="relative" style={{ paddingBottom: '100%' }}>
+                  <Image
+                    src={props.imageAfter}
+                    alt={`${props.title} - After`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-center text-sm text-neutral-500">After</p>
+              </div>
             </div>
-            <div>
-              <Image
-                src={props.imageAfter}
-                alt={`${props.title} - After`}
-                className="w-full rounded-lg"
-              />
-              <p className="mt-2 text-center text-sm text-neutral-500">
-                After
-              </p>
-            </div>
+            <p
+              id={`portfolio-item-${index}-description`}
+              className="text-neutral-600 mt-2"
+            >
+              {props.description}
+            </p>
           </div>
         ) : (
-          <div>
-            <Image
-              src={props.image}
-              alt={props.title}
-              className="w-full rounded-lg"
-            />
+          <div className="flex flex-col gap-2">
+            <div className="w-fit" ref={imageRef}>
+              <Image
+                src={props.image}
+                alt={props.title}
+                className="w-auto max-h-[85vh] object-cover"
+              />
+            </div>
+            <p
+              id={`portfolio-item-${index}-description`}
+              className="text-neutral-600"
+              style={{ width: textWidth ? `${textWidth}px` : 'auto' }}
+            >
+              {props.description}
+            </p>
           </div>
         )}
-        <div className="mt-4">
-          <h3 className="text-xl font-light mb-2">{props.title}</h3>
-          <p
-            id={`portfolio-item-${index}-description`}
-            className="text-neutral-600"
-          >
-            {props.description}
-          </p>
-        </div>
       </DialogContent>
     </Dialog>
   );

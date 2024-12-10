@@ -229,12 +229,12 @@ export default function App() {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[100svh] md:h-[90vh] flex flex-col">
+        <section className="relative min-h-[70vh] md:min-h-screen flex flex-col">
           <div className="absolute inset-0">
             <img 
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
               alt="Luxury Furniture"
-              className="w-full h-full object-cover object-center md:object-bottom"
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/40" />
           </div>
@@ -351,6 +351,7 @@ export default function App() {
                   description={service.description}
                   image={service.image}
                   index={index}
+                  reverse={index % 2 !== 0}
                 />
               ))}
             </div>

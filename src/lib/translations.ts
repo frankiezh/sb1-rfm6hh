@@ -54,12 +54,12 @@ export const translations = {
       items: [
         {
           type: 'before-after' as const,
-          title: 'Sessel Restaurierung',
-          description: 'Vollständige Restaurierung eines klassischen Sessels mit traditioneller Polsterung',
-          altBefore: 'Klassischer Sessel vor der Restaurierung',
-          altAfter: 'Klassischer Sessel nach der Restaurierung',
-          imageBefore: '/images/portfolio/before/armchair-restoration-before.jpg',
-          imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
+          title: 'Restaurierung eines Vintage-Sessels aus den 1950er Jahren',
+          description: 'Vollständige Restaurierung eines klassischen 1950er Jahre Sessels vom abgenutzten Zustand zu eleganter Raffinesse, mit hochwertiger Seidenbrokat-Polsterung und detaillierter Handwerkskunst.',
+          altBefore: 'Vintage Sessel aus den 1950er Jahren vor der Restaurierung - abgenutzter Zustand mit Polsterungsbedarf',
+          altAfter: 'Restaurierter 1950er Jahre Sessel mit luxuriöser Seidenbrokat-Polsterung - nach professioneller Restaurierung',
+          imageBefore: '/images/portfolio/before/1950s-vintage-armchair-restoration-before.jpg',
+          imageAfter: '/images/portfolio/after/1950s-vintage-armchair-silk-brocade-after.jpg'
         },
         {
           type: 'before-after' as const,
@@ -219,12 +219,12 @@ export const translations = {
       items: [
         {
           type: 'before-after' as const,
-          title: 'Sessel Restaurierung',
-          description: 'Vollständige Restaurierung eines klassischen Sessels mit traditioneller Polsterung',
-          altBefore: 'Klassischer Sessel vor der Restaurierung',
-          altAfter: 'Klassischer Sessel nach der Restaurierung',
-          imageBefore: '/images/portfolio/before/armchair-restoration-before.jpg',
-          imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
+          title: '1950s Vintage Armchair Restoration',
+          description: 'Complete restoration of a classic 1950s armchair from worn condition to elegant sophistication, featuring premium silk brocade upholstery and detailed craftsmanship.',
+          altBefore: 'Vintage 1950s armchair before restoration - worn condition requiring upholstery repair',
+          altAfter: 'Restored 1950s armchair with luxurious silk brocade upholstery - after professional restoration',
+          imageBefore: '/images/portfolio/before/1950s-vintage-armchair-restoration-before.jpg',
+          imageAfter: '/images/portfolio/after/1950s-vintage-armchair-silk-brocade-after.jpg'
         },
         {
           type: 'before-after' as const,

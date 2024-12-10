@@ -6,10 +6,11 @@ interface ServiceCardProps {
   title: string;
   description: string;
   image: string;
+  reverse?: boolean;
   index?: number;
 }
 
-export function ServiceCard({ title, description, image, index = 0 }: ServiceCardProps) {
+export function ServiceCard({ title, description, image, reverse = false, index = 0 }: ServiceCardProps) {
   const [ref, inView] = useInView({
     threshold: 0.2,
     triggerOnce: false,
@@ -32,12 +33,12 @@ export function ServiceCard({ title, description, image, index = 0 }: ServiceCar
         hidden: { opacity: 0, scale: 0.95 }
       }}
       className={cn(
-        "grid md:grid-cols-2 gap-8",
-        index % 2 === 1 ? "[grid-template-areas:'text_image']" : "[grid-template-areas:'image_text']"
+        "flex flex-col md:flex-row gap-4",
+        reverse ? "md:flex-row-reverse" : ""
       )}
     >
       <motion.div 
-        className="aspect-[16/10] overflow-hidden rounded-lg [grid-area:image]"
+        className="aspect-[16/10] overflow-hidden rounded-lg flex-1"
         whileHover={{ 
           scale: 1.02,
           transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
@@ -51,9 +52,9 @@ export function ServiceCard({ title, description, image, index = 0 }: ServiceCar
       </motion.div>
       
       <motion.div 
-        className="p-8 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg [grid-area:text]"
+        className="p-4 flex flex-col justify-center bg-[#8A9A8E]/90 backdrop-blur-sm text-white rounded-lg flex-1"
       >
-        <h3 className="text-xl font-light mb-4 tracking-wide">{title}</h3>
+        <h3 className="text-xl font-light mb-2 tracking-wide">{title}</h3>
         <p className="leading-relaxed">{description}</p>
       </motion.div>
     </motion.div>
