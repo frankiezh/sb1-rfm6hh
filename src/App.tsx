@@ -382,6 +382,7 @@ export default function App() {
                   key={item.title}
                   {...item}
                   index={index}
+                  className="h-full"
                 />
               ))}
             </div>

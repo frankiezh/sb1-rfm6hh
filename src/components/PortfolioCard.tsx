@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -31,10 +31,37 @@ type PortfolioCardProps = BeforeAfterCardProps | ShowcaseCardProps;
 
 export function PortfolioCard(props: PortfolioCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [showBefore, setShowBefore] = useState(false);
   const [ref, inView] = useInView({
     threshold: 0.2,
     triggerOnce: false,
   });
+
+  // Update the sequence to wait for zoom
+  useEffect(() => {
+    let zoomTimeoutId: NodeJS.Timeout;
+    let beforeTimeoutId: NodeJS.Timeout;
+    
+    if (isHovered && props.type === 'before-after') {
+      // Wait for zoom animation to complete (2.4s) before showing before image
+      zoomTimeoutId = setTimeout(() => {
+        setShowBefore(true);
+        
+        // After showing before image for 2s, switch back to after
+        beforeTimeoutId = setTimeout(() => {
+          setShowBefore(false);
+        }, 2000);
+      }, 2400); // Match the zoom duration
+    } else {
+      // Reset to after image when not hovering
+      setShowBefore(false);
+    }
+
+    return () => {
+      if (zoomTimeoutId) clearTimeout(zoomTimeoutId);
+      if (beforeTimeoutId) clearTimeout(beforeTimeoutId);
+    };
+  }, [isHovered, props.type]);
 
   const index = props.index ?? 0;
 
@@ -48,22 +75,18 @@ export function PortfolioCard(props: PortfolioCardProps) {
           variants={{
             visible: {
               opacity: 1,
-              scale: 1,
-              y: 0,
               transition: {
-                duration: 1.2,
-                delay: index * 0.2,
-                ease: [0.22, 1, 0.36, 1],
+                duration: 2.4,
+                delay: index * 0.1,
+                ease: "easeOut"
               },
             },
             hidden: {
               opacity: 0,
-              scale: 0.98,
-              y: 40,
             },
           }}
           className={cn(
-            "group cursor-pointer relative overflow-hidden rounded-lg bg-white aspect-[4/3]",
+            "group cursor-pointer relative overflow-hidden rounded-lg bg-white w-full aspect-[4/3]",
             props.className
           )}
           onMouseEnter={() => setIsHovered(true)}
@@ -74,12 +97,18 @@ export function PortfolioCard(props: PortfolioCardProps) {
               <div className="relative h-full overflow-hidden">
                 <motion.div
                   initial={{ scale: 1 }}
-                  animate={{ scale: isHovered ? 1.15 : 1 }}
-                  transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
+                  animate={{ 
+                    scale: isHovered ? 1.15 : 1,
+                    opacity: showBefore ? 0 : 1
+                  }}
+                  transition={{ 
+                    scale: { duration: 2.4, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 1.5, ease: "easeInOut" }
+                  }}
                 >
                   <Image
-                    src={props.imageBefore}
-                    alt={props.altBefore}
+                    src={props.imageAfter}
+                    alt={props.altAfter}
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -88,7 +117,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
                   className="absolute inset-0"
                   initial={{ opacity: 0 }}
                   animate={{ 
-                    opacity: isHovered ? 1 : 0,
+                    opacity: showBefore ? 1 : 0,
                     scale: isHovered ? 1.15 : 1,
                   }}
                   transition={{ 
@@ -97,8 +126,8 @@ export function PortfolioCard(props: PortfolioCardProps) {
                   }}
                 >
                   <Image
-                    src={props.imageAfter}
-                    alt={props.altAfter}
+                    src={props.imageBefore}
+                    alt={props.altBefore}
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -113,6 +142,9 @@ export function PortfolioCard(props: PortfolioCardProps) {
                   src={props.image}
                   alt={props.alt}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Image failed to load:', props.image);
+                  }}
                 />
               </motion.div>
             )}

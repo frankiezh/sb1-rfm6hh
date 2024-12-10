@@ -63,12 +63,12 @@ export const translations = {
         },
         {
           type: 'before-after' as const,
-          title: 'Sessel Restaurierung II',
-          description: 'Traditionelle Restaurierung eines antiken Sessels mit handwerklicher Expertise',
-          altBefore: 'Antiker Sessel vor der Restaurierung',
-          altAfter: 'Antiker Sessel nach der Restaurierung',
-          imageBefore: '/images/portfolio/before/armchair-restoration-before-1.jpg',
-          imageAfter: '/images/portfolio/after/armchair-restoration-after-1.jpg'
+          title: 'IKEA STRANDMON Vintage Makeover',
+          description: 'Kreative Neugestaltung eines IKEA STRANDMON Sessels mit Hocker. Bezogen mit diagonalem Vintage-Streifenstoff und historischen Schweizer Armeeuniformen-Bändern.',
+          altBefore: 'IKEA STRANDMON Sessel vor der Restaurierung - Original Grauer Bezug',
+          altAfter: 'IKEA STRANDMON Sessel nach der Restaurierung - Vintage Streifenstoff mit Militärbändern',
+          imageBefore: '/images/portfolio/before/ikea-strandmon-armchair-footstool-before-restoration.jpg',
+          imageAfter: '/images/portfolio/after/ikea-strandmon-armchair-footstool-vintage-stripe-restoration.jpg'
         },
         {
           type: 'showcase' as const,
@@ -228,12 +228,12 @@ export const translations = {
         },
         {
           type: 'before-after' as const,
-          title: 'Sessel Restaurierung II',
-          description: 'Traditionelle Restaurierung eines antiken Sessels',
-          altBefore: 'Antiker Sessel vor der Restaurierung',
-          altAfter: 'Antiker Sessel nach der Restaurierung',
-          imageBefore: '/images/portfolio/before/armchair-restoration-before-1.jpg',
-          imageAfter: '/images/portfolio/after/armchair-restoration-after-1.jpg'
+          title: 'IKEA STRANDMON Vintage Makeover',
+          description: 'Creative transformation of an IKEA STRANDMON armchair and footstool, reupholstered with diagonal vintage striped fabric and historic Swiss Army uniform bands.',
+          altBefore: 'IKEA STRANDMON armchair before restoration - Original grey upholstery',
+          altAfter: 'IKEA STRANDMON armchair after restoration - Vintage stripe fabric with military bands',
+          imageBefore: '/images/portfolio/before/ikea-strandmon-armchair-footstool-before-restoration.jpg',
+          imageAfter: '/images/portfolio/after/ikea-strandmon-armchair-footstool-vintage-stripe-restoration.jpg'
         },
         {
           type: 'showcase' as const,
