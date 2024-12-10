@@ -164,8 +164,8 @@ export default function App() {
         <link 
           rel="preload" 
           as="image" 
+          fetchPriority="high"
           href="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace" 
-          fetchpriority="high"
         />
       </Helmet>
       
@@ -192,6 +192,7 @@ export default function App() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="md:hidden p-2 text-[#2B1810]"
                 aria-label="Toggle menu"
+                aria-expanded={isMobileMenuOpen}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -202,8 +203,16 @@ export default function App() {
         </header>
 
         {/* Mobile menu */}
-        <div className={`md:hidden fixed inset-x-0 top-20 bg-white/95 backdrop-blur-sm transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-          <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 text-sm font-medium">
+        <div 
+          className={`
+            md:hidden fixed inset-x-0 top-20 
+            bg-white/95 backdrop-blur-sm 
+            transform transition-transform duration-300 ease-in-out 
+            z-40 border-b
+            ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}
+          `}
+        >
+          <nav className="container mx-auto px-4 py-6 flex flex-col space-y-6 text-base font-medium">
             <a href="#services" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.services}</a>
             <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
             <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
