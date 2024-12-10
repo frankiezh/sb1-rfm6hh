@@ -62,52 +62,61 @@ export const translations = {
           imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
         },
         {
+          type: 'before-after' as const,
+          title: 'Sessel Restaurierung II',
+          description: 'Traditionelle Restaurierung eines antiken Sessels mit handwerklicher Expertise',
+          altBefore: 'Antiker Sessel vor der Restaurierung',
+          altAfter: 'Antiker Sessel nach der Restaurierung',
+          imageBefore: '/images/portfolio/before/armchair-restoration-before-1.jpg',
+          imageAfter: '/images/portfolio/after/armchair-restoration-after-1.jpg'
+        },
+        {
           type: 'showcase' as const,
-          title: 'Baroque Sofa',
-          description: 'Restoration of a baroque sofa with gold details',
-          alt: 'Restored baroque sofa with detailed gold ornaments',
-          image: '/images/portfolio/showcase/showcase-1.jpg'
+          title: 'Antiker Sessel (ca. 1900)',
+          description: 'Vollständige Restaurierung und Neupolsterung mit exklusivem Osborne & Little Stoff',
+          alt: 'Antiker Sessel aus der Jahrhundertwende, restauriert und neu bezogen mit Osborne & Little Stoff',
+          image: '/images/portfolio/showcase/antique-chair-1900-osborne-little-restoration.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Viktorianisches Sofa',
+          description: 'Komplette Restaurierung eines viktorianischen Sofas',
+          alt: 'Restauriertes viktorianisches Sofa',
+          image: '/images/portfolio/showcase/showcase-14.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Victorian Chair',
           description: 'Traditional upholstery of a Victorian chair',
           alt: 'Victorian chair with new upholstery',
-          image: '/images/portfolio/showcase/showcase-2.jpg'
+          image: '/images/portfolio/showcase/showcase-3.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Antique Cabinet',
           description: 'Restoration and conservation of an antique cabinet',
           alt: 'Restored antique cabinet',
-          image: '/images/portfolio/showcase/showcase-3.jpg'
+          image: '/images/portfolio/showcase/showcase-4.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Chesterfield Sofa',
           description: 'Classic Chesterfield upholstery with leather',
           alt: 'Chesterfield sofa with new leather upholstery',
-          image: '/images/portfolio/showcase/showcase-4.jpg'
+          image: '/images/portfolio/showcase/showcase-5.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Dining Chairs',
           description: 'Set of six restored dining chairs',
           alt: 'Restored antique dining chairs',
-          image: '/images/portfolio/showcase/showcase-5.jpg'
+          image: '/images/portfolio/showcase/showcase-6.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'French Armchair',
           description: 'Restoration of a French armchair',
           alt: 'French armchair after restoration',
-          image: '/images/portfolio/showcase/showcase-6.jpg'
-        },
-        {
-          type: 'showcase' as const,
-          title: 'Vintage Settee',
-          description: 'Reupholstery of a vintage two-seater',
-          alt: 'Restored vintage settee',
           image: '/images/portfolio/showcase/showcase-7.jpg'
         },
         {
@@ -137,6 +146,20 @@ export const translations = {
           description: 'Restoration of a Louis XV sofa with silk upholstery',
           alt: 'Restored Louis XV sofa',
           image: '/images/portfolio/showcase/showcase-11.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Antique Armchair',
+          description: 'Restoration of an antique armchair with traditional techniques',
+          alt: 'Restored antique armchair',
+          image: '/images/portfolio/showcase/showcase-12.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Victorian Settee',
+          description: 'Complete restoration of a Victorian settee',
+          alt: 'Restored Victorian settee',
+          image: '/images/portfolio/showcase/showcase-13.jpg'
         }
       ]
     }
@@ -204,52 +227,61 @@ export const translations = {
           imageAfter: '/images/portfolio/after/armchair-restoration-after.jpg'
         },
         {
+          type: 'before-after' as const,
+          title: 'Sessel Restaurierung II',
+          description: 'Traditionelle Restaurierung eines antiken Sessels',
+          altBefore: 'Antiker Sessel vor der Restaurierung',
+          altAfter: 'Antiker Sessel nach der Restaurierung',
+          imageBefore: '/images/portfolio/before/armchair-restoration-before-1.jpg',
+          imageAfter: '/images/portfolio/after/armchair-restoration-after-1.jpg'
+        },
+        {
           type: 'showcase' as const,
-          title: 'Baroque Sofa',
-          description: 'Restoration of a baroque sofa with gold details',
-          alt: 'Restored baroque sofa with detailed gold ornaments',
-          image: '/images/portfolio/showcase/showcase-1.jpg'
+          title: 'Antique Chair (c. 1900)',
+          description: 'Complete restoration and reupholstery with exclusive Osborne & Little fabric',
+          alt: 'Turn of the century antique chair restored and reupholstered with Osborne & Little fabric',
+          image: '/images/portfolio/showcase/antique-chair-1900-osborne-little-restoration.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Viktorianisches Sofa',
+          description: 'Komplette Restaurierung eines viktorianischen Sofas',
+          alt: 'Restauriertes viktorianisches Sofa',
+          image: '/images/portfolio/showcase/showcase-14.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Victorian Chair',
           description: 'Traditional upholstery of a Victorian chair',
           alt: 'Victorian chair with new upholstery',
-          image: '/images/portfolio/showcase/showcase-2.jpg'
+          image: '/images/portfolio/showcase/showcase-3.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Antique Cabinet',
           description: 'Restoration and conservation of an antique cabinet',
           alt: 'Restored antique cabinet',
-          image: '/images/portfolio/showcase/showcase-3.jpg'
+          image: '/images/portfolio/showcase/showcase-4.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Chesterfield Sofa',
           description: 'Classic Chesterfield upholstery with leather',
           alt: 'Chesterfield sofa with new leather upholstery',
-          image: '/images/portfolio/showcase/showcase-4.jpg'
+          image: '/images/portfolio/showcase/showcase-5.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'Dining Chairs',
           description: 'Set of six restored dining chairs',
           alt: 'Restored antique dining chairs',
-          image: '/images/portfolio/showcase/showcase-5.jpg'
+          image: '/images/portfolio/showcase/showcase-6.jpg'
         },
         {
           type: 'showcase' as const,
           title: 'French Armchair',
           description: 'Restoration of a French armchair',
           alt: 'French armchair after restoration',
-          image: '/images/portfolio/showcase/showcase-6.jpg'
-        },
-        {
-          type: 'showcase' as const,
-          title: 'Vintage Settee',
-          description: 'Reupholstery of a vintage two-seater',
-          alt: 'Restored vintage settee',
           image: '/images/portfolio/showcase/showcase-7.jpg'
         },
         {
@@ -279,6 +311,20 @@ export const translations = {
           description: 'Restoration of a Louis XV sofa with silk upholstery',
           alt: 'Restored Louis XV sofa',
           image: '/images/portfolio/showcase/showcase-11.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Antique Armchair',
+          description: 'Restoration of an antique armchair with traditional techniques',
+          alt: 'Restored antique armchair',
+          image: '/images/portfolio/showcase/showcase-12.jpg'
+        },
+        {
+          type: 'showcase' as const,
+          title: 'Victorian Settee',
+          description: 'Complete restoration of a Victorian settee',
+          alt: 'Restored Victorian settee',
+          image: '/images/portfolio/showcase/showcase-14.jpg'
         }
       ]
     }

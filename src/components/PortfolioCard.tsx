@@ -63,33 +63,58 @@ export function PortfolioCard(props: PortfolioCardProps) {
             },
           }}
           className={cn(
-            "group cursor-pointer relative overflow-hidden rounded-lg bg-white",
+            "group cursor-pointer relative overflow-hidden rounded-lg bg-white aspect-[4/3]",
             props.className
           )}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          style={{ overflow: "hidden" }}
         >
           <div className="relative w-full h-full">
             {props.type === "before-after" ? (
+              <div className="relative h-full overflow-hidden">
+                <motion.div
+                  initial={{ scale: 1 }}
+                  animate={{ scale: isHovered ? 1.15 : 1 }}
+                  transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Image
+                    src={props.imageBefore}
+                    alt={props.altBefore}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: isHovered ? 1 : 0,
+                    scale: isHovered ? 1.15 : 1,
+                  }}
+                  transition={{ 
+                    opacity: { duration: 1.5, ease: "easeInOut" },
+                    scale: { duration: 2.4, ease: [0.16, 1, 0.3, 1] }
+                  }}
+                >
+                  <Image
+                    src={props.imageAfter}
+                    alt={props.altAfter}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+              </div>
+            ) : (
               <motion.div
                 initial={{ scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.5 }}
-                style={{ transformOrigin: "center" }}
+                animate={{ scale: isHovered ? 1.15 : 1 }}
+                transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Image
-                  src={isHovered ? props.imageAfter : props.imageBefore}
-                  alt={isHovered ? props.altAfter : props.altBefore}
+                  src={props.image}
+                  alt={props.alt}
                   className="w-full h-full object-cover"
                 />
               </motion.div>
-            ) : (
-              <Image
-                src={props.image}
-                alt={props.alt}
-                className="w-full h-full object-cover"
-              />
             )}
 
             <AnimatePresence>
