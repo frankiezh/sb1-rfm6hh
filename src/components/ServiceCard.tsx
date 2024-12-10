@@ -47,7 +47,10 @@ export function ServiceCard({ title, description, image, reverse = false, index 
         <img 
           src={image} 
           alt={title}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover"
+          fetchPriority={index === 0 ? "high" : "low"}
         />
       </motion.div>
       

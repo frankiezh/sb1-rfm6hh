@@ -161,6 +161,12 @@ export default function App() {
             }
           })}
         </script>
+        <link 
+          rel="preload" 
+          as="image" 
+          href="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace" 
+          fetchpriority="high"
+        />
       </Helmet>
       
       <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">
@@ -231,10 +237,13 @@ export default function App() {
         {/* Hero Section */}
         <section className="relative min-h-screen flex flex-col">
           <div className="absolute inset-0">
-            <div 
-              className="w-full h-full bg-cover bg-center" 
-              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace")' }}
-            ></div>
+            <img 
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
+              alt="Hero background"
+              fetchPriority="high"
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
             <div className="absolute inset-0 bg-black/40" />
           </div>
           
@@ -418,6 +427,8 @@ export default function App() {
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Artboard%2018%20copy-mkGJ2YCAJdOhaws0ST1zvrqbmvcE3d.svg"
                   alt="Atelier Grünenwald Logo"
                   className="w-full h-auto object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
