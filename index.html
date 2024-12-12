@@ -1,23 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⚡️ Bolt.new + Vite + React</title>
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google tag (gtag.js) - Combined GA4 and Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11491013132"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');  // Replace with your GA4 measurement ID
+
+      gtag('config', 'G-XXXXXXXXXX');  // Your GA4 ID
+      gtag('config', 'AW-11491013132'); // Your Google Ads ID
     </script>
 
-    <!-- Google Ads -->
+    <!-- Conversion Tracking Function -->
     <script>
-      gtag('config', 'AW-CONVERSION_ID');  // Replace with your Google Ads ID
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-11491013132/gIjyCLqI0vYZEIzkq-cq',
+          'value': 1.0,
+          'currency': 'CHF',
+          'event_callback': callback
+      });
+      return false;
+    }
     </script>
+    
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your App Title</title>
+    <meta property="og:title" content="Polsterei am HB Zürich | Atelier Grünenwald" />
+    <meta property="og:description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
+    <meta property="og:image" content="https://polsterei-hb-zuerich.ch/og-image.jpg" />
+    <meta property="og:url" content="https://polsterei-hb-zuerich.ch" />
+    <meta property="og:type" content="website" />
+
+    <!-- Additional recommended tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content="Atelier Grünenwald - Polsterei am HB Zürich" />
   </head>
   <body>
     <div id="root"></div>

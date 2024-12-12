@@ -99,6 +99,8 @@ export default function App() {
       category: 'Contact',
       label: 'Header Call Button'
     });
+
+    gtag_report_conversion();
   };
 
   const handleWhatsAppClick = () => {
@@ -107,6 +109,8 @@ export default function App() {
       category: 'Contact',
       label: 'Header WhatsApp Button'
     });
+
+    gtag_report_conversion();
   };
 
   // Add state for mobile menu
