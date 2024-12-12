@@ -433,7 +433,7 @@ export default function App() {
               {/* Logo container - Match height with text block */}
               <div className="w-32 md:w-48 flex-shrink-0">
                 <img 
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Artboard%2018%20copy-mkGJ2YCAJdOhaws0ST1zvrqbmvcE3d.svg"
+                  src="/atelier-gruenenwald-logo.svg"
                   alt="Atelier Grünenwald Logo"
                   className="w-full h-auto object-contain"
                   loading="lazy"
