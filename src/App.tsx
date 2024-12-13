@@ -33,12 +33,21 @@ export default function App() {
 
   useEffect(() => {
     // Set default consent state
-    window.gtag?.('consent', 'default', {
+    const defaultConsent = {
       'ad_storage': 'denied',
       'analytics_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied'
+    };
+
+    // Push default consent to dataLayer
+    window.dataLayer?.push({
+      'event': 'default_consent',
+      'consent_state': defaultConsent
     });
+
+    // Set default consent in gtag
+    window.gtag?.('consent', 'default', defaultConsent);
 
     // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -134,23 +143,39 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAcceptCookies = () => {
-    // Update GA consent
-    window.gtag?.('consent', 'update', {
+    const consentState = {
       'analytics_storage': 'granted',
       'ad_storage': 'granted',
       'ad_user_data': 'granted',
       'ad_personalization': 'granted'
+    };
+
+    // Push to dataLayer
+    window.dataLayer?.push({
+      'event': 'update_consent',
+      'consent_state': consentState
     });
+
+    // Update GA consent
+    window.gtag?.('consent', 'update', consentState);
   };
 
   const handleDeclineCookies = () => {
-    // Update GA consent
-    window.gtag?.('consent', 'update', {
+    const consentState = {
       'analytics_storage': 'denied',
       'ad_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied'
+    };
+
+    // Push to dataLayer
+    window.dataLayer?.push({
+      'event': 'update_consent',
+      'consent_state': consentState
     });
+
+    // Update GA consent
+    window.gtag?.('consent', 'update', consentState);
   };
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
