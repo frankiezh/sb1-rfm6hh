@@ -43,7 +43,7 @@ export default function App() {
     // Push default consent to dataLayer
     window.dataLayer?.push({
       'event': 'default_consent',
-      'consent_state': defaultConsent
+      'consent_state': JSON.stringify(defaultConsent)
     });
 
     // Set default consent in gtag
@@ -153,7 +153,7 @@ export default function App() {
     // Push to dataLayer
     window.dataLayer?.push({
       'event': 'update_consent',
-      'consent_state': consentState
+      'consent_state': JSON.stringify(consentState)
     });
 
     // Update GA consent
@@ -171,7 +171,7 @@ export default function App() {
     // Push to dataLayer
     window.dataLayer?.push({
       'event': 'update_consent',
-      'consent_state': consentState
+      'consent_state': JSON.stringify(consentState)
     });
 
     // Update GA consent
