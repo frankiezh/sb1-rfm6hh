@@ -1,55 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) - Combined GA4 and Ads -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11491013132"></script>
-    <script>
-      // Initialize dataLayer
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N9C4C7MB');</script>
+    <!-- End Google Tag Manager -->
 
-      // Check for consent before initializing GA
-      const hasConsent = localStorage.getItem('cookieConsent') === 'accepted';
-      
-      // Initialize GA with consent mode
-      gtag('js', new Date());
-      gtag('consent', 'default', {
-        'analytics_storage': hasConsent ? 'granted' : 'denied',
-        'ad_storage': hasConsent ? 'granted' : 'denied'
-      });
-
-      // Configure GA and Ads
-      gtag('config', 'G-92R482387B', {
-        'anonymize_ip': true
-      });
-      gtag('config', 'AW-11491013132');
-    </script>
-
-    <!-- Conversion Tracking Function -->
-    <script>
-      function gtag_report_conversion(url) {
-        if (localStorage.getItem('cookieConsent') !== 'accepted') {
-          if (typeof(url) != 'undefined') {
-            window.location = url;
-          }
-          return false;
-        }
-
-        var callback = function () {
-          if (typeof(url) != 'undefined') {
-            window.location = url;
-          }
-        };
-        gtag('event', 'conversion', {
-          'send_to': 'AW-11491013132/gIjyCLqI0vYZEIzkq-cq',
-          'value': 1.0,
-          'currency': 'CHF',
-          'event_callback': callback
-        });
-        return false;
-      }
-    </script>
-    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Polsterei am HB Zürich | Atelier Grünenwald</title>
@@ -83,6 +42,11 @@
     <meta name="msapplication-TileColor" content="#334B40">
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9C4C7MB"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
