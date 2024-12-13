@@ -19,14 +19,14 @@ function ensureAbsolutePath(path: string) {
   return absolutePath;
 }
 
-export const Image = ({ src, alt, className, ...props }: ImageProps) => {
+export const Image = ({ src, alt, className, loading = "lazy", ...props }: ImageProps) => {
   const absolutePath = ensureAbsolutePath(src);
 
   return (
     <img
       src={absolutePath}
       alt={alt}
-      loading="lazy"
+      loading={loading}
       className={className}
       {...props}
     />

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
+import { Image } from './Image';
 
 interface ServiceCardProps {
   title: string;
@@ -16,22 +17,27 @@ export function ServiceCard({ title, description, image, reverse = false, index 
     triggerOnce: false,
   });
 
+  const cardVariants = {
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      transition: { 
+        duration: 0.8, 
+        delay: index * 0.2 
+      } 
+    },
+    hidden: { 
+      opacity: 0, 
+      scale: 0.95 
+    },
+  };
+
   return (
     <motion.div 
       ref={ref}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      variants={{
-        visible: { 
-          opacity: 1, 
-          scale: 1,
-          transition: {
-            duration: 0.8,
-            delay: index * 0.2
-          }
-        },
-        hidden: { opacity: 0, scale: 0.95 }
-      }}
+      variants={cardVariants}
       className={cn(
         "flex flex-col md:flex-row gap-4",
         reverse ? "md:flex-row-reverse" : ""
@@ -44,13 +50,11 @@ export function ServiceCard({ title, description, image, reverse = false, index 
           transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
         }}
       >
-        <img 
+        <Image 
           src={image} 
-          alt={title}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover"
-          fetchPriority={index === 0 ? "high" : "low"}
+          alt={title} 
+          loading={index === 0 ? "eager" : "lazy"}
+          className="w-full h-full object-cover" 
         />
       </motion.div>
       

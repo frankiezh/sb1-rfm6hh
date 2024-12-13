@@ -103,20 +103,22 @@ export default function App() {
     };
   });
 
-  const handleCallClick = () => {
-    // Push event to GTM dataLayer
+  const handleCallClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type': 'phone_call'
     });
+    window.location.href = 'tel:+41797389751';
   };
 
-  const handleWhatsAppClick = () => {
-    // Push event to GTM dataLayer
+  const handleWhatsAppClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type': 'whatsapp_click'
     });
+    window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
   };
 
   // Add state for mobile menu
@@ -147,24 +149,20 @@ export default function App() {
   // Contact button component to avoid duplication
   const ContactButtons = ({ className = '', orientation = 'horizontal' }: { className?: string, orientation?: 'horizontal' | 'vertical' }) => (
     <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row' : 'flex-row'} gap-2 ${className}`}>
-      <a
-        href="tel:+41797389751"
+      <button
         onClick={handleCallClick}
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <Phone className="h-4 w-4" />
         <span className="font-medium">Jetzt anrufen</span>
-      </a>
-      <a
-        href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-        target="_blank"
-        rel="noopener noreferrer"
+      </button>
+      <button
         onClick={handleWhatsAppClick}
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <MessageCircle className="h-4 w-4 text-[#25D366]" />
         <span className="font-medium">WhatsApp</span>
-      </a>
+      </button>
     </div>
   );
 
@@ -220,7 +218,6 @@ export default function App() {
         <link 
           rel="preload" 
           as="image" 
-          fetchPriority="high"
           href="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace" 
         />
       </Helmet>
@@ -286,25 +283,21 @@ export default function App() {
 
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform translate-y-full transition-transform duration-300 ease-in-out md:translate-y-full" id="floating-buttons">
           <div className="container mx-auto px-4 py-2 flex items-center justify-center gap-3">
-            <a
-              href="tel:+41797389751"
+            <button
               onClick={handleCallClick}
               className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
             >
               <Phone className="h-3.5 w-3.5" />
               <span className="font-medium">Jetzt anrufen</span>
-            </a>
+            </button>
 
-            <a
-              href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
               onClick={handleWhatsAppClick}
               className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
             >
               <MessageCircle className="h-3.5 w-3.5 text-[#25D366]" />
               <span className="font-medium">WhatsApp</span>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -314,9 +307,8 @@ export default function App() {
             <img 
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
               alt="Hero background"
-              fetchPriority="high"
-              className="w-full h-full object-cover"
               loading="eager"
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/40" />
           </div>
