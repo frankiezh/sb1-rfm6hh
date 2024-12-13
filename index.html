@@ -4,30 +4,50 @@
     <!-- Google tag (gtag.js) - Combined GA4 and Ads -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11491013132"></script>
     <script>
+      // Initialize dataLayer
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-92R482387B');  // Your GA4 ID
-      gtag('config', 'AW-11491013132'); // Your Google Ads ID
+      // Check for consent before initializing GA
+      const hasConsent = localStorage.getItem('cookieConsent') === 'accepted';
+      
+      // Initialize GA with consent mode
+      gtag('js', new Date());
+      gtag('consent', 'default', {
+        'analytics_storage': hasConsent ? 'granted' : 'denied',
+        'ad_storage': hasConsent ? 'granted' : 'denied'
+      });
+
+      // Configure GA and Ads
+      gtag('config', 'G-92R482387B', {
+        'anonymize_ip': true
+      });
+      gtag('config', 'AW-11491013132');
     </script>
 
     <!-- Conversion Tracking Function -->
     <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
+      function gtag_report_conversion(url) {
+        if (localStorage.getItem('cookieConsent') !== 'accepted') {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+          return false;
         }
-      };
-      gtag('event', 'conversion', {
+
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
           'send_to': 'AW-11491013132/gIjyCLqI0vYZEIzkq-cq',
           'value': 1.0,
           'currency': 'CHF',
           'event_callback': callback
-      });
-      return false;
-    }
+        });
+        return false;
+      }
     </script>
     
     <meta charset="UTF-8" />
