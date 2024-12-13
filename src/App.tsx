@@ -32,22 +32,13 @@ export default function App() {
   const scrollHandlerRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Set default consent state
-    const defaultConsent = {
+    // Set default consent state with gtag
+    window.gtag?.('consent', 'default', {
       'ad_storage': 'denied',
       'analytics_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied'
-    };
-
-    // Push default consent to dataLayer
-    window.dataLayer?.push({
-      'event': 'default_consent',
-      'consent_state': JSON.stringify(defaultConsent)
     });
-
-    // Set default consent in gtag
-    window.gtag?.('consent', 'default', defaultConsent);
 
     // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -143,39 +134,23 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAcceptCookies = () => {
-    const consentState = {
+    // Update GA consent
+    window.gtag?.('consent', 'update', {
       'analytics_storage': 'granted',
       'ad_storage': 'granted',
       'ad_user_data': 'granted',
       'ad_personalization': 'granted'
-    };
-
-    // Push to dataLayer
-    window.dataLayer?.push({
-      'event': 'update_consent',
-      'consent_state': JSON.stringify(consentState)
     });
-
-    // Update GA consent
-    window.gtag?.('consent', 'update', consentState);
   };
 
   const handleDeclineCookies = () => {
-    const consentState = {
+    // Update GA consent
+    window.gtag?.('consent', 'update', {
       'analytics_storage': 'denied',
       'ad_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied'
-    };
-
-    // Push to dataLayer
-    window.dataLayer?.push({
-      'event': 'update_consent',
-      'consent_state': JSON.stringify(consentState)
     });
-
-    // Update GA consent
-    window.gtag?.('consent', 'update', consentState);
   };
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
