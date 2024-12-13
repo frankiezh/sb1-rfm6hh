@@ -10,6 +10,15 @@ import { trackEvent } from '@/lib/analytics';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { CookieConsent } from '@/components/CookieConsent';
+import { useInView } from 'react-intersection-observer';
+import { useMediaQuery } from 'react-responsive';
+
+// Declare dataLayer for TypeScript
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
 
 export default function App() {
   const [currentLang, setCurrentLang] = useState<'de' | 'en'>('de');
@@ -95,23 +104,19 @@ export default function App() {
   });
 
   const handleCallClick = () => {
-    trackEvent({
-      action: 'phone_call',
-      category: 'Contact',
-      label: 'Header Call Button'
+    // Push event to GTM dataLayer
+    window.dataLayer?.push({
+      'event': 'conversion',
+      'conversion_type': 'phone_call'
     });
-
-    gtag_report_conversion();
   };
 
   const handleWhatsAppClick = () => {
-    trackEvent({
-      action: 'whatsapp_click',
-      category: 'Contact',
-      label: 'Header WhatsApp Button'
+    // Push event to GTM dataLayer
+    window.dataLayer?.push({
+      'event': 'conversion',
+      'conversion_type': 'whatsapp_click'
     });
-
-    gtag_report_conversion();
   };
 
   // Add state for mobile menu
@@ -132,6 +137,36 @@ export default function App() {
       'ad_storage': 'denied'
     });
   };
+
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [ref, inView] = useInView({
+    threshold: 0,
+    rootMargin: '-80px 0px 0px 0px', // Account for header height
+  });
+
+  // Contact button component to avoid duplication
+  const ContactButtons = ({ className = '', orientation = 'horizontal' }: { className?: string, orientation?: 'horizontal' | 'vertical' }) => (
+    <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row' : 'flex-row'} gap-2 ${className}`}>
+      <a
+        href="tel:+41797389751"
+        onClick={handleCallClick}
+        className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
+      >
+        <Phone className="h-4 w-4" />
+        <span className="font-medium">Jetzt anrufen</span>
+      </a>
+      <a
+        href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleWhatsAppClick}
+        className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
+      >
+        <MessageCircle className="h-4 w-4 text-[#25D366]" />
+        <span className="font-medium">WhatsApp</span>
+      </a>
+    </div>
+  );
 
   return (
     <>
@@ -212,27 +247,9 @@ export default function App() {
                 <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition">{t.nav.contact}</a>
               </nav>
               
-              {/* Desktop CTA Buttons */}
-              <div className="hidden xs:flex flex-row items-center gap-2">
-                <a
-                  href="tel:+41797389751"
-                  onClick={handleCallClick}
-                  className="inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-                >
-                  <Phone className="h-3.5 w-3.5" />
-                  <span className="font-medium">Jetzt anrufen</span>
-                </a>
-
-                <a
-                  href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleWhatsAppClick}
-                  className="inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-                >
-                  <MessageCircle className="h-3.5 w-3.5 text-[#25D366]" />
-                  <span className="font-medium">WhatsApp</span>
-                </a>
+              {/* Desktop CTA Buttons - always visible on desktop */}
+              <div className="hidden md:flex flex-row items-center gap-2">
+                <ContactButtons orientation="horizontal" />
               </div>
               
               {/* Mobile menu button */}
@@ -246,34 +263,6 @@ export default function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
                 </svg>
               </button>
-            </div>
-          </div>
-
-          {/* Mobile/Small Desktop CTA Buttons */}
-          <div 
-            className="max-xs:block hidden w-full bg-white/80 backdrop-blur-sm transform transition-transform duration-300 ease-in-out"
-            id="mobile-header-buttons"
-          >
-            <div className="container mx-auto px-4 py-2 grid grid-cols-2 gap-2">
-              <a
-                href="tel:+41797389751"
-                onClick={handleCallClick}
-                className="inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-              >
-                <Phone className="h-3.5 w-3.5" />
-                <span className="font-medium">Jetzt anrufen</span>
-              </a>
-
-              <a
-                href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleWhatsAppClick}
-                className="inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-              >
-                <MessageCircle className="h-3.5 w-3.5 text-[#25D366]" />
-                <span className="font-medium">WhatsApp</span>
-              </a>
             </div>
           </div>
         </header>
@@ -357,9 +346,9 @@ export default function App() {
                   </div>
                 </motion.div>
 
-                {/* Hero Section Buttons */}
+                {/* Hero Section Buttons - now with ref for visibility tracking */}
                 <motion.div
-                  id="hero-buttons"
+                  ref={ref}
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ 
@@ -367,27 +356,9 @@ export default function App() {
                     ease: "easeOut",
                     delay: 0.4
                   }}
-                  className="flex flex-col md:flex-row items-center justify-center gap-3 mt-12 max-xs:hidden"
+                  className="mt-12"
                 >
-                  <a
-                    href="tel:+41797389751"
-                    onClick={handleCallClick}
-                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
-                  >
-                    <Phone className="h-4 w-4" />
-                    <span className="font-medium">Jetzt anrufen</span>
-                  </a>
-
-                  <a
-                    href="https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleWhatsAppClick}
-                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-5 md:px-6 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm md:text-base whitespace-nowrap"
-                  >
-                    <MessageCircle className="h-4 w-4 text-[#25D366]" />
-                    <span className="font-medium">WhatsApp</span>
-                  </a>
+                  <ContactButtons className="justify-center" orientation="vertical" />
                 </motion.div>
               </AnimatedSection>
             </div>
@@ -591,6 +562,18 @@ export default function App() {
         onAccept={handleAcceptCookies}
         onDecline={handleDeclineCookies}
       />
+
+      {/* Floating mobile buttons - only show when hero buttons are out of view */}
+      {isMobile && !inView && (
+        <motion.div 
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          exit={{ y: -100 }}
+          className="fixed top-[80px] left-0 right-0 z-40 bg-white/80 backdrop-blur-sm border-b px-4 py-2 md:hidden"
+        >
+          <ContactButtons className="justify-center" orientation="horizontal" />
+        </motion.div>
+      )}
     </>
   );
 }
