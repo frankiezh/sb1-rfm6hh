@@ -31,9 +31,6 @@ export default function App() {
   const scrollHandlerRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Initialize dataLayer if it doesn't exist
-    window.dataLayer = window.dataLayer || [];
-    
     // Set default consent state
     window.gtag?.('consent', 'default', {
       'analytics_storage': 'denied',
