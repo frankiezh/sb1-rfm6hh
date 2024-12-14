@@ -32,6 +32,12 @@ export default function App() {
   const scrollHandlerRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
+    // Log GTM availability
+    console.log('GTM Status:', {
+      dataLayerExists: typeof window.dataLayer !== 'undefined',
+      gtagExists: typeof window.gtag !== 'undefined'
+    });
+
     // Set default consent state with gtag
     window.gtag?.('consent', 'default', {
       'ad_storage': 'denied',
@@ -39,6 +45,7 @@ export default function App() {
       'ad_user_data': 'denied',
       'ad_personalization': 'denied'
     });
+    console.log('Default consent state set');
 
     // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -114,43 +121,79 @@ export default function App() {
 
   const handleCallClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.dataLayer?.push({
-      'event': 'conversion',
-      'conversion_type': 'phone_call'
-    });
-    window.location.href = 'tel:+41797389751';
+    console.log('Phone call click detected');
+    
+    try {
+      console.log('Attempting to track phone call conversion...');
+      window.gtag?.('event', 'conversion', {
+        'send_to': 'AW-11491013132/phone_call',
+        'event_callback': () => {
+          console.log('Phone call conversion callback executed');
+          window.location.href = 'tel:+41797389751';
+        }
+      });
+      console.log('Phone call conversion tracking attempted');
+    } catch (error) {
+      console.error('Error tracking phone call:', error);
+      window.location.href = 'tel:+41797389751';
+    }
   };
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.dataLayer?.push({
-      'event': 'conversion',
-      'conversion_type': 'whatsapp_click'
-    });
-    window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
+    console.log('WhatsApp click detected');
+    
+    try {
+      console.log('Attempting to track WhatsApp conversion...');
+      window.gtag?.('event', 'conversion', {
+        'send_to': 'AW-11491013132/whatsapp_click',
+        'event_callback': () => {
+          console.log('WhatsApp conversion callback executed');
+          window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
+        }
+      });
+      console.log('WhatsApp conversion tracking attempted');
+    } catch (error) {
+      console.error('Error tracking WhatsApp click:', error);
+      window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
+    }
   };
 
   // Add state for mobile menu
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAcceptCookies = () => {
-    // Update GA consent
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'granted',
-      'ad_storage': 'granted',
-      'ad_user_data': 'granted',
-      'ad_personalization': 'granted'
-    });
+    console.log('Cookie consent: Accept');
+    try {
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'cookie_consent_update',
+          'consent_state': 'granted'
+        });
+        console.log('Cookie consent: dataLayer push successful');
+      } else {
+        console.log('Cookie consent: dataLayer not available');
+      }
+    } catch (error) {
+      console.error('Error updating cookie consent:', error);
+    }
   };
 
   const handleDeclineCookies = () => {
-    // Update GA consent
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied'
-    });
+    console.log('Cookie consent: Decline');
+    try {
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'cookie_consent_update',
+          'consent_state': 'denied'
+        });
+        console.log('Cookie consent: dataLayer push successful');
+      } else {
+        console.log('Cookie consent: dataLayer not available');
+      }
+    } catch (error) {
+      console.error('Error updating cookie consent:', error);
+    }
   };
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
