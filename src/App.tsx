@@ -133,21 +133,31 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAcceptCookies = () => {
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'granted',
-      'ad_storage': 'granted',
-      'ad_user_data': 'granted',
-      'ad_personalization': 'granted'
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'user_consent_granted',
+      'consent': {
+        'ad_storage': 'granted',
+        'analytics_storage': 'granted',
+        'ad_personalization': 'granted',
+        'ad_user_data': 'granted'
+      }
     });
+    localStorage.setItem('userConsent', 'granted');
   };
 
   const handleDeclineCookies = () => {
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied'
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'user_consent_denied',
+      'consent': {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
+      }
     });
+    localStorage.setItem('userConsent', 'denied');
   };
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
