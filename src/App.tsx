@@ -6,7 +6,6 @@ import { PortfolioCard } from '@/components/PortfolioCard';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { translations } from '@/lib/translations';
 import { Mail, MapPin, Phone, AtSign, MessageCircle } from 'lucide-react';
-import { trackEvent } from '@/lib/analytics';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -118,9 +117,10 @@ export default function App() {
   const handleCallClick = (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // Track conversion with gtag
-    window.gtag?.('event', 'conversion', {
-      'send_to': 'AW-11491013132/phone_call'
+    // Track conversion with dataLayer
+    window.dataLayer?.push({
+      'event': 'conversion',
+      'conversion_type_variable': 'phone_call'
     });
 
     // Immediate action
@@ -130,9 +130,10 @@ export default function App() {
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // Track conversion with gtag
-    window.gtag?.('event', 'conversion', {
-      'send_to': 'AW-11491013132/whatsapp_click'
+    // Track conversion with dataLayer
+    window.dataLayer?.push({
+      'event': 'conversion',
+      'conversion_type_variable': 'whatsapp_click'
     });
 
     // Immediate action
