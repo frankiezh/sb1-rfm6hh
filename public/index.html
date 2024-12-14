@@ -9,15 +9,25 @@
     <!-- Initialize dataLayer and set default consent state before GTM loads -->
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
       
-      // Set initial consent state using the consent command
-      dataLayer.push(['consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
-      }]);
+      // Initial consent state push
+      dataLayer.push({
+        'event': 'gtm.init_consent',
+        'gtm': {
+          'uniqueEventId': -1
+        }
+      });
+
+      // Set default consent settings
+      function handleConsent() {
+        dataLayer.push(['consent', 'default', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied'
+        }]);
+      }
+      handleConsent();
 
       // Debug logging
       console.log('Initial dataLayer state:', window.dataLayer);
