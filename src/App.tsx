@@ -31,14 +31,6 @@ export default function App() {
   const scrollHandlerRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Set default consent state
-    window.gtag?.('consent', 'default', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied'
-    });
-    
     // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
     
