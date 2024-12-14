@@ -6,16 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your App Title</title>
 
-    <!-- Set default consent state before GTM loads -->
+    <!-- Initialize dataLayer and set default consent state before GTM loads -->
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      window.gtag = function() { window.dataLayer.push(arguments); }
+      
+      // Set initial dataLayer with consent state
+      window.dataLayer.push({
+        'event': 'default_consent',
+        'consent_state': {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied'
+        }
+      });
+      
+      // Also set via gtag API
       gtag('consent', 'default', {
         'analytics_storage': 'denied',
         'ad_storage': 'denied',
         'ad_user_data': 'denied',
         'ad_personalization': 'denied'
       });
+
+      // Debug logging
+      console.log('Initial dataLayer state:', window.dataLayer);
     </script>
 
     <!-- Google Tag Manager -->
