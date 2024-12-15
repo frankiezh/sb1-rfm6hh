@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import { CookieConsent } from '@/components/CookieConsent';
 import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
+import { ContactButton } from './components/ContactButton';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -167,22 +168,23 @@ export default function App() {
   });
 
   // Contact button component to avoid duplication
-  const ContactButtons = ({ className = '', orientation = 'horizontal' }: { className?: string, orientation?: 'horizontal' | 'vertical' }) => (
+  const ContactButtons = ({ className = '', orientation = 'horizontal' }) => (
     <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row' : 'flex-row'} gap-2 ${className}`}>
-      <button
-        onClick={handleCallClick}
+      <ContactButton 
+        type="phone"
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <Phone className="h-4 w-4" />
         <span className="font-medium">Jetzt anrufen</span>
-      </button>
-      <button
-        onClick={handleWhatsAppClick}
+      </ContactButton>
+
+      <ContactButton 
+        type="whatsapp"
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <MessageCircle className="h-4 w-4 text-[#25D366]" />
         <span className="font-medium">WhatsApp</span>
-      </button>
+      </ContactButton>
     </div>
   );
 
@@ -345,8 +347,8 @@ export default function App() {
                   }}
                   className="flex flex-col items-center"
                 >
-                  <h1 className="text-3xl md:text-5xl font-light tracking-wider mb-2">
-                    Polsterei am HB Zürich
+                  <h1 className="text-2xl md:text-4xl font-light tracking-wider mb-2">
+                    {t.hero.title}
                   </h1>
                   <div className="relative">
                     <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80">
@@ -571,8 +573,14 @@ export default function App() {
       </div>
 
       <CookieConsent 
-        onAccept={handleAcceptCookies}
-        onDecline={handleDeclineCookies}
+        onAccept={() => {
+          console.log('Consent accepted');
+          // Additional handling if needed
+        }}
+        onDecline={() => {
+          console.log('Consent declined');
+          // Additional handling if needed
+        }}
       />
 
       {/* Floating mobile buttons - only show when hero buttons are out of view */}

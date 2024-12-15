@@ -7,10 +7,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { PrivacyPolicy } from './components/PrivacyPolicy.tsx'
 
 function setInitialConsent() {
-  // get stored consent from local storage
-  const storedConsent = localStorage.getItem('userConsent');
-  const initialConsent = storedConsent === 'granted' ? 'granted' : 'denied';
+  const storedConsent = localStorage.getItem('cookieConsent');
+  const initialConsent = storedConsent === 'accepted' ? 'granted' : 'denied';
+  
   window.dataLayer = window.dataLayer || [];
+  
+  // Push initial consent state
   window.dataLayer.push({
     'consent': {
       'ad_storage': initialConsent,
@@ -19,6 +21,13 @@ function setInitialConsent() {
       'ad_user_data': initialConsent
     }
   });
+
+  // If consent was previously granted, trigger the consent event
+  if (initialConsent === 'granted') {
+    window.dataLayer.push({
+      'event': 'user_consent_granted'
+    });
+  }
 }
 
 setInitialConsent();
