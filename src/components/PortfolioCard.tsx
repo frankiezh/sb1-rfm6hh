@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogClose, DialogHeader, DialogDescription } from "@/components/ui/dialog";
 import { Image } from './Image';
 import { X } from 'lucide-react';
 import { useMediaQuery } from 'react-responsive';
@@ -192,31 +192,31 @@ export function PortfolioCard(props: PortfolioCardProps) {
 
       <DialogContent
         className={cn(
-          "p-4 flex flex-col gap-2 overflow-y-auto",
+          "p-4 flex flex-col gap-2 bg-white text-[#2B1810] overflow-y-auto",
           props.type === 'before-after'
-            ? "w-[90vw] max-w-6xl max-h-[90vh]"
-            : "w-[90vw] md:w-fit max-w-[90vw] max-h-[90vh]"
+            ? "w-[85vw] max-w-6xl max-h-[90vh] md:max-h-[85vh]"
+            : "w-[85vw] md:w-auto max-w-[85vw] h-auto",
         )}
-        aria-describedby={`portfolio-item-${index}-description`}
       >
         <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-neutral-500">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogClose>
         
-        <DialogTitle className="text-xl font-semibold mb-2">{props.title}</DialogTitle>
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="text-lg md:text-xl font-semibold">
+            {props.title}
+          </DialogTitle>
+          <DialogDescription className="text-neutral-600 text-sm md:hidden">
+            {props.description}
+          </DialogDescription>
+        </DialogHeader>
         
         {props.type === "before-after" ? (
           <div className="w-full">
-            <p
-              id={`portfolio-item-${index}-description`}
-              className="text-neutral-600 mb-4 text-sm md:hidden"
-            >
-              {props.description}
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                <div className="relative" style={{ paddingBottom: '100%' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="flex flex-col gap-1 md:gap-2">
+                <div className="relative aspect-square">
                   <Image
                     src={props.imageBefore}
                     alt={`${props.title} - Before`}
@@ -225,8 +225,8 @@ export function PortfolioCard(props: PortfolioCardProps) {
                 </div>
                 <p className="text-center text-sm text-neutral-500">Before</p>
               </div>
-              <div className="flex flex-col">
-                <div className="relative" style={{ paddingBottom: '100%' }}>
+              <div className="flex flex-col gap-1 md:gap-2">
+                <div className="relative aspect-square">
                   <Image
                     src={props.imageAfter}
                     alt={`${props.title} - After`}
@@ -236,35 +236,35 @@ export function PortfolioCard(props: PortfolioCardProps) {
                 <p className="text-center text-sm text-neutral-500">After</p>
               </div>
             </div>
-            <p
-              id={`portfolio-item-${index}-description`}
-              className="text-neutral-600 mt-4 text-base hidden md:block"
-            >
+            <DialogDescription className="text-neutral-600 mt-3 md:mt-4 text-base hidden md:block">
               {props.description}
-            </p>
+            </DialogDescription>
           </div>
         ) : (
-          <div className="flex flex-col gap-2">
-            <p
-              id={`portfolio-item-${index}-description`}
-              className="text-neutral-600 mb-4 text-sm md:hidden"
-            >
-              {props.description}
-            </p>
-            <div className="w-full md:w-fit" ref={imageRef}>
+          <div className="flex flex-col gap-3 md:gap-4">
+            <div className="w-full flex items-center justify-center" ref={imageRef}>
               <Image
                 src={props.image}
                 alt={props.title}
-                className="w-full md:w-auto max-h-[85vh] object-cover"
+                className="w-auto h-auto max-w-full max-h-[55vh] md:max-h-[65vh] object-contain"
+                priority={inView}
+                onLoad={(e) => {
+                  if (imageRef.current) {
+                    const img = e.target as HTMLImageElement;
+                    setTextWidth(img.offsetWidth);
+                  }
+                }}
               />
             </div>
-            <p
-              id={`portfolio-item-${index}-description`}
+            <DialogDescription 
               className="text-neutral-600 text-base hidden md:block"
-              style={{ width: textWidth && !isMobile ? `${textWidth}px` : 'auto' }}
+              style={{ 
+                maxWidth: textWidth ? `${textWidth}px` : '100%',
+                width: '100%'
+              }}
             >
               {props.description}
-            </p>
+            </DialogDescription>
           </div>
         )}
       </DialogContent>
