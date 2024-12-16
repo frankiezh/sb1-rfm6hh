@@ -28,55 +28,6 @@ export default function App() {
   const textBlockRef = useRef<HTMLDivElement>(null);
   const [textBlockHeight, setTextBlockHeight] = useState('auto');
 
-  // Create a ref to store the scroll handler
-  const scrollHandlerRef = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    // Add smooth scroll behavior to html element
-    document.documentElement.style.scrollBehavior = 'smooth';
-    
-    // Create the scroll handler function and store it in the ref
-    scrollHandlerRef.current = () => {
-      const heroSection = document.querySelector('section');
-      const floatingButtons = document.getElementById('floating-buttons');
-      
-      if (heroSection && floatingButtons) {
-        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        const scrollPosition = window.scrollY;
-        
-        requestAnimationFrame(() => {
-          if (scrollPosition > heroBottom - 100) {
-            floatingButtons.style.transform = 'translateY(0)';
-          } else {
-            floatingButtons.style.transform = 'translateY(100%)';
-          }
-        });
-      }
-    };
-
-    // Add event listener using the ref's current value
-    if (scrollHandlerRef.current) {
-      window.addEventListener('scroll', scrollHandlerRef.current, { passive: true });
-      // Initial check
-      scrollHandlerRef.current();
-    }
-
-    // Cleanup function
-    return () => {
-      // Remove event listener using the ref's current value
-      if (scrollHandlerRef.current) {
-        window.removeEventListener('scroll', scrollHandlerRef.current);
-      }
-      document.documentElement.style.scrollBehavior = 'auto';
-      
-      // Reset floating buttons state
-      const floatingButtons = document.getElementById('floating-buttons');
-      if (floatingButtons) {
-        floatingButtons.style.transform = 'translateY(100%)';
-      }
-    };
-  }, []); // Empty dependency array
-
   useEffect(() => {
     const updateHeight = () => {
       if (textBlockRef.current) {
@@ -301,26 +252,6 @@ export default function App() {
             <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
             <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
           </nav>
-        </div>
-
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-t transform translate-y-full transition-transform duration-300 ease-in-out md:translate-y-full" id="floating-buttons">
-          <div className="container mx-auto px-4 py-2 flex items-center justify-center gap-3">
-            <button
-              onClick={handleCallClick}
-              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              <span className="font-medium">Jetzt anrufen</span>
-            </button>
-
-            <button
-              onClick={handleWhatsAppClick}
-              className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-3 md:px-4 py-1.5 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-            >
-              <MessageCircle className="h-3.5 w-3.5 text-[#25D366]" />
-              <span className="font-medium">WhatsApp</span>
-            </button>
-          </div>
         </div>
 
         {/* Hero Section */}
