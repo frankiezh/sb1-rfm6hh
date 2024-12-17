@@ -5,6 +5,10 @@ export const translations = {
       portfolio: 'PORTFOLIO',
       contact: 'KONTAKT'
     },
+    buttons: {
+      call: 'Jetzt anrufen',
+      whatsapp: 'WhatsApp'
+    },
     hero: {
       title: 'POLSTEREI AM HB ZÜRICH',
       subtitle: 'ATELIER GRÜNENWALD',
@@ -157,6 +161,10 @@ export const translations = {
       services: 'SERVICES',
       portfolio: 'PORTFOLIO',
       contact: 'CONTACT'
+    },
+    buttons: {
+      call: 'Call now',
+      whatsapp: 'WhatsApp'
     },
     hero: {
       title: 'UPHOLSTERY AT HB ZURICH',

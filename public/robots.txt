@@ -1,2 +1,5 @@
 User-agent: *
-Disallow: / 
+Allow: /
+
+# Sitemap location
+Sitemap: https://polsterei-hb-zuerich.ch/sitemap.xml 

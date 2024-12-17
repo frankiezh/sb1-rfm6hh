@@ -126,7 +126,7 @@ export default function App() {
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <Phone className="h-4 w-4" />
-        <span className="font-medium">Jetzt anrufen</span>
+        <span className="font-medium">{t.buttons.call}</span>
       </ContactButton>
 
       <ContactButton 
@@ -134,7 +134,7 @@ export default function App() {
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
       >
         <MessageCircle className="h-4 w-4 text-[#25D366]" />
-        <span className="font-medium">WhatsApp</span>
+        <span className="font-medium">{t.buttons.whatsapp}</span>
       </ContactButton>
     </div>
   );
