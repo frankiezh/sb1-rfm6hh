@@ -11,8 +11,6 @@ function setInitialConsent() {
   const initialConsent = storedConsent === 'accepted' ? 'granted' : 'denied';
   
   window.dataLayer = window.dataLayer || [];
-  
-  // Push initial consent state
   window.dataLayer.push({
     'consent': {
       'ad_storage': initialConsent,
@@ -21,13 +19,6 @@ function setInitialConsent() {
       'ad_user_data': initialConsent
     }
   });
-
-  // If consent was previously granted, trigger the consent event
-  if (initialConsent === 'granted') {
-    window.dataLayer.push({
-      'event': 'user_consent_granted'
-    });
-  }
 }
 
 setInitialConsent();

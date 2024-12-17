@@ -1,6 +1,7 @@
 interface Window {
   dataLayer: Array<{
     event?: string;
+    conversion_type_variable?: string;
     consent?: {
       ad_storage: 'granted' | 'denied';
       analytics_storage: 'granted' | 'denied';
@@ -9,9 +10,4 @@ interface Window {
     };
     [key: string]: any;
   }>;
-  gtag: (
-    command: 'event' | 'config' | 'consent',
-    action: string,
-    params?: Record<string, any>
-  ) => void;
 } 

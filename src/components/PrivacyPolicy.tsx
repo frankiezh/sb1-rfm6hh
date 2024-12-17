@@ -8,18 +8,28 @@ export function PrivacyPolicy() {
 
   const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'accepted');
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'granted',
-      'ad_storage': 'granted'
+    window.dataLayer.push({
+      'event': 'user_consent_granted',
+      'consent': {
+        'ad_storage': 'granted',
+        'analytics_storage': 'granted',
+        'ad_personalization': 'granted',
+        'ad_user_data': 'granted'
+      }
     });
     navigate('/');
   };
 
   const handleDecline = () => {
     localStorage.setItem('cookieConsent', 'declined');
-    window.gtag?.('consent', 'update', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied'
+    window.dataLayer.push({
+      'event': 'user_consent_denied',
+      'consent': {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
+      }
     });
     navigate('/');
   };
