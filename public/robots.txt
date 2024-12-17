@@ -1,4 +1,12 @@
 User-agent: *
+Disallow:
+
+# Allow Google Image crawling
+User-agent: Googlebot-Image
+Allow: /
+
+# Allow Google Mobile crawling
+User-agent: Googlebot-Mobile
 Allow: /
 
 # Sitemap location
