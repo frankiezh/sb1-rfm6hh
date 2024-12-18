@@ -56,29 +56,19 @@ export default function App() {
   });
 
   const handleCallClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    // Track conversion with dataLayer
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': 'phone_call'
     });
-
-    // Immediate action
     window.location.href = 'tel:+41797389751';
   };
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    // Track conversion with dataLayer
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': 'whatsapp_click'
     });
-
-    // Immediate action
-    window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
+    window.location.href = 'https://wa.me/41797389751?text=...';
   };
 
   // Add state for mobile menu
@@ -119,11 +109,12 @@ export default function App() {
   });
 
   // Contact button component to avoid duplication
-  const ContactButtons = ({ className = '', orientation = 'horizontal' }) => (
+  const ContactButtons = ({ className = '', orientation = 'horizontal', currentLang }: { className?: string; orientation?: 'horizontal' | 'vertical'; currentLang: 'de' | 'en'; }) => (
     <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row' : 'flex-row'} gap-2 ${className}`}>
       <ContactButton 
         type="phone"
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
+        currentLang={currentLang}
       >
         <Phone className="h-4 w-4" />
         <span className="font-medium">{t.buttons.call}</span>
@@ -132,6 +123,7 @@ export default function App() {
       <ContactButton 
         type="whatsapp"
         className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-gray-100/95 hover:bg-white text-[#334B40] px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
+        currentLang={currentLang}
       >
         <MessageCircle className="h-4 w-4 text-[#25D366]" />
         <span className="font-medium">{t.buttons.whatsapp}</span>
@@ -219,7 +211,7 @@ export default function App() {
               
               {/* Desktop CTA Buttons - always visible on desktop */}
               <div className="hidden md:flex flex-row items-center gap-2">
-                <ContactButtons orientation="horizontal" />
+                <ContactButtons orientation="horizontal" currentLang={currentLang} />
               </div>
               
               {/* Mobile menu button */}
@@ -303,7 +295,7 @@ export default function App() {
                   }}
                   className="mt-12"
                 >
-                  <ContactButtons className="justify-center" orientation="vertical" />
+                  <ContactButtons className="justify-center" orientation="vertical" currentLang={currentLang} />
                 </motion.div>
               </AnimatedSection>
             </div>
@@ -522,7 +514,7 @@ export default function App() {
           exit={{ y: -100 }}
           className="fixed top-[80px] left-0 right-0 z-40 bg-white/80 backdrop-blur-sm border-b px-4 py-2 md:hidden"
         >
-          <ContactButtons className="justify-center" orientation="horizontal" />
+          <ContactButtons className="justify-center" orientation="horizontal" currentLang={currentLang} />
         </motion.div>
       )}
     </>

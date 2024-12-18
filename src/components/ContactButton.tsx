@@ -1,33 +1,29 @@
+import { type ReactNode } from 'react';
+
 interface ContactButtonProps {
   type: 'phone' | 'whatsapp';
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
+  currentLang: 'de' | 'en';
 }
 
-export function ContactButton({ type, children, className = '' }: ContactButtonProps) {
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    console.log(`${type} click - tracking conversion`);
-    
-    // Debug check if dataLayer exists
-    if (!window.dataLayer) {
-      console.error('dataLayer not initialized');
-      window.dataLayer = [];
-    }
-
-    // Push conversion event to dataLayer
-    window.dataLayer.push({
+export function ContactButton({ type, children, className = '', currentLang }: ContactButtonProps) {
+  const handleClick = () => {
+    window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': type === 'phone' ? 'phone_call' : 'whatsapp_click'
     });
 
-    // Perform action
     if (type === 'phone') {
       window.location.href = 'tel:+41797389751';
-    } else {
-      window.location.href = 'https://wa.me/41797389751?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Dienstleistungen';
+      return;
     }
+
+    const message = currentLang === 'de'
+      ? 'Hallo Herr Grünenwald, können Sie mich bitte kontaktieren? Es geht um......'
+      : 'Hello Mr. Grünenwald, could you please contact me? It\'s about......';
+
+    window.location.href = `https://wa.me/41797389751?text=${encodeURIComponent(message)}`;
   };
 
   return (
