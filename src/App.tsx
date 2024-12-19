@@ -21,8 +21,14 @@ declare global {
   }
 }
 
-export default function App() {
-  const [currentLang, setCurrentLang] = useState<'de' | 'en'>('de');
+// Add prop for default language
+interface AppProps {
+  defaultLang: 'de' | 'en';
+}
+
+export default function App({ defaultLang }: AppProps) {
+  // Use defaultLang from URL instead of hardcoded 'de'
+  const [currentLang, setCurrentLang] = useState<'de' | 'en'>(defaultLang);
   const t = translations[currentLang];
 
   const textBlockRef = useRef<HTMLDivElement>(null);
@@ -131,10 +137,24 @@ export default function App() {
     </div>
   );
 
+  // Update language switcher to use navigation
+  const handleLanguageChange = (newLang: 'de' | 'en') => {
+    const currentPath = window.location.pathname;
+    const newPath = currentPath.replace(/\/(de|en)\//, `/${newLang}/`);
+    window.location.href = newPath;
+  };
+
   return (
     <>
       <Helmet>
         <title>Polsterei am HB Zürich | Atelier Grünenwald</title>
+        
+        {/* Language meta tags */}
+        <html lang={currentLang} />
+        <link rel="alternate" hreflang="de" href={`https://polsterei-hb-zuerich.ch/de${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        <link rel="alternate" hreflang="en" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        <link rel="alternate" hreflang="x-default" href="https://polsterei-hb-zuerich.ch/de/" />
+        
         <meta name="description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
         <meta name="keywords" content="polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" />
         <link rel="canonical" href="https://www.polsterei-hb-zuerich.ch" />
@@ -197,7 +217,7 @@ export default function App() {
               <div className="w-12 h-12">
                 <Logo />
               </div>
-              <LanguageSwitcher currentLang={currentLang} onLanguageChange={setCurrentLang} />
+              <LanguageSwitcher currentLang={currentLang} onLanguageChange={handleLanguageChange} />
             </div>
             
             {/* Navigation and Menu Button */}

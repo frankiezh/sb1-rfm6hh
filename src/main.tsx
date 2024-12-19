@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { HelmetProvider } from 'react-helmet-async'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { PrivacyPolicy } from './components/PrivacyPolicy.tsx'
 
 function setInitialConsent() {
@@ -28,8 +28,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <HelmetProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/" element={<Navigate to="/de/" replace />} />
+          
+          <Route path="/de/*" element={<App defaultLang="de" />} />
+          <Route path="/en/*" element={<App defaultLang="en" />} />
+          
+          <Route path="/:lang/privacy-policy" element={<PrivacyPolicy />} />
+          
+          <Route path="*" element={<Navigate to="/de/" replace />} />
         </Routes>
       </Router>
     </HelmetProvider>
