@@ -168,19 +168,17 @@ export default function App({ defaultLang }: AppProps) {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "name": "Atelier Grünenwald",
+            "name": currentLang === 'de' ? "Atelier Grünenwald" : "Atelier Gruenenwald",
             "image": [
               "https://polsterei-hb-zuerich.ch/atelier-gruenenwald-logo.svg",
-              "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
+              "https://polsterei-hb-zuerich.ch/images/hero/hero-upholstery-workshop.jpg"
             ],
-            "description": {
-              "@type": "Text",
-              "de": "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge.",
-              "en": "Professional upholstery in Zurich. Traditional upholstery work, furniture restoration and reupholstery."
-            },
+            "description": currentLang === 'de' 
+              ? "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge."
+              : "Professional upholstery in Zurich. Traditional upholstery work, furniture restoration and reupholstery.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": t.contact.address.street1,
+              "streetAddress": "Lagerstrasse 93",
               "addressLocality": "Zürich",
               "postalCode": "8004",
               "addressCountry": "CH"
@@ -195,11 +193,11 @@ export default function App({ defaultLang }: AppProps) {
             "openingHoursSpecification": {
               "@type": "OpeningHoursSpecification",
               "dayOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday"
+                "http://schema.org/Monday",
+                "http://schema.org/Tuesday",
+                "http://schema.org/Wednesday",
+                "http://schema.org/Thursday",
+                "http://schema.org/Friday"
               ],
               "opens": "09:00",
               "closes": "18:00"
@@ -207,14 +205,15 @@ export default function App({ defaultLang }: AppProps) {
             "priceRange": "$$",
             "hasMap": "https://www.google.com/maps/place/Lagerstrasse+93,+8004+Z%C3%BCrich",
             "sameAs": [
-              "https://wa.me/41797389751"
+              "https://wa.me/41797389751",
+              "https://www.instagram.com/AtelierGruenenwald"
             ]
           })}
         </script>
         <link 
           rel="preload" 
           as="image" 
-          href="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace" 
+          href="/images/hero/hero-upholstery-workshop.jpg" 
         />
       </Helmet>
       
