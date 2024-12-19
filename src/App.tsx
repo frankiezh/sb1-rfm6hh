@@ -170,10 +170,14 @@ export default function App({ defaultLang }: AppProps) {
             "@type": "LocalBusiness",
             "name": "Atelier Grünenwald",
             "image": [
-              "url-to-image1.jpg",
-              "url-to-image2.jpg"
+              "https://polsterei-hb-zuerich.ch/atelier-gruenenwald-logo.svg",
+              "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
             ],
-            "description": "Expert furniture restoration and antique repair in Zürich.",
+            "description": {
+              "@type": "Text",
+              "de": "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge.",
+              "en": "Professional upholstery in Zurich. Traditional upholstery work, furniture restoration and reupholstery."
+            },
             "address": {
               "@type": "PostalAddress",
               "streetAddress": t.contact.address.street1,
@@ -186,6 +190,8 @@ export default function App({ defaultLang }: AppProps) {
               "latitude": 47.37833710898837,
               "longitude": 8.533439776271842
             },
+            "url": "https://polsterei-hb-zuerich.ch",
+            "telephone": "+41442428980",
             "openingHoursSpecification": {
               "@type": "OpeningHoursSpecification",
               "dayOfWeek": [
@@ -197,7 +203,12 @@ export default function App({ defaultLang }: AppProps) {
               ],
               "opens": "09:00",
               "closes": "18:00"
-            }
+            },
+            "priceRange": "$$",
+            "hasMap": "https://www.google.com/maps/place/Lagerstrasse+93,+8004+Z%C3%BCrich",
+            "sameAs": [
+              "https://wa.me/41797389751"
+            ]
           })}
         </script>
         <link 
