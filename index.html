@@ -51,45 +51,79 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Atelier Grünenwald",
+      "alternateName": "Polsterei am HB Zürich",
       "image": [
-        "https://polsterei-hb-zuerich.ch/atelier-gruenenwald-logo.svg",
+        "https://polsterei-hb-zuerich.ch/images/store-front.jpg",
         "https://polsterei-hb-zuerich.ch/images/hero/hero-upholstery-workshop.jpg"
       ],
-      "description": "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich.",
       "@id": "https://polsterei-hb-zuerich.ch",
       "url": "https://polsterei-hb-zuerich.ch",
-      "telephone": "+41797389751",
+      "telephone": "+41442428980",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Tellstrasse 38",
         "addressLocality": "Zürich",
         "postalCode": "8004",
-        "addressCountry": "CH"
+        "addressCountry": "CH",
+        "addressRegion": "ZH"
       },
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": 47.378337,
         "longitude": 8.533440
       },
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-          ],
-          "opens": "09:00",
-          "closes": "18:00"
-        }
-      ],
-      "hasMap": "https://www.google.com/maps/place/Tellstrasse+38,+8004+Z%C3%BCrich",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "description": "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich.",
+      "hasMap": "https://www.google.com/maps/place/Tellstrasse+38,+8004+Zürich",
       "sameAs": [
-        "https://wa.me/41797389751",
         "https://www.instagram.com/AtelierGruenenwald"
+      ],
+      "areaServed": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": 47.378337,
+          "longitude": 8.533440
+        },
+        "geoRadius": "50000"
+      },
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Möbelrestaurierung",
+            "description": "Sorgfältige Instandsetzung und Renovierung von Möbeln"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Polsterarbeiten",
+            "description": "Umfassende Polsterarbeiten und maßgeschneiderte Bezüge"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Antiquitätenpflege",
+            "description": "Spezialisierte Pflege und Restaurierung von Antiquitäten"
+          }
+        }
       ]
     }
     </script>
