@@ -515,7 +515,16 @@ export default function App({ defaultLang }: AppProps) {
         {/* Footer */}
         <footer className="py-8 bg-white border-t">
           <div className="container mx-auto px-4 text-center text-sm text-neutral-600">
-            {t.footer.copyright.replace('{year}', new Date().getFullYear().toString())}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+              <span>{t.footer.copyright.replace('{year}', new Date().getFullYear().toString())}</span>
+              <span className="hidden md:inline">•</span>
+              <a 
+                href={`/${currentLang}/privacy-policy`}
+                className="text-[#334B40] hover:text-[#3D5A4C] hover:underline transition-colors"
+              >
+                {currentLang === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+              </a>
+            </div>
           </div>
         </footer>
       </div>
