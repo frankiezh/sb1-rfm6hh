@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 interface CookieConsentProps {
   onAccept: () => void;
@@ -8,6 +9,8 @@ interface CookieConsentProps {
 
 export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+  const currentLang = location.pathname.split('/')[1] || 'de';
 
   useEffect(() => {
     const hasConsent = localStorage.getItem('cookieConsent');
@@ -57,7 +60,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
             <div className="text-sm text-gray-600">
               Diese Website verwendet Cookies, um Ihre Erfahrung zu verbessern. 
               Mit der Nutzung unserer Website stimmen Sie unserer 
-              <a href="/privacy-policy" className="text-[#334B40] hover:underline mx-1">Datenschutzerklärung</a>
+              <a href={`/${currentLang}/privacy-policy`} className="text-[#334B40] hover:underline mx-1">Datenschutzerklärung</a>
               zu.
             </div>
             <div className="flex gap-3">
