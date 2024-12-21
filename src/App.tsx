@@ -12,11 +12,23 @@ import { CookieConsent } from '@/components/CookieConsent';
 import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
 import { ContactButton } from './components/ContactButton';
+import { GoogleMap } from './components/GoogleMap';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
   interface Window {
-    dataLayer: any[];
+    dataLayer: Array<{
+      [key: string]: any;
+      event?: string;
+      conversion_type_variable?: string;
+      consent?: {
+        ad_storage: "granted" | "denied";
+        analytics_storage: "granted" | "denied";
+        ad_personalization: "granted" | "denied";
+        ad_user_data: "granted" | "denied";
+      };
+    }>;
     gtag: (...args: any[]) => void;
   }
 }
@@ -151,9 +163,9 @@ export default function App({ defaultLang }: AppProps) {
         
         {/* Language meta tags */}
         <html lang={currentLang} />
-        <link rel="alternate" hreflang="de" href={`https://polsterei-hb-zuerich.ch/de${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
-        <link rel="alternate" hreflang="en" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
-        <link rel="alternate" hreflang="x-default" href="https://polsterei-hb-zuerich.ch/de/" />
+        <link rel="alternate" hrefLang="de" href={`https://polsterei-hb-zuerich.ch/de${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        <link rel="alternate" hrefLang="en" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        <link rel="alternate" hrefLang="x-default" href="https://polsterei-hb-zuerich.ch/de/" />
         
         <meta name="description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
         <meta name="keywords" content="polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" />
@@ -178,15 +190,15 @@ export default function App({ defaultLang }: AppProps) {
               : "Professional upholstery in Zurich. Traditional upholstery work, furniture restoration and reupholstery.",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Lagerstrasse 93",
+              "streetAddress": "Tellstrasse 38",
               "addressLocality": "Zürich",
               "postalCode": "8004",
               "addressCountry": "CH"
             },
             "geo": {
               "@type": "GeoCoordinates",
-              "latitude": 47.37833710898837,
-              "longitude": 8.533439776271842
+              "latitude": 47.378337,
+              "longitude": 8.533440
             },
             "url": "https://polsterei-hb-zuerich.ch",
             "telephone": "+41442428980",
@@ -203,7 +215,7 @@ export default function App({ defaultLang }: AppProps) {
               "closes": "18:00"
             },
             "priceRange": "$$",
-            "hasMap": "https://www.google.com/maps/place/Lagerstrasse+93,+8004+Z%C3%BCrich",
+            "hasMap": "https://www.google.com/maps/place/Tellstrasse+38,+8004+Z%C3%BCrich",
             "sameAs": [
               "https://wa.me/41797389751",
               "https://www.instagram.com/AtelierGruenenwald"
@@ -462,19 +474,9 @@ export default function App({ defaultLang }: AppProps) {
             <div className="grid md:grid-cols-3 gap-12 mb-12">
               <div>
                 <h2 className="text-xl font-medium mb-4">Adresse</h2>
-                <div className="space-y-3">
-                  <div className="flex items-start space-x-2">
-                    <Mail className="h-5 w-5 flex-shrink-0 mt-1 text-[#334B40]" />
-                    <div className="flex-1">
-                      <span>{t.contact.address.street1}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-2">
-                    <MapPin className="h-5 w-5 flex-shrink-0 mt-1 text-[#334B40]" />
-                    <div className="flex-1">
-                      <span>{t.contact.address.street2}</span>
-                    </div>
-                  </div>
+                <div className="space-y-2">
+                  <p>Tellstrasse 38</p>
+                  <p>8004 Zürich</p>
                 </div>
               </div>
 
@@ -488,30 +490,23 @@ export default function App({ defaultLang }: AppProps) {
 
               <div>
                 <h2 className="text-xl font-medium mb-4">Kontakt</h2>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <AtSign className="h-5 w-5 flex-shrink-0 text-[#334B40]" />
-                    <span>info@ateliergruenenwald.ch</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-5 w-5 flex-shrink-0 text-[#334B40]" />
-                    <span>+41 44 242 89 80</span>
-                  </div>
+                <div className="space-y-2">
+                  <p>info@ateliergruenenwald.ch</p>
+                  <p>+41 44 242 89 80</p>
                 </div>
               </div>
             </div>
 
-            {/* Full Width Map */}
+            {/* Map Section */}
             <AnimatedSection>
-              <div className="aspect-[21/9] w-full overflow-hidden rounded-lg">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2702.3685467436644!2d8.533439776271842!3d47.37833710898837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47900a0e1b77b6c7%3A0x6a4d8a746db7c848!2sLagerstrasse%2093%2C%208004%20Z%C3%BCrich!5e0!3m2!1sen!2sch!4v1708732246399!5m2!1sen!2sch"
-                  className="w-full h-full"
-                  style={{ border: 0 }} 
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+              <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+                <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center bg-gray-100">Error loading map</div>}>
+                  <GoogleMap 
+                    apiKey="AIzaSyAEQX-fQYb5MYj9cxHhX46miGsvZ4mTCB8"
+                    placeId="ChIJb9WK7SALBQMRecnC-8QFKF4"
+                    language={currentLang}
+                  />
+                </ErrorBoundary>
               </div>
             </AnimatedSection>
           </div>
