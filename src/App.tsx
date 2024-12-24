@@ -448,25 +448,14 @@ export default function App({ defaultLang }: AppProps) {
           {/* Light overlay */}
           <div className="absolute inset-0 bg-[#f8f8f8]/90" />
           <div className="container mx-auto px-4 relative">
-            {/* Title and Logo Row */}
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8 mb-12">
-              {/* Text block - Use as height reference */}
-              <div className="w-full md:flex-1 min-w-0 text-center md:text-left" ref={textBlockRef}>
+            {/* Title and Description - Removed logo row */}
+            <div className="mb-12">
+              {/* Text block - Now full width */}
+              <div className="text-center" ref={textBlockRef}>
                 <h2 className="text-3xl font-light tracking-wide mb-4">
                   {t.contact.subtitle}
                 </h2>
                 <p className="text-neutral-600">{t.contact.description}</p>
-              </div>
-              
-              {/* Logo container - Match height with text block */}
-              <div className="w-32 md:w-48 flex-shrink-0">
-                <img 
-                  src="/atelier-gruenenwald-logo.svg"
-                  alt="Atelier Grünenwald Logo"
-                  className="w-full h-auto object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
               </div>
             </div>
 
