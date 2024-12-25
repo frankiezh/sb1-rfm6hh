@@ -14,6 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 import { ContactButton } from './components/ContactButton';
 import { GoogleMap } from './components/GoogleMap';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ContactForm } from '@/components/ContactForm';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -459,30 +460,38 @@ export default function App({ defaultLang }: AppProps) {
               </div>
             </div>
 
-            {/* Contact Information */}
-            <div className="grid md:grid-cols-3 gap-12 mb-12">
-              <div>
-                <h2 className="text-xl font-medium mb-4">Adresse</h2>
-                <div className="space-y-2">
-                  <p>Tellstrasse 38</p>
-                  <p>8004 Zürich</p>
+            {/* Contact Information and Form */}
+            <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-8 md:gap-12 mb-12 items-baseline">
+              {/* Left Column - Contact Info */}
+              <div className="space-y-6 md:space-y-8 md:min-w-[280px]">
+                <div>
+                  <h2 className="text-xl font-medium mb-4">Adresse</h2>
+                  <div className="space-y-2">
+                    <p>Tellstrasse 38</p>
+                    <p>8004 Zürich</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-medium mb-4">Öffnungszeiten</h2>
+                  <div className="space-y-2">
+                    <p>Mo-Fr: 09:00 - 18:00</p>
+                    <p>Sa: Nach Vereinbarung</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-medium mb-4">Kontakt</h2>
+                  <div className="space-y-2">
+                    <p>info@ateliergruenenwald.ch</p>
+                    <p>+41 44 242 89 80</p>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <h2 className="text-xl font-medium mb-4">Öffnungszeiten</h2>
-                <div className="space-y-2">
-                  <p>Mo-Fr: 09:00 - 18:00</p>
-                  <p>Sa: Nach Vereinbarung</p>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-medium mb-4">Kontakt</h2>
-                <div className="space-y-2">
-                  <p>info@ateliergruenenwald.ch</p>
-                  <p>+41 44 242 89 80</p>
-                </div>
+              {/* Right Column - Contact Form */}
+              <div className="w-full">
+                <ContactForm />
               </div>
             </div>
 
