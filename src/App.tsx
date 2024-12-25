@@ -5,7 +5,7 @@ import { ServiceCard } from '@/components/ServiceCard';
 import { PortfolioCard } from '@/components/PortfolioCard';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { translations } from '@/lib/translations';
-import { Mail, MapPin, Phone, AtSign, MessageCircle } from 'lucide-react';
+import { Mail, MessageCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -15,6 +15,7 @@ import { ContactButton } from './components/ContactButton';
 import { GoogleMap } from './components/GoogleMap';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ContactForm } from '@/components/ContactForm';
+import { ContactDialog } from '@/components/ContactDialog';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -130,14 +131,14 @@ export default function App({ defaultLang }: AppProps) {
   // Contact button component to avoid duplication
   const ContactButtons = ({ className = '', orientation = 'horizontal', currentLang }: { className?: string; orientation?: 'horizontal' | 'vertical'; currentLang: 'de' | 'en'; }) => (
     <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row' : 'flex-row'} gap-2 ${className}`}>
-      <ContactButton 
-        type="phone"
-        className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
-        currentLang={currentLang}
-      >
-        <Phone className="h-4 w-4" />
-        <span className="font-medium">{t.buttons.call}</span>
-      </ContactButton>
+      <ContactDialog currentLang={currentLang}>
+        <button
+          className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 bg-[#334B40] hover:bg-[#3D5A4C] text-white px-4 py-2 rounded-md transition-all duration-200 hover:scale-105 text-sm whitespace-nowrap"
+        >
+          <Mail className="h-4 w-4" />
+          <span className="font-medium">{currentLang === 'de' ? 'Kontakt' : 'Contact'}</span>
+        </button>
+      </ContactDialog>
 
       <ContactButton 
         type="whatsapp"
@@ -449,9 +450,8 @@ export default function App({ defaultLang }: AppProps) {
           {/* Light overlay */}
           <div className="absolute inset-0 bg-[#f8f8f8]/90" />
           <div className="container mx-auto px-4 relative">
-            {/* Title and Description - Removed logo row */}
+            {/* Title and Description */}
             <div className="mb-12">
-              {/* Text block - Now full width */}
               <div className="text-center" ref={textBlockRef}>
                 <h2 className="text-3xl font-light tracking-wide mb-4">
                   {t.contact.subtitle}
@@ -463,7 +463,7 @@ export default function App({ defaultLang }: AppProps) {
             {/* Contact Information and Form */}
             <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-8 md:gap-12 mb-12 items-baseline">
               {/* Left Column - Contact Info */}
-              <div className="space-y-6 md:space-y-8 md:min-w-[280px]">
+              <div className="space-y-6 md:space-y-8 md:min-w-[280px] order-2 md:order-1">
                 <div>
                   <h2 className="text-xl font-medium mb-4">Adresse</h2>
                   <div className="space-y-2">
@@ -484,20 +484,21 @@ export default function App({ defaultLang }: AppProps) {
                   <h2 className="text-xl font-medium mb-4">Kontakt</h2>
                   <div className="space-y-2">
                     <p>info@ateliergruenenwald.ch</p>
-                    <p>+41 44 242 89 80</p>
+                    <p>Tel: +41 44 242 89 80</p>
+                    <p>Mobile: +41 79 738 97 51</p>
                   </div>
                 </div>
               </div>
 
               {/* Right Column - Contact Form */}
-              <div className="w-full">
-                <ContactForm />
+              <div className="w-full order-1 md:order-2">
+                <ContactForm currentLang={currentLang} />
               </div>
             </div>
 
             {/* Map Section */}
-            <AnimatedSection>
-              <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+            <AnimatedSection className="container mx-auto px-4">
+              <div className="relative w-full h-[400px] rounded-lg overflow-hidden mx-auto max-w-[1920px]">
                 <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center bg-gray-100">Error loading map</div>}>
                   <GoogleMap 
                     apiKey="AIzaSyAEQX-fQYb5MYj9cxHhX46miGsvZ4mTCB8"

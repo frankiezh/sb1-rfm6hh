@@ -6,7 +6,7 @@ export const translations = {
       contact: 'KONTAKT'
     },
     buttons: {
-      call: 'Jetzt anrufen',
+      contact: 'Kontakt',
       whatsapp: 'WhatsApp'
     },
     hero: {
@@ -163,7 +163,7 @@ export const translations = {
       contact: 'CONTACT'
     },
     buttons: {
-      call: 'Call now',
+      contact: 'Kontakt',
       whatsapp: 'WhatsApp'
     },
     hero: {

@@ -1,39 +1,32 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Mail, User, Phone } from 'lucide-react';
+import { translations } from '@/lib/translations';
+import { useLocation } from 'react-router-dom';
 
-const translations = {
-  de: {
-    title: 'Kontaktieren Sie uns',
-    name: 'Vollständiger Name',
-    email: 'E-Mail',
-    phone: 'Telefon (optional)',
-    message: 'Ihre Nachricht',
-    submit: 'Nachricht senden',
-    success: 'Vielen Dank für Ihre Nachricht! Wir melden uns schnellstmöglichst bei Ihnen.',
-    required: 'Pflichtfeld'
-  },
-  en: {
-    title: 'Contact Us',
-    name: 'Full Name',
-    email: 'Email',
-    phone: 'Phone (optional)',
-    message: 'Your Message',
-    submit: 'Send Message',
-    success: 'Thank you for your message! We\'ll get in touch as soon as possible.',
-    required: 'Required'
-  }
-};
+interface ContactFormProps {
+  isDialog?: boolean;
+  currentLang?: 'de' | 'en';
+}
 
-export function ContactForm() {
+export function ContactForm({ isDialog = false, currentLang }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const location = useLocation();
-  const currentLang = location.pathname.split('/')[1] || 'de';
-  const t = translations[currentLang as keyof typeof translations];
+  const lang = currentLang || location.pathname.split('/')[1] || 'de';
+  const t = translations[lang as keyof typeof translations];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.dataLayer?.push({
+      'event': 'conversion',
+      'conversion_type_variable': 'contact_form_submit',
+      'form_type': isDialog ? 'popup' : 'inline'
+    });
+    setIsSubmitted(true);
+  };
 
   if (isSubmitted) {
     return (
-      <div className="h-full flex items-center justify-center p-8 bg-white/50 backdrop-blur-sm rounded-lg">
+      <div className={`flex items-center justify-center p-8 ${!isDialog ? 'h-full bg-white/50 backdrop-blur-sm rounded-lg' : ''}`}>
         <p className="text-lg text-[#334B40]">{t.success}</p>
       </div>
     );
@@ -45,8 +38,8 @@ export function ContactForm() {
       method="POST"
       data-netlify="true"
       netlify-honeypot="bot-field"
-      className="space-y-4 h-full w-full"
-      onSubmit={() => setIsSubmitted(true)}
+      className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
+      onSubmit={handleSubmit}
     >
       <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
@@ -54,7 +47,9 @@ export function ContactForm() {
       </div>
 
       <div className="h-full bg-white/50 backdrop-blur-sm rounded-lg">
-        <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-6 mb-4">{t.title}</h3>
+        <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-4 mb-4">
+          {currentLang === 'de' ? 'Kontaktieren Sie uns' : 'Contact Us'}
+        </h3>
         <div className="space-y-4 px-4 md:px-6 pb-4 md:pb-6 h-[calc(100%-4rem)]">
           <div className="relative">
             <div className="absolute left-3 top-3 text-neutral-500">
@@ -64,7 +59,7 @@ export function ContactForm() {
               type="text"
               name="name"
               required
-              placeholder={t.name + ' *'}
+              placeholder={`${currentLang === 'de' ? 'Vollständiger Name' : 'Full Name'} *`}
               className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
             />
           </div>
@@ -77,7 +72,7 @@ export function ContactForm() {
               type="email"
               name="email"
               required
-              placeholder={t.email + ' *'}
+              placeholder="E-Mail *"
               className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
             />
           </div>
@@ -89,7 +84,7 @@ export function ContactForm() {
             <input
               type="tel"
               name="phone"
-              placeholder={t.phone}
+              placeholder={`${currentLang === 'de' ? 'Telefon (optional)' : 'Phone (optional)'}`}
               className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
             />
           </div>
@@ -97,7 +92,7 @@ export function ContactForm() {
           <textarea
             name="message"
             required
-            placeholder={t.message + ' *'}
+            placeholder={`${currentLang === 'de' ? 'Ihre Nachricht' : 'Your Message'} *`}
             rows={4}
             className="w-full px-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all resize-none"
           />
@@ -106,7 +101,7 @@ export function ContactForm() {
             type="submit"
             className="w-full bg-[#334B40] hover:bg-[#3D5A4C] text-white py-2 px-4 rounded-md transition-colors duration-200"
           >
-            {t.submit}
+            {currentLang === 'de' ? 'Nachricht senden' : 'Send Message'}
           </button>
         </div>
       </div>
