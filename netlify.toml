@@ -6,39 +6,30 @@
   NODE_VERSION = "20"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200 
+  from = "http://polsterei-hb-zuerich.ch/*"
+  to = "https://polsterei-hb-zuerich.ch/:splat"
+  status = 301
+  force = true
 
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-[[headers]]
-  for = "/robots.txt"
-  [headers.values]
-    Content-Type = "text/plain"
-    Access-Control-Allow-Origin = "*"
-
-[[headers]]
-  for = "/sitemap.xml"
-  [headers.values]
-    Content-Type = "application/xml"
-    Access-Control-Allow-Origin = "*"
-
-# Handle SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Force HTTPS
-[[redirects]]
-  from = "http://*"
-  to = "https://:splat"
-  status = 301
-  force = true
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "index, follow"
+
+[dev]
+  framework = "vite"
+
+# Enable form detection
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.forms]
+  enabled = true
