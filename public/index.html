@@ -38,12 +38,11 @@
     
     <div id="root"></div>
     <!-- Hidden form for Netlify form detection -->
-    <form name="contact" netlify netlify-honeypot="bot-field" action="/" method="POST" hidden>
+    <form name="contact" netlify data-netlify="true" method="POST" hidden>
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />
       <textarea name="message"></textarea>
-      <input type="hidden" name="form-name" value="contact" />
     </form>
     <script type="module" src="/src/main.tsx"></script>
   </body>
