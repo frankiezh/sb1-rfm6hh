@@ -40,10 +40,7 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
 
         fetch(form.action, {
           method: 'POST',
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams(formData as any).toString(),
+          body: formData,
         })
           .then(() => setIsSubmitted(true))
           .catch((error) => {
