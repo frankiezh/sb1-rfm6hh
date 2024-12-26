@@ -31,6 +31,8 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
       name="contact"
       method="POST"
       data-netlify="true"
+      action="/"
+      netlify-honeypot="bot-field"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
       onSubmit={(e) => {
         e.preventDefault();
