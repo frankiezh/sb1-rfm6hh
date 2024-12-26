@@ -35,12 +35,21 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
         fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams(formData as any).toString(),
         })
           .then(() => setIsSubmitted(true))
-          .catch((error) => console.error('Form submission error:', error));
+          .catch((error) => {
+            console.error('Form submission error:', error);
+            console.log('Form action:', form.action);
+            console.log('Form data:', Object.fromEntries(formData));
+          });
       }}
     >
       <input type="hidden" name="form-name" value="contact" />
