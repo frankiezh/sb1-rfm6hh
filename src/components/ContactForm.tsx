@@ -31,8 +31,17 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
       name="contact"
       method="POST"
       data-netlify="true"
-      action="/thank-you"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+        })
+          .then(() => setIsSubmitted(true))
+          .catch((error) => console.error('Form submission error:', error));
+      }}
     >
       <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
@@ -43,7 +52,7 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
         <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-4 mb-4">
           {currentLang === 'de' ? 'Kontaktieren Sie uns' : 'Contact Us'}
         </h3>
-        <div className="space-y-4 px-4 md:px-6 pb-4 md:pb-6 h-[calc(100%-4rem)]">
+        <div className="space-y-4 px-4 md:px-6 pb-4 md:pb-6">
           <div className="relative">
             <div className="absolute left-3 top-3 text-neutral-500">
               <User className="h-5 w-5" />
