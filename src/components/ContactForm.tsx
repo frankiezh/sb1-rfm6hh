@@ -14,40 +14,6 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
   const lang = currentLang || location.pathname.split('/')[1] || 'de';
   const t = translations[lang as keyof typeof translations];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    fetch("/", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json"
-      },
-      body: new URLSearchParams([...formData] as [string, string][]).toString()
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log("Form submitted successfully");
-        // Track conversion
-        window.dataLayer?.push({
-          'event': 'conversion',
-          'conversion_type_variable': 'contact_form_submit',
-          'form_type': isDialog ? 'popup' : 'inline'
-        });
-        // Show success message
-        setIsSubmitted(true);
-      })
-      .catch((error) => {
-        console.error("Form submission error:", error);
-        // Still show success message for now (since Netlify might handle the form anyway)
-        setIsSubmitted(true);
-      });
-  };
-
   if (isSubmitted) {
     const successMessage = currentLang === 'de' 
       ? 'Vielen Dank für Ihre Nachricht! Wir melden uns schnellstmöglichst bei Ihnen.'
@@ -65,9 +31,8 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
       name="contact"
       method="POST"
       data-netlify="true"
-      netlify-honeypot="bot-field"
+      action="/thank-you"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
-      onSubmit={handleSubmit}
     >
       <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
