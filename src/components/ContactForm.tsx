@@ -31,7 +31,6 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
   return (
     <form
       name="contact"
-      method="POST"
       data-netlify="true"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
       onSubmit={async (e) => {
@@ -56,15 +55,14 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
           setIsSubmitted(true);
         } catch (err) {
           setError(currentLang === 'de' 
-            ? 'Es gab einen Fehler beim Senden. Bitte versuchen Sie es später erneut.'
-            : 'There was an error sending your message. Please try again later.');
+            ? 'Es gab einen Fehler...'
+            : 'There was an error...');
           console.error('Form submission error:', err);
         } finally {
           setIsSubmitting(false);
         }
       }}
     >
-      <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
         <input name="bot-field" />
       </div>
