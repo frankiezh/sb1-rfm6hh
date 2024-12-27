@@ -10,6 +10,8 @@ interface ContactFormProps {
 
 export function ContactForm({ isDialog = false, currentLang }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const lang = currentLang || location.pathname.split('/')[1] || 'de';
   const t = translations[lang as keyof typeof translations];
@@ -30,30 +32,48 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
     <form
       name="contact"
       method="POST"
-      netlify
-      action="/thank-you"
+      data-netlify="true"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
+        setError(null);
+        
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
 
-        fetch(form.action, {
-          method: 'POST',
-          body: formData,
-        })
-          .then(() => setIsSubmitted(true))
-          .catch((error) => {
-            console.error('Form submission error:', error);
-            console.log('Form action:', form.action);
-            console.log('Form data:', Object.fromEntries(formData));
+        try {
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData as any).toString()
           });
+
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+
+          setIsSubmitted(true);
+        } catch (err) {
+          setError(currentLang === 'de' 
+            ? 'Es gab einen Fehler beim Senden. Bitte versuchen Sie es später erneut.'
+            : 'There was an error sending your message. Please try again later.');
+          console.error('Form submission error:', err);
+        } finally {
+          setIsSubmitting(false);
+        }
       }}
     >
       <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
         <input name="bot-field" />
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <p>{error}</p>
+        </div>
+      )}
 
       <div className="h-full bg-white/50 backdrop-blur-sm rounded-lg">
         <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-4 mb-4">
@@ -108,9 +128,14 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
 
           <button
             type="submit"
-            className="w-full bg-[#334B40] hover:bg-[#3D5A4C] text-white py-2 px-4 rounded-md transition-colors duration-200"
+            disabled={isSubmitting}
+            className={`w-full bg-[#334B40] hover:bg-[#3D5A4C] text-white py-2 px-4 rounded-md transition-colors duration-200 ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
-            {currentLang === 'de' ? 'Nachricht senden' : 'Send Message'}
+            {isSubmitting 
+              ? (currentLang === 'de' ? 'Wird gesendet...' : 'Sending...') 
+              : (currentLang === 'de' ? 'Nachricht senden' : 'Send Message')}
           </button>
         </div>
       </div>
