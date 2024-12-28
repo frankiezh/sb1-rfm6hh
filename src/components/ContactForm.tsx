@@ -33,6 +33,29 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
       data-netlify="true"
       netlify-honeypot="bot-field"
       className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        // Check if we're on localhost
+        if (window.location.hostname === 'localhost') {
+          console.log('Local development - simulating form submission');
+          setIsSubmitted(true);
+          return;
+        }
+
+        // On production, submit the form normally
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData as any).toString()
+        })
+          .then(() => setIsSubmitted(true))
+          .catch((error) => {
+            console.error('Form submission error:', error);
+          });
+      }}
     >
       <input type="hidden" name="form-name" value="contact" />
       <div className="hidden">
