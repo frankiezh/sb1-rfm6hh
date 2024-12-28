@@ -27,103 +27,77 @@ export function ContactForm({ isDialog = false, currentLang }: ContactFormProps)
   }
 
   return (
-    <>
-      {/* Hidden Netlify Form */}
-      <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
-        <input type="text" name="name" />
-        <input type="email" name="email" />
-        <input type="tel" name="phone" />
-        <textarea name="message"></textarea>
-      </form>
+    <form
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <div className="hidden">
+        <input name="bot-field" />
+      </div>
 
-      {/* Actual Form */}
-      <form
-        name="contact"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        className={`space-y-4 w-full ${!isDialog ? 'h-full' : ''}`}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const form = e.target as HTMLFormElement;
-          const formData = new FormData(form);
-
-          fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData as any).toString()
-          })
-            .then(() => setIsSubmitted(true))
-            .catch((error) => {
-              console.error('Form submission error:', error);
-            });
-        }}
-      >
-        <input type="hidden" name="form-name" value="contact" />
-        <div hidden>
-          <input name="bot-field" />
-        </div>
-
-        <div className="h-full bg-white/50 backdrop-blur-sm rounded-lg">
-          <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-4 mb-4">
-            {currentLang === 'de' ? 'Kontaktieren Sie uns' : 'Contact Us'}
-          </h3>
-          <div className="space-y-4 px-4 md:px-6 pb-4 md:pb-6">
-            <div className="relative">
-              <div className="absolute left-3 top-3 text-neutral-500">
-                <User className="h-5 w-5" />
-              </div>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder={`${currentLang === 'de' ? 'Vollständiger Name' : 'Full Name'} *`}
-                className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
-              />
+      <div className="h-full bg-white/50 backdrop-blur-sm rounded-lg">
+        <h3 className="text-xl font-medium px-4 md:px-6 pt-4 md:pt-4 mb-4">
+          {currentLang === 'de' ? 'Kontaktieren Sie uns' : 'Contact Us'}
+        </h3>
+        <div className="space-y-4 px-4 md:px-6 pb-4 md:pb-6">
+          <div className="relative">
+            <div className="absolute left-3 top-3 text-neutral-500">
+              <User className="h-5 w-5" />
             </div>
-
-            <div className="relative">
-              <div className="absolute left-3 top-3 text-neutral-500">
-                <Mail className="h-5 w-5" />
-              </div>
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="E-Mail *"
-                className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
-              />
-            </div>
-
-            <div className="relative">
-              <div className="absolute left-3 top-3 text-neutral-500">
-                <Phone className="h-5 w-5" />
-              </div>
-              <input
-                type="tel"
-                name="phone"
-                placeholder={`${currentLang === 'de' ? 'Telefon (optional)' : 'Phone (optional)'}`}
-                className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
-              />
-            </div>
-
-            <textarea
-              name="message"
+            <input
+              type="text"
+              name="name"
               required
-              placeholder={`${currentLang === 'de' ? 'Ihre Nachricht' : 'Your Message'} *`}
-              rows={4}
-              className="w-full px-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all resize-none"
+              placeholder={`${currentLang === 'de' ? 'Vollständiger Name' : 'Full Name'} *`}
+              className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
             />
-
-            <button
-              type="submit"
-              className={`w-full bg-[#334B40] hover:bg-[#3D5A4C] text-white py-2 px-4 rounded-md transition-colors duration-200`}
-            >
-              {currentLang === 'de' ? 'Nachricht senden' : 'Send Message'}
-            </button>
           </div>
+
+          <div className="relative">
+            <div className="absolute left-3 top-3 text-neutral-500">
+              <Mail className="h-5 w-5" />
+            </div>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="E-Mail *"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
+            />
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-3 top-3 text-neutral-500">
+              <Phone className="h-5 w-5" />
+            </div>
+            <input
+              type="tel"
+              name="phone"
+              placeholder={`${currentLang === 'de' ? 'Telefon (optional)' : 'Phone (optional)'}`}
+              className="w-full pl-10 pr-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all"
+            />
+          </div>
+
+          <textarea
+            name="message"
+            required
+            placeholder={`${currentLang === 'de' ? 'Ihre Nachricht' : 'Your Message'} *`}
+            rows={4}
+            className="w-full px-4 py-2 bg-white border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#334B40] focus:border-transparent transition-all resize-none"
+          />
+
+          <button
+            type="submit"
+            className={`w-full bg-[#334B40] hover:bg-[#3D5A4C] text-white py-2 px-4 rounded-md transition-colors duration-200`}
+          >
+            {currentLang === 'de' ? 'Nachricht senden' : 'Send Message'}
+          </button>
         </div>
-      </form>
-    </>
+      </div>
+    </form>
   );
 } 
