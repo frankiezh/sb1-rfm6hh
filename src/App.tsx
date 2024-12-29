@@ -294,7 +294,7 @@ export default function App({ defaultLang }: AppProps) {
         <section className="relative min-h-screen flex flex-col">
           <div className="absolute inset-0">
             <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
+              src="/images/hero/hero-upholstery-workshop.jpg"
               alt="Hero background"
               loading="eager"
               className="w-full h-full object-cover"
