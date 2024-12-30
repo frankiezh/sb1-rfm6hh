@@ -19,7 +19,7 @@ export function TrackedPhoneNumber({ number, children, className = '' }: Tracked
     <a
       href={`tel:${number.replace(/\s/g, '')}`}
       onClick={handleClick}
-      className={`hover:text-[#334B40] transition-colors ${className}`}
+      className={`hover:text-[#334B40] transition-colors duration-200 ${className}`}
     >
       {children}
     </a>

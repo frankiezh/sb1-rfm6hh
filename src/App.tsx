@@ -16,6 +16,7 @@ import { GoogleMap } from './components/GoogleMap';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ContactForm } from '@/components/ContactForm';
 import { ContactDialog } from '@/components/ContactDialog';
+import { TrackedPhoneNumber } from '@/components/TrackedPhoneNumber';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -465,7 +466,7 @@ export default function App({ defaultLang }: AppProps) {
               {/* Left Column - Contact Info */}
               <div className="space-y-6 md:space-y-8 md:min-w-[280px] order-2 md:order-1">
                 <div>
-                  <h2 className="text-xl font-medium mb-4">Adresse</h2>
+                  <h2 className="text-xl font-medium mb-4">{currentLang === 'de' ? 'Adresse' : 'Address'}</h2>
                   <div className="space-y-2">
                     <p>Tellstrasse 38</p>
                     <p>8004 Zürich</p>
@@ -473,19 +474,29 @@ export default function App({ defaultLang }: AppProps) {
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-medium mb-4">Öffnungszeiten</h2>
+                  <h2 className="text-xl font-medium mb-4">{currentLang === 'de' ? 'Öffnungszeiten' : 'Opening Hours'}</h2>
                   <div className="space-y-2">
-                    <p>Mo-Fr: 09:00 - 18:00</p>
-                    <p>Sa: Nach Vereinbarung</p>
+                    <p>{currentLang === 'de' ? 'Mo-Fr: 09:00 - 18:00' : 'Mon-Fri: 09:00 - 18:00'}</p>
+                    <p>{currentLang === 'de' ? 'Sa: Nach Vereinbarung' : 'Sat: By appointment'}</p>
                   </div>
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-medium mb-4">Kontakt</h2>
+                  <h2 className="text-xl font-medium mb-4">{currentLang === 'de' ? 'Kontakt' : 'Contact'}</h2>
                   <div className="space-y-2">
                     <p>info@ateliergruenenwald.ch</p>
-                    <p>Tel: +41 44 242 89 80</p>
-                    <p>Mobile: +41 79 738 97 51</p>
+                    <div className="flex">
+                      <span className="w-16">Tel:</span>
+                      <TrackedPhoneNumber number="+41442428980" className="hover:text-[#334B40] transition-colors">
+                        +41 44 242 89 80
+                      </TrackedPhoneNumber>
+                    </div>
+                    <div className="flex">
+                      <span className="w-16">Mobile:</span>
+                      <TrackedPhoneNumber number="+41797389751" className="hover:text-[#334B40] transition-colors">
+                        +41 79 738 97 51
+                      </TrackedPhoneNumber>
+                    </div>
                   </div>
                 </div>
               </div>
