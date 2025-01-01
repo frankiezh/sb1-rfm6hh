@@ -170,14 +170,15 @@ export default function App({ defaultLang }: AppProps) {
         <link rel="alternate" hrefLang="en" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
         <link rel="alternate" hrefLang="x-default" href="https://polsterei-hb-zuerich.ch/de/" />
         
+        <link rel="canonical" href={`https://polsterei-hb-zuerich.ch/${currentLang}${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        
         <meta name="description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
         <meta name="keywords" content="polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" />
-        <link rel="canonical" href="https://www.polsterei-hb-zuerich.ch" />
         
         <meta property="og:title" content="Polsterei am HB Zürich | Atelier Grünenwald" />
         <meta property="og:description" content="Professionelle Polsterei in Zürich. 2 Minuten vom Hauptbahnhof." />
         <meta property="og:image" content="/path-to-your-logo-or-featured-image.jpg" />
-        <meta property="og:url" content="https://www.polsterei-hb-zuerich.ch" />
+        <meta property="og:url" content={`https://polsterei-hb-zuerich.ch/${currentLang}${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
         
         <script type="application/ld+json">
           {JSON.stringify({

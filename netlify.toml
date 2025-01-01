@@ -11,6 +11,25 @@
   status = 301
   force = true
 
+# Default language redirect
+[[redirects]]
+  from = "/"
+  to = "/de/"
+  status = 301
+  force = true
+
+# Handle form submissions and success pages
+[[redirects]]
+  from = "/de/success"
+  to = "/de/"
+  status = 200
+
+[[redirects]]
+  from = "/en/success"
+  to = "/en/"
+  status = 200
+
+# SPA fallback - this ensures React handles all routes
 [[redirects]]
   from = "/*"
   to = "/index.html"
