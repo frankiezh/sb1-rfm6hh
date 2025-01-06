@@ -5,12 +5,14 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Force HTTPS with explicit domain
 [[redirects]]
   from = "http://polsterei-hb-zuerich.ch/*"
   to = "https://polsterei-hb-zuerich.ch/:splat"
   status = 301
   force = true
 
+# SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -20,11 +22,15 @@
   for = "/*"
   [headers.values]
     X-Robots-Tag = "index, follow"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
 
 [dev]
   framework = "vite"
 
-# Enable form detection
+# Form handling settings
 [build.processing]
   skip_processing = false
 
