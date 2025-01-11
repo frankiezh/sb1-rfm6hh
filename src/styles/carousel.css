@@ -1,0 +1,36 @@
+/* Custom styles for the carousel */
+.hero-carousel .slick-dots {
+  bottom: 25px;
+  z-index: 10;
+}
+
+.hero-carousel .slick-dots li button:before {
+  color: white;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.hero-carousel .slick-dots li.slick-active button:before {
+  color: white;
+  opacity: 1;
+}
+
+.hero-carousel .slick-prev,
+.hero-carousel .slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+}
+
+.hero-carousel .slick-prev {
+  left: 20px;
+}
+
+.hero-carousel .slick-next {
+  right: 20px;
+}
+
+.hero-carousel .slick-prev:before,
+.hero-carousel .slick-next:before {
+  font-size: 40px;
+} 

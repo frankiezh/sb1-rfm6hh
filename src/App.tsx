@@ -17,6 +17,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ContactForm } from '@/components/ContactForm';
 import { ContactDialog } from '@/components/ContactDialog';
 import { TrackedPhoneNumber } from '@/components/TrackedPhoneNumber';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -42,9 +45,63 @@ interface AppProps {
 }
 
 export default function App({ defaultLang }: AppProps) {
-  // Use defaultLang from URL instead of hardcoded 'de'
   const [currentLang, setCurrentLang] = useState<'de' | 'en'>(defaultLang);
   const t = translations[currentLang];
+
+  // Move settings here to access t
+  const settings = {
+    dots: true,
+    arrows: false,
+    infinite: true,
+    speed: 2000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    fade: true,
+    pauseOnHover: true,
+    cssEase: "cubic-bezier(0.645, 0.045, 0.355, 1)",
+    lazyLoad: 'progressive',
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          dots: false
+        }
+      }
+    ],
+    initialSlide: Math.floor(Math.random() * t.hero.slides.length),
+    beforeChange: (current: number, next: number) => {
+      // Remove previous patterns
+      document.querySelectorAll('.hero-carousel .slick-slide img').forEach(img => {
+        ['pattern-1', 'pattern-2', 'pattern-3', 'pattern-4', 'pattern-5', 'pattern-6'].forEach(pattern => {
+          img.classList.remove(pattern);
+        });
+      });
+      
+      // Add random pattern to next slide
+      const nextSlide = document.querySelector(
+        `.slick-slide[data-index="${next}"] img`
+      );
+      if (nextSlide) {
+        const randomPattern = Math.floor(Math.random() * 6) + 1;
+        nextSlide.classList.add(`pattern-${randomPattern}`);
+      }
+
+      // Handle exit animation
+      const currentSlide = document.querySelector(
+        `.slick-slide[data-index="${current}"] img`
+      );
+      if (currentSlide) {
+        currentSlide.classList.add('exit');
+      }
+    },
+    afterChange: (current: number) => {
+      document.querySelectorAll('.hero-carousel .slick-slide img').forEach(img => {
+        img.classList.remove('exit');
+      });
+    }
+  };
 
   const textBlockRef = useRef<HTMLDivElement>(null);
   const [textBlockHeight, setTextBlockHeight] = useState('auto');
@@ -161,6 +218,57 @@ export default function App({ defaultLang }: AppProps) {
 
   return (
     <>
+      <style>
+        {`
+          .hero-carousel .slick-slide > div {
+            height: 100vh;
+          }
+          /* Base states for different patterns */
+          .hero-carousel .slick-slide img {
+            transform: scale(1.2) translate(0%, 0%);
+            transition: transform 8s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform;
+          }
+          
+          /* Pattern 1: Zoom in + right pan */
+          .hero-carousel .slick-active img.pattern-1 {
+            transform: scale(1.4) translate(-4%, -1%);
+          }
+          
+          /* Pattern 2: Left pan + gentle zoom */
+          .hero-carousel .slick-active img.pattern-2 {
+            transform: scale(1.3) translate(4%, -2%);
+          }
+          
+          /* Pattern 3: Dramatic zoom + up pan */
+          .hero-carousel .slick-active img.pattern-3 {
+            transform: scale(1.5) translate(-2%, 3%);
+          }
+          
+          /* Pattern 4: Diagonal pan + moderate zoom */
+          .hero-carousel .slick-active img.pattern-4 {
+            transform: scale(1.35) translate(-4%, -4%);
+          }
+          
+          /* Pattern 5: Zoom out + right pan */
+          .hero-carousel .slick-active img.pattern-5 {
+            transform: scale(1.25) translate(-3%, 2%);
+          }
+          
+          /* Pattern 6: Center zoom + subtle pan */
+          .hero-carousel .slick-active img.pattern-6 {
+            transform: scale(1.45) translate(1%, -1%);
+          }
+
+          /* Quick cinematic exit */
+          .hero-carousel .slick-slide img.exit {
+            transform: scale(1.25) translate(-6%, 0%) !important;
+            transition: transform 1200ms cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+            opacity: 0.8;
+          }
+        `}
+      </style>
+
       <Helmet>
         <title>Polsterei am HB Zürich | Atelier Grünenwald</title>
         
@@ -230,8 +338,24 @@ export default function App({ defaultLang }: AppProps) {
         </script>
         <link 
           rel="preload" 
-          as="image" 
-          href="/images/hero/hero-upholstery-workshop.jpg" 
+          as="image"
+          type="image/webp"
+          href={`/images/hero/${t.hero.slides[0].imageId}-large.webp`}
+          media="(min-width: 1280px)"
+        />
+        <link 
+          rel="preload" 
+          as="image"
+          type="image/webp"
+          href="/images/hero/upholstery-workshop-zurich-medium.webp"
+          media="(min-width: 768px) and (max-width: 1279px)"
+        />
+        <link 
+          rel="preload" 
+          as="image"
+          type="image/jpeg"
+          href="/images/hero/fallback/upholstery-workshop-zurich-small.jpg"
+          media="(max-width: 767px)"
         />
       </Helmet>
       
@@ -295,43 +419,64 @@ export default function App({ defaultLang }: AppProps) {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-screen flex flex-col">
+        <section className="relative h-screen">
+          {/* Carousel container */}
           <div className="absolute inset-0">
-            <img 
-              src="/images/hero/hero-upholstery-workshop.jpg"
-              alt="Hero background"
-              loading="eager"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40" />
+            <Slider {...settings} className="hero-carousel h-full">
+              {t.hero.slides.map((slide, index) => (
+                <div key={index} className="relative h-full overflow-hidden">
+                  <picture className="transform transition-transform duration-6000">
+                    <source
+                      media="(min-width: 1280px)"
+                      srcSet={`/images/hero/${slide.imageId}-large.webp`}
+                      type="image/webp"
+                    />
+                    <source
+                      media="(min-width: 768px)"
+                      srcSet={`/images/hero/${slide.imageId}-medium.webp`}
+                      type="image/webp"
+                    />
+                    <source
+                      srcSet={`/images/hero/${slide.imageId}-small.webp`}
+                      type="image/webp"
+                    />
+                    <img
+                      src={`/images/hero/fallback/${slide.imageId}-small.jpg`}
+                      alt={slide.alt}
+                      className="w-full h-full object-cover object-center"
+                      style={{ minHeight: '100vh' }}
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  </picture>
+                  <div className="absolute inset-0 bg-black/40" />
+                </div>
+              ))}
+            </Slider>
           </div>
-          
-          <div className="relative flex-1 flex flex-col justify-between text-white">
-            <div className="flex items-center justify-center flex-1 mt-24 md:mt-20">
-              <AnimatedSection className="text-center">
+
+          {/* Hero Content Overlay */}
+          <div className="absolute inset-0 flex flex-col justify-between py-8 md:py-12">
+            <div className="flex-1 flex items-center justify-center">
+              <AnimatedSection className="text-center w-full px-4">
                 <motion.div 
                   initial={{ x: -100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ 
-                    duration: 0.8,
-                    ease: "easeOut"
-                  }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
                   className="flex flex-col items-center"
                 >
-                  <h1 className="text-2xl md:text-4xl font-light tracking-wider mb-2">
+                  <h1 className="text-2xl md:text-4xl font-light tracking-wider mb-2 text-white whitespace-normal">
                     {t.hero.title}
                   </h1>
-                  <div className="relative">
-                    <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80">
+                  <div className="relative mt-2">
+                    <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80 text-white hidden md:block">
                       by
                     </span>
-                    <h2 className="text-4xl md:text-6xl font-light tracking-wider">
-                      ATELIER GRÜNENWALD
+                    <h2 className="text-3xl md:text-6xl font-light tracking-wider text-white whitespace-normal px-4 md:px-0">
+                      {t.hero.subtitle}
                     </h2>
                   </div>
                 </motion.div>
 
-                {/* Hero Section Buttons - now with ref for visibility tracking */}
                 <motion.div
                   ref={ref}
                   initial={{ y: 50, opacity: 0 }}
@@ -348,23 +493,19 @@ export default function App({ defaultLang }: AppProps) {
               </AnimatedSection>
             </div>
 
-            {/* Tagline section */}
-            <div className="w-full overflow-hidden">
+            {/* Tagline at bottom - adjusted for mobile */}
+            <div className="w-full overflow-hidden px-4 md:px-0">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ 
-                  duration: 0.8,
-                  ease: "easeOut",
-                  delay: 0.6
-                }}
-                className="container mx-auto px-4 pb-4 md:pb-8"
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+                className="container mx-auto pb-4 md:pb-8"
               >
-                <h2 className="font-light tracking-wider text-[#B8A164] text-center flex flex-col md:block
-                  text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
+                <h2 className="font-light tracking-wider text-[#B8A164] text-center
+                  text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl"
                 >
                   <span className="block md:inline">{t.hero.tagline.line1}</span>
-                  <span className="mt-1 md:mt-0 md:inline">
+                  <span className="block mt-1 md:mt-0 md:inline">
                     <span className="hidden md:inline mx-2">-</span>
                     {t.hero.tagline.line2}
                   </span>

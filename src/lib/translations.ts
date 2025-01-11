@@ -15,7 +15,33 @@ export const translations = {
       tagline: {
         line1: 'TRADITIONELLES HANDWERK',
         line2: 'TRIFFT MODERNE EXPERTISE'
-      }
+      },
+      slides: [
+        {
+          alt: "Professionelle Polsterei-Werkstatt in Zürich - moderne Einrichtung",
+          imageId: "upholstery-workshop-zurich"
+        },
+        {
+          alt: "Qualitätskontrolle von Polsterarbeiten - Detailinspektion",
+          imageId: "upholstery-quality-inspection"
+        },
+        {
+          alt: "Professionelle Schaumstoffverarbeitung für Polsterung",
+          imageId: "upholstery-foam-crafting"
+        },
+        {
+          alt: "Präzise Näharbeiten an Polstermöbeln",
+          imageId: "upholstery-detail-stitching"
+        },
+        {
+          alt: "Große Auswahl an Polsterstoffen in verschiedenen Farben",
+          imageId: "upholstery-fabric-selection"
+        },
+        {
+          alt: "Fachmännische Stoffprüfung für Polsterarbeiten",
+          imageId: "upholstery-fabric-inspection"
+        }
+      ]
     },
     services: {
       title: 'LEISTUNGEN',
@@ -172,7 +198,33 @@ export const translations = {
       tagline: {
         line1: 'TRADITIONAL CRAFTSMANSHIP',
         line2: 'MEETS MODERN EXPERTISE'
-      }
+      },
+      slides: [
+        {
+          alt: "Professional upholstery workshop in Zurich - modern interior",
+          imageId: "upholstery-workshop-zurich"
+        },
+        {
+          alt: "Quality inspection of upholstery work - detailed check",
+          imageId: "upholstery-quality-inspection"
+        },
+        {
+          alt: "Professional foam padding crafting for upholstery",
+          imageId: "upholstery-foam-crafting"
+        },
+        {
+          alt: "Precision stitching work on upholstered furniture",
+          imageId: "upholstery-detail-stitching"
+        },
+        {
+          alt: "Wide selection of upholstery fabrics in various colors",
+          imageId: "upholstery-fabric-selection"
+        },
+        {
+          alt: "Expert fabric inspection for upholstery work",
+          imageId: "upholstery-fabric-inspection"
+        }
+      ]
     },
     services: {
       title: 'SERVICES',
