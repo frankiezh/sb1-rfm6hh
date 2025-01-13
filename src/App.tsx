@@ -57,11 +57,11 @@ export default function App({ defaultLang }: AppProps) {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 7500,
     fade: true,
     pauseOnHover: true,
     cssEase: "cubic-bezier(0.645, 0.045, 0.355, 1)",
-    lazyLoad: 'progressive',
+    lazyLoad: undefined,
     responsive: [
       {
         breakpoint: 768,
@@ -72,34 +72,43 @@ export default function App({ defaultLang }: AppProps) {
     ],
     initialSlide: Math.floor(Math.random() * t.hero.slides.length),
     beforeChange: (current: number, next: number) => {
-      // Remove previous patterns
-      document.querySelectorAll('.hero-carousel .slick-slide img').forEach(img => {
-        ['pattern-1', 'pattern-2', 'pattern-3', 'pattern-4', 'pattern-5', 'pattern-6'].forEach(pattern => {
-          img.classList.remove(pattern);
-        });
-      });
-      
-      // Add random pattern to next slide
-      const nextSlide = document.querySelector(
-        `.slick-slide[data-index="${next}"] img`
-      );
-      if (nextSlide) {
-        const randomPattern = Math.floor(Math.random() * 6) + 1;
-        nextSlide.classList.add(`pattern-${randomPattern}`);
-      }
-
-      // Handle exit animation
+      // Current slide continues zooming
       const currentSlide = document.querySelector(
         `.slick-slide[data-index="${current}"] img`
       );
       if (currentSlide) {
-        currentSlide.classList.add('exit');
+        currentSlide.classList.remove('zoom-active');
+        currentSlide.classList.add('zoom-next');
+      }
+
+      // Next slide starts from active state
+      const nextSlide = document.querySelector(
+        `.slick-slide[data-index="${next}"] img`
+      );
+      if (nextSlide) {
+        nextSlide.classList.add('zoom-active');
       }
     },
     afterChange: (current: number) => {
+      // Clean up after transition
       document.querySelectorAll('.hero-carousel .slick-slide img').forEach(img => {
-        img.classList.remove('exit');
+        img.classList.remove('zoom-next');
       });
+    },
+    onInit: () => {
+      // Force initial zoom on first load with a slightly longer delay
+      setTimeout(() => {
+        const firstSlide = document.querySelector('.hero-carousel .slick-current img');
+        if (firstSlide) {
+          firstSlide.classList.add('zoom-active');
+        }
+      }, 100);  // Increased from 0 to 100ms
+    },
+    onReInit: () => {
+      const currentSlide = document.querySelector('.hero-carousel .slick-current img');
+      if (currentSlide) {
+        currentSlide.classList.add('zoom-active');
+      }
     }
   };
 
@@ -223,48 +232,25 @@ export default function App({ defaultLang }: AppProps) {
           .hero-carousel .slick-slide > div {
             height: 100vh;
           }
-          /* Base states for different patterns */
+          /* Base state with slower movement */
           .hero-carousel .slick-slide img {
-            transform: scale(1.2) translate(0%, 0%);
-            transition: transform 8s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(1.05) translate(-4%, -1%);
+            transition: transform 15s linear;
             will-change: transform;
           }
-          
-          /* Pattern 1: Zoom in + right pan */
-          .hero-carousel .slick-active img.pattern-1 {
-            transform: scale(1.4) translate(-4%, -1%);
+          /* Active slide with slower speeds */
+          .hero-carousel .slick-slide img.zoom-active {
+            transform: scale(1.3) translate(4%, 1%);
+            transition: 
+              transform 15s linear,
+              scale 10s linear;
           }
-          
-          /* Pattern 2: Left pan + gentle zoom */
-          .hero-carousel .slick-active img.pattern-2 {
-            transform: scale(1.3) translate(4%, -2%);
-          }
-          
-          /* Pattern 3: Dramatic zoom + up pan */
-          .hero-carousel .slick-active img.pattern-3 {
-            transform: scale(1.5) translate(-2%, 3%);
-          }
-          
-          /* Pattern 4: Diagonal pan + moderate zoom */
-          .hero-carousel .slick-active img.pattern-4 {
-            transform: scale(1.35) translate(-4%, -4%);
-          }
-          
-          /* Pattern 5: Zoom out + right pan */
-          .hero-carousel .slick-active img.pattern-5 {
-            transform: scale(1.25) translate(-3%, 2%);
-          }
-          
-          /* Pattern 6: Center zoom + subtle pan */
-          .hero-carousel .slick-active img.pattern-6 {
-            transform: scale(1.45) translate(1%, -1%);
-          }
-
-          /* Quick cinematic exit */
-          .hero-carousel .slick-slide img.exit {
-            transform: scale(1.25) translate(-6%, 0%) !important;
-            transition: transform 1200ms cubic-bezier(0.645, 0.045, 0.355, 1) !important;
-            opacity: 0.8;
+          /* Next slide continues the slower movement */
+          .hero-carousel .slick-slide img.zoom-next {
+            transform: scale(1.5) translate(8%, 2%);
+            transition: 
+              transform 15s linear,
+              scale 10s linear;
           }
         `}
       </style>
@@ -425,7 +411,7 @@ export default function App({ defaultLang }: AppProps) {
             <Slider {...settings} className="hero-carousel h-full">
               {t.hero.slides.map((slide, index) => (
                 <div key={index} className="relative h-full overflow-hidden">
-                  <picture className="transform transition-transform duration-6000">
+                  <picture>
                     <source
                       media="(min-width: 1280px)"
                       srcSet={`/images/hero/${slide.imageId}-large.webp`}
@@ -443,7 +429,7 @@ export default function App({ defaultLang }: AppProps) {
                     <img
                       src={`/images/hero/fallback/${slide.imageId}-small.jpg`}
                       alt={slide.alt}
-                      className="w-full h-full object-cover object-center"
+                      className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
                       style={{ minHeight: '100vh' }}
                       loading={index === 0 ? "eager" : "lazy"}
                     />
