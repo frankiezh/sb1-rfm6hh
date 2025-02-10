@@ -682,11 +682,9 @@ export default function App({ defaultLang }: AppProps) {
 
       <CookieConsent 
         onAccept={() => {
-          console.log('Consent accepted');
           // Additional handling if needed
         }}
         onDecline={() => {
-          console.log('Consent declined');
           // Additional handling if needed
         }}
       />

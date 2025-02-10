@@ -29,6 +29,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
     };
     localStorage.setItem('userConsent', JSON.stringify(consentState));
     window.gtag('consent', 'update', consentState);
+    setIsVisible(false);
     onAccept?.();
   };
 
@@ -41,6 +42,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
     };
     localStorage.setItem('userConsent', JSON.stringify(consentState));
     window.gtag('consent', 'update', consentState);
+    setIsVisible(false);
     onDecline?.();
   };
 

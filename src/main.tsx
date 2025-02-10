@@ -18,14 +18,6 @@ if (storedVersion !== CONSENT_VERSION) {
   localStorage.setItem('consentVersion', CONSENT_VERSION);
 }
 
-// Add this before rendering
-const storedConsent = localStorage.getItem('userConsent');
-if (storedConsent === 'accepted') {
-  localStorage.setItem('userConsent', 'granted');
-} else if (storedConsent === 'declined') {
-  localStorage.setItem('userConsent', 'denied');
-}
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HelmetProvider>
