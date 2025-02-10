@@ -18,6 +18,13 @@
 
       if (storedConsent) {
         try {
+          // Parse the stored consent only if it's an object
+          const parsedConsent = JSON.parse(storedConsent);
+          if (typeof parsedConsent === 'object' && parsedConsent !== null) {
+            defaultConsent = parsedConsent;
+          }
+        } catch (e) {
+          // If parsing fails, check if it's the string "granted"
           if (storedConsent === 'granted') {
             defaultConsent = {
               'ad_storage': 'granted',
@@ -25,19 +32,13 @@
               'ad_personalization': 'granted',
               'ad_user_data': 'granted'
             };
-          } else if (storedConsent !== 'denied') {
-            defaultConsent = JSON.parse(storedConsent);
           }
-        } catch (e) {
-          console.error('Error parsing consent:', e);
+          // If it's neither valid JSON nor "granted", use default denied state
         }
       }
       
       // Set default consent state
-      gtag('consent', 'default', {
-        ...defaultConsent,
-        'wait_for_update': 500
-      });
+      gtag('consent', 'default', defaultConsent);
     </script>
     
     <!-- Google Tag Manager -->

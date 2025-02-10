@@ -21,29 +21,27 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
-    setIsVisible(false);
-
-    setConsent({
-      ad_storage: 'granted',
-      analytics_storage: 'granted',
-      ad_personalization: 'granted',
-      ad_user_data: 'granted'
-    });
-
-    onAccept();
+    const consentState = {
+      'ad_storage': 'granted',
+      'analytics_storage': 'granted',
+      'ad_personalization': 'granted',
+      'ad_user_data': 'granted'
+    };
+    localStorage.setItem('userConsent', JSON.stringify(consentState));
+    window.gtag('consent', 'update', consentState);
+    onAccept?.();
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookieConsent', 'denied');
-    setIsVisible(false);
-    setConsent({
-      ad_storage: 'denied',
-      analytics_storage: 'denied',
-      ad_personalization: 'denied',
-      ad_user_data: 'denied'
-    });
-    onDecline();
+    const consentState = {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_personalization': 'denied',
+      'ad_user_data': 'denied'
+    };
+    localStorage.setItem('userConsent', JSON.stringify(consentState));
+    window.gtag('consent', 'update', consentState);
+    onDecline?.();
   };
 
   return (
