@@ -28,7 +28,11 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [dev]
-  framework = "vite"
+  framework = "#auto"
+  targetPort = 5173
+  port = 8888
+  publish = "dist"
+  autoLaunch = true
 
 # Form handling settings
 [build.processing]

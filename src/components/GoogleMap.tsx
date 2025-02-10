@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { InfoWindow, Marker } from '@react-google-maps/api';
 
 declare global {
   interface Window {
-    google: any;
+    google: typeof google;
+    initMap: () => void;
   }
 }
 
@@ -14,47 +14,56 @@ interface GoogleMapProps {
 }
 
 export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
+  console.log('GoogleMap mounted, API Key exists:', !!apiKey);
+  console.log('API Key starts with:', apiKey?.substring(0, 5));
+
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const scriptId = 'google-maps-script';
 
   useEffect(() => {
+    console.log('API Key being used:', apiKey);
+  }, [apiKey]);
+
+  useEffect(() => {
     let isMounted = true;
 
     const cleanup = () => {
       const existingScript = document.getElementById(scriptId);
-      if (existingScript) {
-        existingScript.remove();
-      }
+      const verificationElement = document.querySelector('[name="gmp-internal-element-support-verification"]');
+      if (existingScript) existingScript.remove();
+      if (verificationElement) verificationElement.remove();
+      
       if (mapInstanceRef.current) {
         mapInstanceRef.current = null;
       }
-      delete window.google;
+      if (window.google?.maps) {
+        delete window.google.maps;
+      }
     };
 
     const initializeMap = () => {
-      if (!mapContainerRef.current || !window.google?.maps) return;
+      if (!mapContainerRef.current) return;
 
       try {
-        // Create map instance
-        mapInstanceRef.current = new window.google.maps.Map(mapContainerRef.current, {
+        mapInstanceRef.current = new google.maps.Map(mapContainerRef.current, {
           zoom: 15,
           center: { lat: 47.380617, lng: 8.529662 },
           mapTypeControl: false,
           fullscreenControl: false,
           streetViewControl: true,
+          language,
         });
 
-        // Create marker
-        const marker = new window.google.maps.Marker({
+        const marker = new google.maps.Marker({
           map: mapInstanceRef.current,
           position: { lat: 47.379317, lng: 8.529662 },
           title: "Atelier Grünenwald",
         });
 
         // Create info window with clickable logo
-        const infoWindow = new window.google.maps.InfoWindow({
+        const infoWindow = new google.maps.InfoWindow({
           content: `
             <div style="padding: 8px; text-align: center;">
               <a 
@@ -89,7 +98,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
         });
 
         // Create tooltip for hover state
-        const tooltip = new window.google.maps.InfoWindow({
+        const tooltip = new google.maps.InfoWindow({
           content: `
             <div style="padding: 4px; text-align: center; font-size: 14px;">
               ${language === 'de' ? 'Auf Google Maps öffnen' : 'Open in Google Maps'}
@@ -118,36 +127,24 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
         // Open info window by default
         infoWindow.open(mapInstanceRef.current, marker);
 
-        // Set language after map is created
-        if (mapInstanceRef.current) {
-          mapInstanceRef.current.setOptions({ language });
-        }
-
         if (isMounted) {
           setIsLoading(false);
         }
       } catch (error) {
         console.error('Map initialization error:', error);
-        // Continue showing the loading state instead of an error
-        // This allows the map to retry loading if it was a temporary error
       }
     };
 
     const loadScript = () => {
       cleanup();
 
+      window.initMap = initializeMap;
+
       const script = document.createElement('script');
       script.id = scriptId;
-      // Remove language from URL to avoid referrer issues
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
       script.async = true;
       script.defer = true;
-
-      script.onload = () => {
-        if (isMounted) {
-          initializeMap();
-        }
-      };
 
       document.head.appendChild(script);
     };
@@ -157,6 +154,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
     return () => {
       isMounted = false;
       cleanup();
+      delete window.initMap;
     };
   }, [apiKey, language]);
 

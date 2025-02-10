@@ -650,6 +650,8 @@ export default function App({ defaultLang }: AppProps) {
             <AnimatedSection className="container mx-auto px-4">
               <div className="relative w-full h-[400px] rounded-lg overflow-hidden mx-auto max-w-[1920px]">
                 <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center bg-gray-100">Error loading map</div>}>
+                  {/* Add logging */}
+                  {console.log('Env var in App:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY)}
                   <GoogleMap 
                     apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                     placeId="ChIJb9WK7SALBQMRecnC-8QFKF4"
