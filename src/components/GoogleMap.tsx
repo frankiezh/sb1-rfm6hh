@@ -10,10 +10,10 @@ declare global {
 interface GoogleMapProps {
   apiKey: string;
   placeId: string;
-  language?: 'de' | 'en';
+  language: 'de' | 'en';
 }
 
-export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
+export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
   console.log('GoogleMap mounted, API Key exists:', !!apiKey);
   console.log('API Key starts with:', apiKey?.substring(0, 5));
 
@@ -21,6 +21,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
   const mapInstanceRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const scriptId = 'google-maps-script';
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('API Key being used:', apiKey);
@@ -44,7 +45,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
     };
 
     const initializeMap = () => {
-      if (!mapContainerRef.current) return;
+      if (!mapContainerRef.current || !window.google?.maps) return;
 
       try {
         mapInstanceRef.current = new google.maps.Map(mapContainerRef.current, {
@@ -53,7 +54,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
           mapTypeControl: false,
           fullscreenControl: false,
           streetViewControl: true,
-          language,
+          language: language as string,
         });
 
         const marker = new google.maps.Marker({
@@ -79,7 +80,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
                 onmouseout="this.style.transform='scale(1)'"
               >
                 <img 
-                  src="/atelier-gruenenwald-logo.svg" 
+                  src="${window.location.origin}/atelier-gruenenwald-logo.svg"
                   alt="Atelier Grünenwald - ${language === 'de' ? 'Auf Google Maps öffnen' : 'Open in Google Maps'}"
                   style="width: 100px; height: auto;"
                 />
@@ -109,7 +110,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
 
         // Add hover listeners
         marker.addListener('mouseover', () => {
-          if (!infoWindow.map) {
+          if (!infoWindow.getMap()) {
             tooltip.open(mapInstanceRef.current, marker);
           }
         });
@@ -132,6 +133,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
         }
       } catch (error) {
         console.error('Map initialization error:', error);
+        setError('Error loading map');
       }
     };
 
@@ -142,9 +144,13 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
 
       const script = document.createElement('script');
       script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&loading=async`;
       script.async = true;
       script.defer = true;
+      script.onerror = () => {
+        console.error('Failed to load Google Maps script');
+        setError('Failed to load map');
+      };
 
       document.head.appendChild(script);
     };
@@ -190,6 +196,14 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
         console.error("Error querying geolocation permission:", error);
       });
   }, []); // Empty dependency array: run this effect only once
+
+  if (error) {
+    return (
+      <div className="w-full h-[400px] flex items-center justify-center bg-gray-100 rounded-lg">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-[400px] relative rounded-lg">

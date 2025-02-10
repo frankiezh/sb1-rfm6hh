@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Logo } from '@/components/Logo';
 import { ServiceCard } from '@/components/ServiceCard';
@@ -19,7 +19,7 @@ import { TrackedPhoneNumber } from '@/components/TrackedPhoneNumber';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
+import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -45,7 +45,7 @@ interface AppProps {
 }
 
 export default function App({ defaultLang }: AppProps) {
-  const [currentLang, setCurrentLang] = useState<'de' | 'en'>(defaultLang);
+  const [currentLang] = useState<'de' | 'en'>(defaultLang);
   const t = translations[currentLang];
 
   // Move settings here to access t
@@ -112,28 +112,6 @@ export default function App({ defaultLang }: AppProps) {
     }
   };
 
-  const textBlockRef = useRef<HTMLDivElement>(null);
-  const [textBlockHeight, setTextBlockHeight] = useState('auto');
-
-  useEffect(() => {
-    const updateHeight = () => {
-      if (textBlockRef.current) {
-        setTextBlockHeight(`${textBlockRef.current.offsetHeight}px`);
-      }
-    };
-
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
-
-  const [isConsentGiven, setIsConsentGiven] = useState<boolean | undefined>(undefined);
-
-  useEffect(() => {
-    const consentValue = getCookieConsentValue("myAppConsentCookie");
-    setIsConsentGiven(consentValue === "true");
-  }, []);
-
   const portfolioItems = t.portfolio.items.map(item => {
     if (item.type === 'before-after') {
       return {
@@ -150,6 +128,7 @@ export default function App({ defaultLang }: AppProps) {
   });
 
   const handleCallClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': 'phone_call'
@@ -158,42 +137,12 @@ export default function App({ defaultLang }: AppProps) {
   };
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': 'whatsapp_click'
     });
     window.location.href = 'https://wa.me/41797389751?text=...';
-  };
-
-  // Add state for mobile menu
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleAcceptCookies = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'user_consent_granted',
-      'consent': {
-        'ad_storage': 'granted',
-        'analytics_storage': 'granted',
-        'ad_personalization': 'granted',
-        'ad_user_data': 'granted'
-      }
-    });
-    localStorage.setItem('userConsent', 'granted');
-  };
-
-  const handleDeclineCookies = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'user_consent_denied',
-      'consent': {
-        'ad_storage': 'denied',
-        'analytics_storage': 'denied',
-        'ad_personalization': 'denied',
-        'ad_user_data': 'denied'
-      }
-    });
-    localStorage.setItem('userConsent', 'denied');
   };
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -232,12 +181,39 @@ export default function App({ defaultLang }: AppProps) {
     window.location.href = newPath;
   };
 
-  const handleAccept = () => {
-    console.log("Cookies accepted");
+  // Keep these handlers as they're used in CookieConsent component
+  const handleAcceptCookies = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'user_consent_granted',
+      'consent': {
+        'ad_storage': 'granted',
+        'analytics_storage': 'granted',
+        'ad_personalization': 'granted',
+        'ad_user_data': 'granted'
+      }
+    });
   };
 
-  const handleDecline = () => {
-    console.log("Cookies declied");
+  const handleDeclineCookies = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'user_consent_denied',
+      'consent': {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
+      }
+    });
+  };
+
+  // Add state for mobile menu if you need it
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Add toggle handler
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prev => !prev);
   };
 
   return (
@@ -389,7 +365,7 @@ export default function App({ defaultLang }: AppProps) {
               
               {/* Mobile menu button */}
               <button 
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onClick={toggleMobileMenu}
                 className="md:hidden p-2 text-[#2B1810]"
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
@@ -413,9 +389,9 @@ export default function App({ defaultLang }: AppProps) {
           `}
         >
           <nav className="container mx-auto px-4 py-6 flex flex-col space-y-6 text-base font-medium">
-            <a href="#services" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.services}</a>
-            <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.portfolio}</a>
-            <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.contact}</a>
+            <a href="#services" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={toggleMobileMenu}>{t.nav.services}</a>
+            <a href="#portfolio" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={toggleMobileMenu}>{t.nav.portfolio}</a>
+            <a href="#contact" className="text-[#2B1810] hover:text-[#334B40] transition" onClick={toggleMobileMenu}>{t.nav.contact}</a>
           </nav>
         </div>
 
@@ -598,7 +574,7 @@ export default function App({ defaultLang }: AppProps) {
           <div className="container mx-auto px-4 relative">
             {/* Title and Description */}
             <div className="mb-12">
-              <div className="text-center" ref={textBlockRef}>
+              <div className="text-center" ref={ref}>
                 <h2 className="text-3xl font-light tracking-wide mb-4">
                   {t.contact.subtitle}
                 </h2>
@@ -656,13 +632,14 @@ export default function App({ defaultLang }: AppProps) {
             <AnimatedSection className="container mx-auto px-4">
               <div className="relative w-full h-[400px] rounded-lg overflow-hidden mx-auto max-w-[1920px]">
                 <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center bg-gray-100">Error loading map</div>}>
-                  {/* Add logging */}
-                  {console.log('Env var in App:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY)}
-                  <GoogleMap 
-                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                    placeId="ChIJb9WK7SALBQMRecnC-8QFKF4"
-                    language={currentLang}
-                  />
+                  <div>
+                    {console.log('Env var in App:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY)}
+                    <GoogleMap 
+                      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                      placeId="ChIJb9WK7SALBQMRecnC-8QFKF4"
+                      language={currentLang}
+                    />
+                  </div>
                 </ErrorBoundary>
               </div>
             </AnimatedSection>
@@ -691,19 +668,44 @@ export default function App({ defaultLang }: AppProps) {
         buttonText={t.buttons.accept}
         declineButtonText={t.buttons.decline}
         cookieName="myAppConsentCookie"
-        style={{ background: "#2B373B" }}
-        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+        style={{ 
+          background: "#334B40",  // Dark green background matching your theme
+          padding: "1rem",
+          alignItems: "center",
+          gap: "1rem"
+        }}
+        buttonStyle={{ 
+          background: "#FFFFFF",  // White background for accept button
+          color: "#334B40",      // Dark green text
+          fontSize: "14px",
+          fontWeight: "500",
+          padding: "0.5rem 1.5rem",
+          borderRadius: "0.375rem",
+          border: "none"
+        }}
+        declineButtonStyle={{
+          background: "transparent", // Transparent background for decline button
+          color: "#FFFFFF",         // White text
+          fontSize: "14px",
+          fontWeight: "500",
+          padding: "0.5rem 1.5rem",
+          borderRadius: "0.375rem",
+          border: "1px solid #FFFFFF"
+        }}
         expires={150}
-        onAccept={() => {
-          setIsConsentGiven(true);
-          // ... any other actions on accept ...
-        }}
-        onDecline={() => {
-          setIsConsentGiven(false)
-          // ... any other actions on decline ...
-        }}
+        enableDeclineButton
+        flipButtons
+        onAccept={handleAcceptCookies}
+        onDecline={handleDeclineCookies}
+        sameSite="strict"
+        debug={process.env.NODE_ENV === 'development'}
       >
-        {t.cookieConsent.message}
+        <span style={{ 
+          fontSize: "14px",
+          color: "#FFFFFF"
+        }}>
+          {t.cookieConsent.message}
+        </span>
       </CookieConsent>
 
       {/* Floating mobile buttons - only show when hero buttons are out of view */}
