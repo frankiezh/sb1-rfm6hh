@@ -8,7 +8,6 @@ import { translations } from '@/lib/translations';
 import { Mail, MessageCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { CookieConsent } from '@/components/CookieConsent';
 import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
 import { ContactButton } from './components/ContactButton';
@@ -20,6 +19,7 @@ import { TrackedPhoneNumber } from '@/components/TrackedPhoneNumber';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -127,13 +127,11 @@ export default function App({ defaultLang }: AppProps) {
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
+  const [isConsentGiven, setIsConsentGiven] = useState<boolean | undefined>(undefined);
+
   useEffect(() => {
-    const storedConsent = localStorage.getItem('userConsent');
-    if (storedConsent === 'accepted') {
-      localStorage.setItem('userConsent', 'granted');
-    } else if (storedConsent === 'declined') {
-      localStorage.setItem('userConsent', 'denied');
-    }
+    const consentValue = getCookieConsentValue("myAppConsentCookie");
+    setIsConsentGiven(consentValue === "true");
   }, []);
 
   const portfolioItems = t.portfolio.items.map(item => {
@@ -232,6 +230,14 @@ export default function App({ defaultLang }: AppProps) {
     const currentPath = window.location.pathname;
     const newPath = currentPath.replace(/\/(de|en)\//, `/${newLang}/`);
     window.location.href = newPath;
+  };
+
+  const handleAccept = () => {
+    console.log("Cookies accepted");
+  };
+
+  const handleDecline = () => {
+    console.log("Cookies declied");
   };
 
   return (
@@ -680,14 +686,25 @@ export default function App({ defaultLang }: AppProps) {
         </footer>
       </div>
 
-      <CookieConsent 
+      <CookieConsent
+        location="bottom"
+        buttonText={t.buttons.accept}
+        declineButtonText={t.buttons.decline}
+        cookieName="myAppConsentCookie"
+        style={{ background: "#2B373B" }}
+        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+        expires={150}
         onAccept={() => {
-          // Additional handling if needed
+          setIsConsentGiven(true);
+          // ... any other actions on accept ...
         }}
         onDecline={() => {
-          // Additional handling if needed
+          setIsConsentGiven(false)
+          // ... any other actions on decline ...
         }}
-      />
+      >
+        {t.cookieConsent.message}
+      </CookieConsent>
 
       {/* Floating mobile buttons - only show when hero buttons are out of view */}
       {isMobile && !inView && (

@@ -39,7 +39,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
         mapInstanceRef.current = null;
       }
       if (window.google?.maps) {
-        delete window.google.maps;
+        window.google.maps = undefined;
       }
     };
 
@@ -109,7 +109,7 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
 
         // Add hover listeners
         marker.addListener('mouseover', () => {
-          if (!infoWindow.getMap()) { // Only show tooltip if info window is closed
+          if (!infoWindow.map) {
             tooltip.open(mapInstanceRef.current, marker);
           }
         });
@@ -154,9 +154,42 @@ export function GoogleMap({ apiKey, language = 'de' }: GoogleMapProps) {
     return () => {
       isMounted = false;
       cleanup();
-      delete window.initMap;
+      window.initMap = undefined;
     };
   }, [apiKey, language]);
+
+  useEffect(() => {
+    // Check for existing permission status in localStorage
+    const storedPermission = localStorage.getItem('geolocationPermission');
+
+    if (storedPermission) {
+      console.log("Geolocation permission from localStorage:", storedPermission);
+      // You can use the storedPermission value here (e.g., to show a message)
+      // if (storedPermission === "granted") { ... }
+    }
+
+    navigator.permissions.query({ name: 'geolocation' })
+      .then((permissionStatus) => {
+        console.log("Geolocation permission status:", permissionStatus.state); // "granted", "denied", "prompt"
+        localStorage.setItem('geolocationPermission', permissionStatus.state); // Store the STRING
+
+        permissionStatus.onchange = () => {
+          console.log("Geolocation permission changed:", permissionStatus.state);
+          localStorage.setItem('geolocationPermission', permissionStatus.state); // Update on change
+        };
+
+        if (permissionStatus.state === "granted") {
+          // ... proceed with using geolocation (if needed) ...
+        } else if (permissionStatus.state === "denied") {
+          // ... handle denied state ...
+        } else {
+          // ... handle prompt state ...
+        }
+      })
+      .catch((error) => {
+        console.error("Error querying geolocation permission:", error);
+      });
+  }, []); // Empty dependency array: run this effect only once
 
   return (
     <div className="w-full h-[400px] relative rounded-lg">

@@ -7,7 +7,12 @@ export const translations = {
     },
     buttons: {
       contact: 'Kontakt',
-      whatsapp: 'WhatsApp'
+      whatsapp: 'WhatsApp',
+      accept: "Akzeptieren",
+      decline: "Ablehnen"
+    },
+    cookieConsent: {
+      message: "Diese Website verwendet Cookies, um Ihnen das bestmögliche Erlebnis zu bieten."
     },
     hero: {
       title: 'POLSTEREI AM HB ZÜRICH',
@@ -190,7 +195,12 @@ export const translations = {
     },
     buttons: {
       contact: 'Kontakt',
-      whatsapp: 'WhatsApp'
+      whatsapp: 'WhatsApp',
+      accept: "Accept",
+      decline: "Decline"
+    },
+    cookieConsent: {
+      message: "This website uses cookies to ensure you get the best experience."
     },
     hero: {
       title: 'UPHOLSTERY AT HB ZURICH',
