@@ -6,29 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your App Title</title>
 
-    <!-- Google Tag Manager -->
+    <!-- Default Consent State - MUST be before GTM -->
     <script>
-      // Push dataLayer BEFORE main gtm tag
       window.dataLayer = window.dataLayer || [];
-      dataLayer.push({
-        'event': 'gtm.init_consent',
-        'gtm': {
-          'uniqueEventId': -1
-        },
-        'consent': {
-          'ad_storage': 'denied',
-          'analytics_storage': 'denied',
-          'ad_personalization': 'denied',
-          'ad_user_data': 'denied'
-        }
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Check stored consent
+      const storedConsent = localStorage.getItem('userConsent');
+      const defaultConsent = storedConsent ? JSON.parse(storedConsent) : {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
+      };
+      
+      // Set default consent state
+      gtag('consent', 'default', {
+        ...defaultConsent,
+        'wait_for_update': 500
       });
     </script>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-N9C4C7MB');</script>
-    <!-- End Google Tag Manager -->
+    
+    <script type="module">
+      import { initializeGTM } from '/src/lib/gtm.js';
+      initializeGTM();
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->

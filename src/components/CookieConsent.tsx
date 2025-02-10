@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import { setConsent } from '@/lib/consent';
 
 interface CookieConsentProps {
   onAccept: () => void;
@@ -23,19 +24,11 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
     localStorage.setItem('cookieConsent', 'accepted');
     setIsVisible(false);
 
-    // Only update consent state, don't trigger conversions
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'user_consent_granted',
-      'consent': {
-        'ad_storage': 'granted',
-        'analytics_storage': 'granted',
-        'ad_personalization': 'granted',
-        'ad_user_data': 'granted',
-        'personalization_storage': 'granted',
-        'functionality_storage': 'granted',
-        'security_storage': 'granted'
-      }
+    setConsent({
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+      ad_personalization: 'granted',
+      ad_user_data: 'granted'
     });
 
     onAccept();
@@ -44,6 +37,12 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   const handleDecline = () => {
     localStorage.setItem('cookieConsent', 'declined');
     setIsVisible(false);
+    setConsent({
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_personalization: 'denied',
+      ad_user_data: 'denied'
+    });
     onDecline();
   };
 

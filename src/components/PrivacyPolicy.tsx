@@ -1,6 +1,7 @@
 import { AnimatedSection } from './AnimatedSection';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Globe } from 'lucide-react';
+import { setConsent } from '@/lib/consent';
 
 const translations = {
   de: {
@@ -123,29 +124,21 @@ export function PrivacyPolicy() {
   };
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
-    window.dataLayer.push({
-      'event': 'user_consent_granted',
-      'consent': {
-        'ad_storage': 'granted',
-        'analytics_storage': 'granted',
-        'ad_personalization': 'granted',
-        'ad_user_data': 'granted'
-      }
+    setConsent({
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+      ad_personalization: 'granted',
+      ad_user_data: 'granted'
     });
     navigate(`/${currentLang}/`);
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookieConsent', 'declined');
-    window.dataLayer.push({
-      'event': 'user_consent_denied',
-      'consent': {
-        'ad_storage': 'denied',
-        'analytics_storage': 'denied',
-        'ad_personalization': 'denied',
-        'ad_user_data': 'denied'
-      }
+    setConsent({
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_personalization: 'denied',
+      ad_user_data: 'denied'
     });
     navigate(`/${currentLang}/`);
   };

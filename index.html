@@ -2,6 +2,27 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
+    <!-- Default Consent State - MUST be before GTM -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Check stored consent
+      const storedConsent = localStorage.getItem('userConsent');
+      const defaultConsent = storedConsent ? JSON.parse(storedConsent) : {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
+      };
+      
+      // Set default consent state
+      gtag('consent', 'default', {
+        ...defaultConsent,
+        'wait_for_update': 500
+      });
+    </script>
+    
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -126,6 +147,10 @@
         }
       ]
     }
+    </script>
+    <script type="module">
+      import { initializeGTM } from '/src/lib/gtm.js';
+      initializeGTM();
     </script>
   </head>
   <body>

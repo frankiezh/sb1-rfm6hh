@@ -10,4 +10,5 @@ interface Window {
     };
     [key: string]: any;
   }>;
+  gtag: (...args: any[]) => void;
 } 
