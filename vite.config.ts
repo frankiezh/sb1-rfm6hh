@@ -18,5 +18,8 @@ export default defineConfig({
       strict: false,
       allow: ['..']
     }
+  },
+  define: {
+    'process.env': process.env
   }
 });
