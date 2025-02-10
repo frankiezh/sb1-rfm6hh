@@ -21,7 +21,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
+    localStorage.setItem('cookieConsent', JSON.stringify('accepted'));
     setIsVisible(false);
 
     setConsent({

@@ -13,7 +13,7 @@
       
       // Check stored consent
       const storedConsent = localStorage.getItem('userConsent');
-      const defaultConsent = storedConsent ? JSON.parse(storedConsent) : {
+      const defaultConsent = storedConsent && storedConsent !== 'granted' ? JSON.parse(storedConsent) : {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
         'ad_personalization': 'denied',

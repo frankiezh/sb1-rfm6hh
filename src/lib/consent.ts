@@ -24,6 +24,25 @@ export function setConsent(consent: ConsentType) {
 }
 
 export function getConsent(): ConsentType {
-  const stored = localStorage.getItem(CONSENT_KEY);
-  return stored ? JSON.parse(stored) : DEFAULT_CONSENT;
+  try {
+    const stored = localStorage.getItem(CONSENT_KEY);
+    if (!stored) return DEFAULT_CONSENT;
+    
+    // Handle legacy string value
+    if (stored === 'granted' || stored === 'denied') {
+      const value = stored as 'granted' | 'denied';
+      return {
+        ad_storage: value,
+        analytics_storage: value,
+        ad_personalization: value,
+        ad_user_data: value
+      };
+    }
+    
+    // Parse stored JSON
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error('Error parsing consent:', error);
+    return DEFAULT_CONSENT;
+  }
 } 
