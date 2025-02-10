@@ -6,6 +6,14 @@ import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { PrivacyPolicy } from './components/PrivacyPolicy.tsx'
 
+// Add this before rendering
+const storedConsent = localStorage.getItem('userConsent');
+if (storedConsent === 'accepted') {
+  localStorage.setItem('userConsent', 'granted');
+} else if (storedConsent === 'declined') {
+  localStorage.setItem('userConsent', 'denied');
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HelmetProvider>

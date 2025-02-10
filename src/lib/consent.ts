@@ -15,7 +15,10 @@ export const DEFAULT_CONSENT: ConsentType = {
 };
 
 export function setConsent(consent: ConsentType) {
-  localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
+  const value = Object.values(consent).every(v => v === 'granted') ? 'granted' : 
+                Object.values(consent).every(v => v === 'denied') ? 'denied' :
+                JSON.stringify(consent);
+  localStorage.setItem(CONSENT_KEY, value);
   window.gtag('consent', 'update', consent);
   window.dataLayer.push({
     event: 'user_consent_update',

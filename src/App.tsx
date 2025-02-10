@@ -127,6 +127,15 @@ export default function App({ defaultLang }: AppProps) {
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
+  useEffect(() => {
+    const storedConsent = localStorage.getItem('userConsent');
+    if (storedConsent === 'accepted') {
+      localStorage.setItem('userConsent', 'granted');
+    } else if (storedConsent === 'declined') {
+      localStorage.setItem('userConsent', 'denied');
+    }
+  }, []);
+
   const portfolioItems = t.portfolio.items.map(item => {
     if (item.type === 'before-after') {
       return {

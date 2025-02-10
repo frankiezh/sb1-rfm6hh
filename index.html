@@ -9,12 +9,29 @@
       
       // Check stored consent
       const storedConsent = localStorage.getItem('userConsent');
-      const defaultConsent = storedConsent && storedConsent !== 'granted' ? JSON.parse(storedConsent) : {
+      let defaultConsent = {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
         'ad_personalization': 'denied',
         'ad_user_data': 'denied'
       };
+
+      if (storedConsent) {
+        try {
+          if (storedConsent === 'granted') {
+            defaultConsent = {
+              'ad_storage': 'granted',
+              'analytics_storage': 'granted',
+              'ad_personalization': 'granted',
+              'ad_user_data': 'granted'
+            };
+          } else if (storedConsent !== 'denied') {
+            defaultConsent = JSON.parse(storedConsent);
+          }
+        } catch (e) {
+          console.error('Error parsing consent:', e);
+        }
+      }
       
       // Set default consent state
       gtag('consent', 'default', {

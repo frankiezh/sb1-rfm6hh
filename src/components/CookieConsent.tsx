@@ -21,7 +21,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', JSON.stringify('accepted'));
+    localStorage.setItem('cookieConsent', 'accepted');
     setIsVisible(false);
 
     setConsent({
@@ -35,7 +35,7 @@ export function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookieConsent', 'declined');
+    localStorage.setItem('cookieConsent', 'denied');
     setIsVisible(false);
     setConsent({
       ad_storage: 'denied',
