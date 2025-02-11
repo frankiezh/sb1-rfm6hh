@@ -129,6 +129,7 @@ export default function App({ defaultLang }: AppProps) {
 
   const handleCallClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    // Remove or update any AdWords-specific dataLayer pushes
     window.dataLayer?.push({
       'event': 'conversion',
       'conversion_type_variable': 'phone_call'
@@ -186,17 +187,31 @@ export default function App({ defaultLang }: AppProps) {
     try {
       window.dataLayer = window.dataLayer || [];
       const consentData = {
-        'event': 'user_consent_granted',
-        'consent': {
-          'ad_storage': 'granted',
-          'analytics_storage': 'granted',
-          'ad_personalization': 'granted',
-          'ad_user_data': 'granted'
-        }
+        'ad_storage': 'granted',
+        'analytics_storage': 'granted',
+        'ad_personalization': 'granted',
+        'ad_user_data': 'granted'
       };
-      window.dataLayer.push(consentData);
-      // Store as JSON string
-      localStorage.setItem('userConsent', JSON.stringify(consentData.consent));
+
+      // 1. Push to dataLayer
+      window.dataLayer.push({
+        'event': 'user_consent_granted',
+        'consent': consentData
+      });
+
+      // 2. Store in localStorage
+      localStorage.setItem('userConsent', JSON.stringify(consentData));
+
+      // 3. Immediately update consent state - both ways to ensure it works
+      if (window.gtag) {
+        window.gtag('consent', 'update', consentData);
+        // Also try direct update
+        window.dataLayer.push({
+          'event': 'consent.update',
+          ...consentData
+        });
+      }
+
       console.log('Consent granted:', consentData);
     } catch (error) {
       console.error('Error handling cookie consent:', error);
@@ -207,17 +222,24 @@ export default function App({ defaultLang }: AppProps) {
     try {
       window.dataLayer = window.dataLayer || [];
       const consentData = {
-        'event': 'user_consent_denied',
-        'consent': {
-          'ad_storage': 'denied',
-          'analytics_storage': 'denied',
-          'ad_personalization': 'denied',
-          'ad_user_data': 'denied'
-        }
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_personalization': 'denied',
+        'ad_user_data': 'denied'
       };
-      window.dataLayer.push(consentData);
-      // Store as JSON string
-      localStorage.setItem('userConsent', JSON.stringify(consentData.consent));
+
+      // 1. Push to dataLayer
+      window.dataLayer.push({
+        'event': 'user_consent_denied',
+        'consent': consentData
+      });
+
+      // 2. Store in localStorage
+      localStorage.setItem('userConsent', JSON.stringify(consentData));
+
+      // 3. Immediately update consent state
+      window.gtag('consent', 'update', consentData);
+
       console.log('Consent denied:', consentData);
     } catch (error) {
       console.error('Error handling cookie consent:', error);

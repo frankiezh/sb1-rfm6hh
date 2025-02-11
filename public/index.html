@@ -11,28 +11,16 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
-      // Check stored consent
-      let defaultConsent = {
+      // Initialize gtag first
+      window.gtag = gtag;
+      
+      // Then set default consent
+      gtag('consent', 'default', {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
         'ad_personalization': 'denied',
         'ad_user_data': 'denied'
-      };
-
-      try {
-        const storedConsent = localStorage.getItem('userConsent');
-        if (storedConsent) {
-          const parsedConsent = JSON.parse(storedConsent);
-          if (typeof parsedConsent === 'object' && parsedConsent !== null) {
-            defaultConsent = parsedConsent;
-          }
-        }
-      } catch (error) {
-        console.error('Error parsing stored consent:', error);
-      }
-      
-      // Set default consent state
-      gtag('consent', 'default', defaultConsent);
+      });
     </script>
     
     <script type="module">
@@ -52,6 +40,14 @@
 
     <!-- Twitter -->
     <meta property="twitter:url" content="https://polsterei-hb-zuerich.ch/">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N9C4C7MB');</script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
