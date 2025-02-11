@@ -14,9 +14,6 @@ interface GoogleMapProps {
 }
 
 export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
-  console.log('GoogleMap mounted, API Key exists:', !!apiKey);
-  console.log('API Key starts with:', apiKey?.substring(0, 5));
-
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +21,6 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('API Key being used:', apiKey);
   }, [apiKey]);
 
   useEffect(() => {
@@ -165,23 +161,17 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
   }, [apiKey, language]);
 
   useEffect(() => {
-    // Check for existing permission status in localStorage
     const storedPermission = localStorage.getItem('geolocationPermission');
 
     if (storedPermission) {
-      console.log("Geolocation permission from localStorage:", storedPermission);
-      // You can use the storedPermission value here (e.g., to show a message)
-      // if (storedPermission === "granted") { ... }
     }
 
     navigator.permissions.query({ name: 'geolocation' })
       .then((permissionStatus) => {
-        console.log("Geolocation permission status:", permissionStatus.state); // "granted", "denied", "prompt"
-        localStorage.setItem('geolocationPermission', permissionStatus.state); // Store the STRING
+        localStorage.setItem('geolocationPermission', permissionStatus.state);
 
         permissionStatus.onchange = () => {
-          console.log("Geolocation permission changed:", permissionStatus.state);
-          localStorage.setItem('geolocationPermission', permissionStatus.state); // Update on change
+          localStorage.setItem('geolocationPermission', permissionStatus.state);
         };
 
         if (permissionStatus.state === "granted") {
