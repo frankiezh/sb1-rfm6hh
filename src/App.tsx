@@ -183,29 +183,45 @@ export default function App({ defaultLang }: AppProps) {
 
   // Keep these handlers as they're used in CookieConsent component
   const handleAcceptCookies = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'user_consent_granted',
-      'consent': {
-        'ad_storage': 'granted',
-        'analytics_storage': 'granted',
-        'ad_personalization': 'granted',
-        'ad_user_data': 'granted'
-      }
-    });
+    try {
+      window.dataLayer = window.dataLayer || [];
+      const consentData = {
+        'event': 'user_consent_granted',
+        'consent': {
+          'ad_storage': 'granted',
+          'analytics_storage': 'granted',
+          'ad_personalization': 'granted',
+          'ad_user_data': 'granted'
+        }
+      };
+      window.dataLayer.push(consentData);
+      // Store as JSON string
+      localStorage.setItem('userConsent', JSON.stringify(consentData.consent));
+      console.log('Consent granted:', consentData);
+    } catch (error) {
+      console.error('Error handling cookie consent:', error);
+    }
   };
 
   const handleDeclineCookies = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'user_consent_denied',
-      'consent': {
-        'ad_storage': 'denied',
-        'analytics_storage': 'denied',
-        'ad_personalization': 'denied',
-        'ad_user_data': 'denied'
-      }
-    });
+    try {
+      window.dataLayer = window.dataLayer || [];
+      const consentData = {
+        'event': 'user_consent_denied',
+        'consent': {
+          'ad_storage': 'denied',
+          'analytics_storage': 'denied',
+          'ad_personalization': 'denied',
+          'ad_user_data': 'denied'
+        }
+      };
+      window.dataLayer.push(consentData);
+      // Store as JSON string
+      localStorage.setItem('userConsent', JSON.stringify(consentData.consent));
+      console.log('Consent denied:', consentData);
+    } catch (error) {
+      console.error('Error handling cookie consent:', error);
+    }
   };
 
   // Add state for mobile menu if you need it
@@ -215,6 +231,31 @@ export default function App({ defaultLang }: AppProps) {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(prev => !prev);
   };
+
+  // Add more detailed error logging
+  window.onerror = function(msg, url, lineNo, columnNo, error) {
+    console.error('Window Error:', { msg, url, lineNo, columnNo, error });
+    return false;
+  };
+
+  window.onunhandledrejection = function(event) {
+    console.error('Unhandled Promise Rejection:', event.reason);
+  };
+
+  useEffect(() => {
+    console.log('Environment:', {
+      NODE_ENV: process.env.NODE_ENV,
+      VITE_APP_URL: import.meta.env.VITE_APP_URL,
+      hasGoogleMapsKey: !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch('/health.txt')
+      .then(response => response.text())
+      .then(text => console.log('Health check:', text))
+      .catch(error => console.error('Health check failed:', error));
+  }, []);
 
   return (
     <>
@@ -669,14 +710,14 @@ export default function App({ defaultLang }: AppProps) {
         declineButtonText={t.buttons.decline}
         cookieName="myAppConsentCookie"
         style={{ 
-          background: "#334B40",  // Dark green background matching your theme
+          background: "#334B40",
           padding: "1rem",
           alignItems: "center",
           gap: "1rem"
         }}
         buttonStyle={{ 
-          background: "#FFFFFF",  // White background for accept button
-          color: "#334B40",      // Dark green text
+          background: "#FFFFFF",
+          color: "#334B40",
           fontSize: "14px",
           fontWeight: "500",
           padding: "0.5rem 1.5rem",
@@ -684,8 +725,8 @@ export default function App({ defaultLang }: AppProps) {
           border: "none"
         }}
         declineButtonStyle={{
-          background: "transparent", // Transparent background for decline button
-          color: "#FFFFFF",         // White text
+          background: "transparent",
+          color: "#FFFFFF",
           fontSize: "14px",
           fontWeight: "500",
           padding: "0.5rem 1.5rem",
@@ -699,11 +740,9 @@ export default function App({ defaultLang }: AppProps) {
         onDecline={handleDeclineCookies}
         sameSite="strict"
         debug={process.env.NODE_ENV === 'development'}
+        setDeclineCookie={true}
       >
-        <span style={{ 
-          fontSize: "14px",
-          color: "#FFFFFF"
-        }}>
+        <span style={{ fontSize: "14px", color: "#FFFFFF" }}>
           {t.cookieConsent.message}
         </span>
       </CookieConsent>

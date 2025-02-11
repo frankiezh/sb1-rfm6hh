@@ -12,7 +12,6 @@
       function gtag(){dataLayer.push(arguments);}
       
       // Check stored consent
-      const storedConsent = localStorage.getItem('userConsent');
       let defaultConsent = {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
@@ -20,25 +19,16 @@
         'ad_user_data': 'denied'
       };
 
-      if (storedConsent) {
-        try {
-          // Parse the stored consent only if it's an object
+      try {
+        const storedConsent = localStorage.getItem('userConsent');
+        if (storedConsent) {
           const parsedConsent = JSON.parse(storedConsent);
           if (typeof parsedConsent === 'object' && parsedConsent !== null) {
             defaultConsent = parsedConsent;
           }
-        } catch (e) {
-          // If parsing fails, check if it's the string "granted"
-          if (storedConsent === 'granted') {
-            defaultConsent = {
-              'ad_storage': 'granted',
-              'analytics_storage': 'granted',
-              'ad_personalization': 'granted',
-              'ad_user_data': 'granted'
-            };
-          }
-          // If it's neither valid JSON nor "granted", use default denied state
         }
+      } catch (error) {
+        console.error('Error parsing stored consent:', error);
       }
       
       // Set default consent state
@@ -49,6 +39,19 @@
       import { initializeGTM } from '/src/lib/gtm.js';
       initializeGTM();
     </script>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://polsterei-hb-zuerich.ch/" />
+
+    <!-- Alternate Language Versions -->
+    <link rel="alternate" hreflang="de" href="https://polsterei-hb-zuerich.ch/" />
+    <link rel="alternate" hreflang="en" href="https://polsterei-hb-zuerich.ch/en/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:url" content="https://polsterei-hb-zuerich.ch/">
+
+    <!-- Twitter -->
+    <meta property="twitter:url" content="https://polsterei-hb-zuerich.ch/">
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
