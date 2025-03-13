@@ -257,7 +257,7 @@ export function PortfolioCard(props: PortfolioCardProps) {
               />
             </div>
             <DialogDescription 
-              className="text-neutral-600 text-base hidden md:block"
+              className="text-neutral-600 text-base"
               style={{ 
                 maxWidth: textWidth ? `${textWidth}px` : '100%',
                 width: '100%'

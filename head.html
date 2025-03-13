@@ -1,7 +1,14 @@
-<!-- Replace the existing canonical tag with dynamic language-specific canonical URLs -->
-<link rel="canonical" href="{{ if eq .Lang "de" }}https://polsterei-hb-zuerich.ch/de{{ if ne .RelPermalink "/de/" }}{{ .RelPermalink }}{{ end }}{{ else if eq .Lang "en" }}https://polsterei-hb-zuerich.ch/en{{ if ne .RelPermalink "/en/" }}{{ .RelPermalink }}{{ end }}{{ else }}https://polsterei-hb-zuerich.ch{{ .RelPermalink }}{{ end }}">
+<!-- German pages -->
+{{ if eq .Lang "de" }}
+<link rel="canonical" href="https://polsterei-hb-zuerich.ch/de{{ if ne .RelPermalink "/de/" }}{{ .RelPermalink | replaceRE "^/de" "" }}{{ end }}">
+{{ end }}
+
+<!-- English pages -->
+{{ if eq .Lang "en" }}
+<link rel="canonical" href="https://polsterei-hb-zuerich.ch/en{{ if ne .RelPermalink "/en/" }}{{ .RelPermalink | replaceRE "^/en" "" }}{{ end }}">
+{{ end }}
 
 <!-- Add hreflang tags to establish relationships between language versions -->
 <link rel="alternate" hreflang="de" href="https://polsterei-hb-zuerich.ch/de{{ if ne .RelPermalink (printf "/%s/" .Lang) }}{{ strings.TrimPrefix (printf "/%s" .Lang) .RelPermalink }}{{ end }}">
 <link rel="alternate" hreflang="en" href="https://polsterei-hb-zuerich.ch/en{{ if ne .RelPermalink (printf "/%s/" .Lang) }}{{ strings.TrimPrefix (printf "/%s" .Lang) .RelPermalink }}{{ end }}">
-<link rel="alternate" hreflang="x-default" href="https://polsterei-hb-zuerich.ch{{ if ne .RelPermalink "/" }}{{ .RelPermalink }}{{ end }}"> 
+<link rel="alternate" hreflang="x-default" href="https://polsterei-hb-zuerich.ch/de/"> 

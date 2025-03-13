@@ -55,12 +55,11 @@
     <meta name="geo.region" content="CH-ZH">
     <meta name="geo.placename" content="Zürich">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://polsterei-hb-zuerich.ch/" />
-
-    <!-- Alternate Language Versions -->
-    <link rel="alternate" hreflang="de" href="https://polsterei-hb-zuerich.ch/" />
-    <link rel="alternate" hreflang="en" href="https://polsterei-hb-zuerich.ch/en/" />
+    <!-- Canonical URL - REMOVED to allow React Helmet to set the dynamic canonical URL -->
+    
+    <!-- Alternate Language Versions - These will be set dynamically by React Helmet -->
+    <!-- <link rel="alternate" hreflang="de" href="https://polsterei-hb-zuerich.ch/" />
+    <link rel="alternate" hreflang="en" href="https://polsterei-hb-zuerich.ch/en/" /> -->
 
     <!-- Add this inside the <head> section -->
     <script type="application/ld+json">
@@ -73,10 +72,11 @@
         "https://polsterei-hb-zuerich.ch/images/store-front.jpg",
         "https://polsterei-hb-zuerich.ch/images/hero/hero-upholstery-workshop.jpg"
       ],
-      "@id": "https://polsterei-hb-zuerich.ch",
-      "url": "https://polsterei-hb-zuerich.ch",
+      "@id": "https://polsterei-hb-zuerich.ch/de",
+      "url": "https://polsterei-hb-zuerich.ch/de",
       "telephone": "+41442428980",
       "priceRange": "$$",
+      "inLanguage": "de-CH",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Tellstrasse 38",

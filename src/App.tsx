@@ -318,17 +318,49 @@ export default function App({ defaultLang }: AppProps) {
         <link rel="alternate" hrefLang="en" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
         <link rel="alternate" hrefLang="x-default" href="https://polsterei-hb-zuerich.ch/de/" />
         
-        {/* Fix canonical URL to be language-specific */}
-        <link rel="canonical" href={`https://polsterei-hb-zuerich.ch${window.location.pathname}`} />
+        {/* Add robots meta tag */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         
-        <meta name="description" content="Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." />
-        <meta name="keywords" content="polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" />
+        {/* Remove any existing canonical links and set the new one */}
+        {currentLang === 'de' ? (
+          <link rel="canonical" href={`https://polsterei-hb-zuerich.ch/de${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        ) : (
+          <link rel="canonical" href={`https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`} />
+        )}
         
-        {/* Update og:url to match canonical */}
+        <meta name="description" content={currentLang === 'de' ? 
+          "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge. 2 Minuten vom Hauptbahnhof Zürich." : 
+          "Professional upholstery in Zurich. Traditional upholstery work, furniture restoration and reupholstery. Just 2 minutes from Zurich main station."
+        } />
+        <meta name="keywords" content={currentLang === 'de' ? 
+          "polsterei zürich, polsterer zürich, möbelpolsterei, polsterarbeiten, möbelrestaurierung, hb zürich" : 
+          "upholstery zurich, upholsterer zurich, furniture upholstery, upholstery work, furniture restoration, zurich hb"
+        } />
+        
+        {/* Update og:url and other OG tags to be dynamic */}
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="Polsterei am HB Zürich | Atelier Grünenwald" />
-        <meta property="og:description" content="Professionelle Polsterei in Zürich. 2 Minuten vom Hauptbahnhof." />
-        <meta property="og:image" content="/path-to-your-logo-or-featured-image.jpg" />
-        <meta property="og:url" content={`https://polsterei-hb-zuerich.ch${window.location.pathname}`} />
+        <meta property="og:description" content={currentLang === 'de' ? 
+          "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung. 2 Minuten vom Hauptbahnhof." : 
+          "Professional upholstery in Zurich. Traditional upholstery, furniture restoration. 2 minutes from main station."
+        } />
+        <meta property="og:image" content="https://polsterei-hb-zuerich.ch/images/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content={currentLang === 'de' ? 
+          `https://polsterei-hb-zuerich.ch/de${window.location.pathname.replace(/^\/(de|en)/, '')}` : 
+          `https://polsterei-hb-zuerich.ch/en${window.location.pathname.replace(/^\/(de|en)/, '')}`
+        } />
+        <meta property="og:locale" content={currentLang === 'de' ? 'de_CH' : 'en_GB'} />
+        
+        {/* Add Twitter card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Polsterei am HB Zürich | Atelier Grünenwald" />
+        <meta name="twitter:description" content={currentLang === 'de' ? 
+          "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung. 2 Minuten vom Hauptbahnhof." : 
+          "Professional upholstery in Zurich. Traditional upholstery, furniture restoration. 2 minutes from main station."
+        } />
+        <meta name="twitter:image" content="https://polsterei-hb-zuerich.ch/images/og-image.jpg" />
         
         <script type="application/ld+json">
           {JSON.stringify({
@@ -354,7 +386,8 @@ export default function App({ defaultLang }: AppProps) {
               "latitude": 47.378337,
               "longitude": 8.533440
             },
-            "url": "https://polsterei-hb-zuerich.ch",
+            "@id": `https://polsterei-hb-zuerich.ch/${currentLang}`,
+            "url": `https://polsterei-hb-zuerich.ch/${currentLang}`,
             "telephone": "+41442428980",
             "openingHoursSpecification": {
               "@type": "OpeningHoursSpecification",
@@ -369,6 +402,7 @@ export default function App({ defaultLang }: AppProps) {
               "closes": "18:00"
             },
             "priceRange": "$$",
+            "inLanguage": currentLang === 'de' ? "de-CH" : "en",
             "hasMap": "https://www.google.com/maps/place/Tellstrasse+38,+8004+Z%C3%BCrich",
             "sameAs": [
               "https://wa.me/41797389751",
