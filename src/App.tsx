@@ -570,7 +570,7 @@ export default function App({ defaultLang }: AppProps) {
           <div className="absolute inset-0 bg-[#f8f8f8]/75" />
           <div className="container mx-auto px-4 relative">
             <AnimatedSection className="text-center mb-16">
-              <h2 id="services-title" className="text-3xl font-light tracking-wide">
+              <h2 id="services-title" className="text-4xl md:text-5xl font-light tracking-wide">
                 {t.services.title}
               </h2>
             </AnimatedSection>
