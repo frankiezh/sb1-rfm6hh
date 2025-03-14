@@ -18,6 +18,18 @@
   status = 301
   force = true
 
+  [[redirects]]
+  from = "/unsere-leistungen"
+  to = "/de/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/referenzen"
+  to = "/de/"
+  status = 301
+  force = true
+
 # SPA routing
 [[redirects]]
   from = "/*"
