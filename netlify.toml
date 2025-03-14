@@ -12,10 +12,16 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/index"
+  to = "/de/"
+  status = 301
+  force = true
+
 # SPA routing
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/index.html"but 
   status = 200
 
 [[headers]]
