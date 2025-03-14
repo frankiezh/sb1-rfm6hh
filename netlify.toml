@@ -21,7 +21,7 @@
 # SPA routing
 [[redirects]]
   from = "/*"
-  to = "/index.html"but 
+  to = "/index.html"
   status = 200
 
 [[headers]]
