@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { PrivacyPolicy } from './components/PrivacyPolicy.tsx'
+// Lazy load non-critical component
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
+
+// Register service worker for PWA support
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('SW registered: ', registration);
+        }
+      })
+      .catch(registrationError => {
+        console.error('SW registration failed: ', registrationError);
+      });
+  });
+}
 
 // Add at the start, before any other consent code
 const CONSENT_VERSION = '2';  // Increment this when consent format changes
@@ -18,20 +34,53 @@ if (storedVersion !== CONSENT_VERSION) {
   localStorage.setItem('consentVersion', CONSENT_VERSION);
 }
 
+// Loading component for Suspense fallback
+const Loading = () => (
+  <div className="min-h-screen flex items-center justify-center bg-[#f8f8f8]">
+    <div className="animate-pulse w-16 h-16 rounded-full bg-[#334B40]/30"></div>
+  </div>
+);
+
+// Prefetch critical resources
+const prefetchResources = () => {
+  const resources = [
+    '/images/hero/upholstery-workshop-zurich-large.webp',
+    '/images/hero/upholstery-workshop-zurich-medium.webp',
+    '/images/hero/fallback/upholstery-workshop-zurich-small.jpg',
+    '/background.jpg'
+  ];
+  
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => {
+      resources.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        document.head.appendChild(link);
+      });
+    });
+  }
+};
+
+// Execute prefetch
+prefetchResources();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HelmetProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Navigate to="/de/" replace />} />
-          
-          <Route path="/de/*" element={<App defaultLang="de" />} />
-          <Route path="/en/*" element={<App defaultLang="en" />} />
-          
-          <Route path="/:lang/privacy-policy" element={<PrivacyPolicy />} />
-          
-          <Route path="*" element={<Navigate to="/de/" replace />} />
-        </Routes>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/de/" replace />} />
+            
+            <Route path="/de/*" element={<App defaultLang="de" />} />
+            <Route path="/en/*" element={<App defaultLang="en" />} />
+            
+            <Route path="/:lang/privacy-policy" element={<PrivacyPolicy />} />
+            
+            <Route path="*" element={<Navigate to="/de/" replace />} />
+          </Routes>
+        </Suspense>
       </Router>
     </HelmetProvider>
   </React.StrictMode>,

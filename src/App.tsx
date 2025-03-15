@@ -16,7 +16,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ContactForm } from '@/components/ContactForm';
 import { ContactDialog } from '@/components/ContactDialog';
 import { TrackedPhoneNumber } from '@/components/TrackedPhoneNumber';
-import Slider from 'react-slick';
+import { lazy, Suspense } from 'react';
+// Lazy load non-critical components
+const Slider = lazy(() => import('react-slick'));
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
@@ -44,9 +46,18 @@ interface AppProps {
   defaultLang: 'de' | 'en';
 }
 
+// Update the consent type definitions to fix type errors
+interface ConsentData {
+  'ad_storage': 'granted' | 'denied';
+  'analytics_storage': 'granted' | 'denied';
+  'ad_personalization': 'granted' | 'denied';
+  'ad_user_data': 'granted' | 'denied';
+}
+
 export default function App({ defaultLang }: AppProps) {
   const [currentLang] = useState<'de' | 'en'>(defaultLang);
   const t = translations[currentLang];
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Move settings here to access t
   const settings = {
@@ -186,7 +197,7 @@ export default function App({ defaultLang }: AppProps) {
   const handleAcceptCookies = () => {
     try {
       window.dataLayer = window.dataLayer || [];
-      const consentData = {
+      const consentData: ConsentData = {
         'ad_storage': 'granted',
         'analytics_storage': 'granted',
         'ad_personalization': 'granted',
@@ -211,8 +222,6 @@ export default function App({ defaultLang }: AppProps) {
           ...consentData
         });
       }
-
-      console.log('Consent granted:', consentData);
     } catch (error) {
       console.error('Error handling cookie consent:', error);
     }
@@ -221,7 +230,7 @@ export default function App({ defaultLang }: AppProps) {
   const handleDeclineCookies = () => {
     try {
       window.dataLayer = window.dataLayer || [];
-      const consentData = {
+      const consentData: ConsentData = {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
         'ad_personalization': 'denied',
@@ -239,8 +248,6 @@ export default function App({ defaultLang }: AppProps) {
 
       // 3. Immediately update consent state
       window.gtag('consent', 'update', consentData);
-
-      console.log('Consent denied:', consentData);
     } catch (error) {
       console.error('Error handling cookie consent:', error);
     }
@@ -254,29 +261,32 @@ export default function App({ defaultLang }: AppProps) {
     setIsMobileMenuOpen(prev => !prev);
   };
 
-  // Add more detailed error logging
-  window.onerror = function(msg, url, lineNo, columnNo, error) {
-    console.error('Window Error:', { msg, url, lineNo, columnNo, error });
-    return false;
-  };
-
-  window.onunhandledrejection = function(event) {
-    console.error('Unhandled Promise Rejection:', event.reason);
-  };
-
+  // Remove console.log statements that were present in production code
   useEffect(() => {
-    console.log('Environment:', {
-      NODE_ENV: process.env.NODE_ENV,
-      VITE_APP_URL: import.meta.env.VITE_APP_URL,
-      hasGoogleMapsKey: !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-    });
+    // Environment check without console logging
+    if (process.env.NODE_ENV === 'development') {
+      // Only log in development
+      console.log('Environment:', {
+        NODE_ENV: process.env.NODE_ENV,
+        VITE_APP_URL: import.meta.env.VITE_APP_URL,
+        hasGoogleMapsKey: !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+      });
+    }
   }, []);
 
   useEffect(() => {
+    // Health check - no console logs in production
     fetch('/health.txt')
-      .then(response => response.text())
-      .then(text => console.log('Health check:', text))
-      .catch(error => console.error('Health check failed:', error));
+      .then(() => {
+        // Success, but don't log in production
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Health check succeeded');
+        }
+      })
+      .catch(error => {
+        // Only log errors in any environment
+        console.error('Health check failed:', error);
+      });
   }, []);
 
   return (
@@ -362,6 +372,13 @@ export default function App({ defaultLang }: AppProps) {
         } />
         <meta name="twitter:image" content="https://polsterei-hb-zuerich.ch/images/og-image.jpg" />
         
+        {/* Add PWA-related meta tags */}
+        <meta name="theme-color" content="#334B40" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Polsterei HB Zürich" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -410,12 +427,16 @@ export default function App({ defaultLang }: AppProps) {
             ]
           })}
         </script>
+        
+        {/* Preload critical hero image with explicit dimensions */}
         <link 
           rel="preload" 
           as="image"
           type="image/webp"
           href={`/images/hero/${t.hero.slides[0].imageId}-large.webp`}
           media="(min-width: 1280px)"
+          imageSizes="100vw"
+          fetchPriority="high"
         />
         <link 
           rel="preload" 
@@ -423,6 +444,8 @@ export default function App({ defaultLang }: AppProps) {
           type="image/webp"
           href="/images/hero/upholstery-workshop-zurich-medium.webp"
           media="(min-width: 768px) and (max-width: 1279px)"
+          imageSizes="100vw"
+          fetchPriority="high"
         />
         <link 
           rel="preload" 
@@ -430,6 +453,8 @@ export default function App({ defaultLang }: AppProps) {
           type="image/jpeg"
           href="/images/hero/fallback/upholstery-workshop-zurich-small.jpg"
           media="(max-width: 767px)"
+          imageSizes="100vw"
+          fetchPriority="high"
         />
       </Helmet>
       
@@ -467,7 +492,7 @@ export default function App({ defaultLang }: AppProps) {
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
                 </svg>
               </button>
@@ -496,36 +521,54 @@ export default function App({ defaultLang }: AppProps) {
         <section className="relative h-screen">
           {/* Carousel container */}
           <div className="absolute inset-0">
-            <Slider {...settings} className="hero-carousel h-full">
-              {t.hero.slides.map((slide, index) => (
-                <div key={index} className="relative h-full overflow-hidden">
-                  <picture>
-                    <source
-                      media="(min-width: 1280px)"
-                      srcSet={`/images/hero/${slide.imageId}-large.webp`}
-                      type="image/webp"
-                    />
-                    <source
-                      media="(min-width: 768px)"
-                      srcSet={`/images/hero/${slide.imageId}-medium.webp`}
-                      type="image/webp"
-                    />
-                    <source
-                      srcSet={`/images/hero/${slide.imageId}-small.webp`}
-                      type="image/webp"
-                    />
-                    <img
-                      src={`/images/hero/fallback/${slide.imageId}-small.jpg`}
-                      alt={slide.alt}
-                      className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
-                      style={{ minHeight: '100vh' }}
-                      loading={index === 0 ? "eager" : "lazy"}
-                    />
-                  </picture>
-                  <div className="absolute inset-0 bg-black/40" />
-                </div>
-              ))}
-            </Slider>
+            <Suspense fallback={
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="sr-only">Loading...</span>
+                <div className="animate-pulse w-16 h-16 rounded-full bg-gray-300"></div>
+              </div>
+            }>
+              <Slider {...settings} className="hero-carousel h-full">
+                {t.hero.slides.map((slide, index) => (
+                  <div key={index} className="relative h-full overflow-hidden">
+                    <picture>
+                      <source
+                        media="(min-width: 1280px)"
+                        srcSet={`/images/hero/${slide.imageId}-large.webp`}
+                        type="image/webp"
+                        width="1920"
+                        height="1080"
+                      />
+                      <source
+                        media="(min-width: 768px)"
+                        srcSet={`/images/hero/${slide.imageId}-medium.webp`}
+                        type="image/webp"
+                        width="1280"
+                        height="720"
+                      />
+                      <source
+                        srcSet={`/images/hero/${slide.imageId}-small.webp`}
+                        type="image/webp"
+                        width="640"
+                        height="360"
+                      />
+                      <img
+                        src={`/images/hero/fallback/${slide.imageId}-small.jpg`}
+                        alt={slide.alt}
+                        className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
+                        width="640"
+                        height="360"
+                        style={{ minHeight: '100vh' }}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                        decoding={index === 0 ? "sync" : "async"}
+                        onLoad={() => index === 0 && setImageLoaded(true)}
+                      />
+                    </picture>
+                    <div className="absolute inset-0 bg-black/40" />
+                  </div>
+                ))}
+              </Slider>
+            </Suspense>
           </div>
 
           {/* Hero Content Overlay */}
@@ -729,14 +772,13 @@ export default function App({ defaultLang }: AppProps) {
             <AnimatedSection className="container mx-auto px-4">
               <div className="relative w-full h-[400px] rounded-lg overflow-hidden mx-auto max-w-[1920px]">
                 <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center bg-gray-100">Error loading map</div>}>
-                  <div>
-                    {console.log('Env var in App:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY)}
+                  {import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
                     <GoogleMap 
                       apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                       placeId="ChIJb9WK7SALBQMRecnC-8QFKF4"
                       language={currentLang}
                     />
-                  </div>
+                  )}
                 </ErrorBoundary>
               </div>
             </AnimatedSection>
