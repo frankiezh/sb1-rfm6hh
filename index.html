@@ -29,6 +29,9 @@
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#334B40" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     
     <!-- Primary Meta Tags -->
     <title>Polsterei am HB Zürich | Atelier Grünenwald</title>
@@ -148,6 +151,55 @@
       import { initializeGTM } from '/src/lib/gtm.js';
       initializeGTM();
     </script>
+
+    <!-- Inline critical CSS -->
+    <style>
+      /* Critical CSS */
+      body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background-color:#f8f8f8;color:#2B1810}header{position:fixed;top:0;left:0;right:0;z-index:50;background-color:rgba(255,255,255,.8);backdrop-filter:blur(4px);border-bottom:1px solid #eaeaea}header .container{max-width:1280px;margin:0 auto;padding:0 1rem;height:5rem;display:flex;align-items:center;justify-content:space-between}.hero-carousel .slick-slide>div{height:100vh}.hero-carousel .slick-slide img{width:100%;height:100%;object-fit:cover;object-position:center}.hero-image-overlay{position:absolute;inset:0;background-color:rgba(0,0,0,.4)}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}h1,h2,h3{font-weight:300;line-height:1.2}.text-white{color:#fff}
+    </style>
+    
+    <!-- Preload critical fonts -->
+    <link 
+      rel="preload" 
+      href="/fonts/inter-var.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin
+    />
+    
+    <!-- Preload critical hero image -->
+    <link 
+      rel="preload" 
+      as="image"
+      type="image/webp"
+      href="/images/hero/upholstery-workshop-zurich-large.webp"
+      media="(min-width: 1280px)"
+    />
+    
+    <!-- Defer non-critical CSS -->
+    <link 
+      rel="stylesheet" 
+      href="/src/index.css" 
+      media="print" 
+      onload="this.media='all'"
+    />
+    
+    <!-- Delay third-party scripts -->
+    <script type="text/javascript">
+      // Defer Google Tag Manager
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          // Load GTM script dynamically
+          if (localStorage.getItem('userConsent') && 
+              JSON.parse(localStorage.getItem('userConsent')).analytics_storage === 'granted') {
+            const script = document.createElement('script');
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=YOUR-GTM-ID';
+            script.async = true;
+            document.head.appendChild(script);
+          }
+        }, 3000); // Delay by 3 seconds
+      });
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -155,7 +207,12 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div id="root"></div>
+    <div id="root">
+      <!-- Minimal splash screen to reduce CLS -->
+      <div style="height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f8f8f8;">
+        <div class="animate-pulse" style="width: 64px; height: 64px; border-radius: 9999px; background-color: rgba(51, 75, 64, 0.3);"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
