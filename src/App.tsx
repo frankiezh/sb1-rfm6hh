@@ -444,7 +444,7 @@ export default function App({ defaultLang }: AppProps) {
           rel="preload" 
           as="image"
           type="image/webp"
-          href="/images/hero/upholstery-workshop-zurich-medium.webp"
+          href={`/images/hero/${t.hero.slides[0].imageId}-medium.webp`}
           media="(min-width: 768px) and (max-width: 1279px)"
           imageSizes="100vw"
           fetchPriority="high"
@@ -453,7 +453,7 @@ export default function App({ defaultLang }: AppProps) {
           rel="preload" 
           as="image"
           type="image/webp"
-          href="/images/hero/upholstery-workshop-zurich-small.webp"
+          href={`/images/hero/${t.hero.slides[0].imageId}-small.webp`}
           media="(max-width: 767px)"
           imageSizes="100vw"
           fetchPriority="high"
