@@ -39,6 +39,28 @@ export default defineConfig(({ mode }) => {
         DEV: mode === 'development',
         PROD: mode === 'production',
       })
+    },
+    json: {
+      stringify: true,
+    },
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom'],
+            slick: ['react-slick', 'slick-carousel'],
+            framer: ['framer-motion'],
+            ui: [
+              '@radix-ui/react-dialog',
+              'lucide-react',
+              'class-variance-authority',
+              'clsx',
+              'tailwind-merge'
+            ]
+          }
+        }
+      }
     }
   };
 });

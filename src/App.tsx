@@ -22,6 +22,7 @@ const Slider = lazy(() => import('react-slick'));
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
+import { getImageUrl, getResponsiveImage, imageDimensions } from '@/lib/image-utils';
 
 // Declare dataLayer and gtag for TypeScript
 declare global {
@@ -354,7 +355,7 @@ export default function App({ defaultLang }: AppProps) {
           "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung. 2 Minuten vom Hauptbahnhof." : 
           "Professional upholstery in Zurich. Traditional upholstery, furniture restoration. 2 minutes from main station."
         } />
-        <meta property="og:image" content="https://polsterei-hb-zuerich.ch/images/og-image.jpg" />
+        <meta property="og:image" content="https://polsterei-hb-zuerich.ch/images/og-image.webp" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:url" content={currentLang === 'de' ? 
@@ -370,7 +371,7 @@ export default function App({ defaultLang }: AppProps) {
           "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung. 2 Minuten vom Hauptbahnhof." : 
           "Professional upholstery in Zurich. Traditional upholstery, furniture restoration. 2 minutes from main station."
         } />
-        <meta name="twitter:image" content="https://polsterei-hb-zuerich.ch/images/og-image.jpg" />
+        <meta name="twitter:image" content="https://polsterei-hb-zuerich.ch/images/og-image.webp" />
         
         {/* Add PWA-related meta tags */}
         <meta name="theme-color" content="#334B40" />
@@ -378,6 +379,7 @@ export default function App({ defaultLang }: AppProps) {
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Polsterei HB Zürich" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
         
         <script type="application/ld+json">
           {JSON.stringify({
@@ -386,7 +388,7 @@ export default function App({ defaultLang }: AppProps) {
             "name": currentLang === 'de' ? "Atelier Grünenwald" : "Atelier Gruenenwald",
             "image": [
               "https://polsterei-hb-zuerich.ch/atelier-gruenenwald-logo.svg",
-              "https://polsterei-hb-zuerich.ch/images/hero/hero-upholstery-workshop.jpg"
+              "https://polsterei-hb-zuerich.ch/images/hero/upholstery-workshop-zurich-large.webp"
             ],
             "description": currentLang === 'de' 
               ? "Professionelle Polsterei in Zürich. Traditionelle Polsterarbeiten, Möbelrestaurierung und Neubezüge."
@@ -450,8 +452,8 @@ export default function App({ defaultLang }: AppProps) {
         <link 
           rel="preload" 
           as="image"
-          type="image/jpeg"
-          href="/images/hero/fallback/upholstery-workshop-zurich-small.jpg"
+          type="image/webp"
+          href="/images/hero/upholstery-workshop-zurich-small.webp"
           media="(max-width: 767px)"
           imageSizes="100vw"
           fetchPriority="high"
@@ -535,28 +537,23 @@ export default function App({ defaultLang }: AppProps) {
                         media="(min-width: 1280px)"
                         srcSet={`/images/hero/${slide.imageId}-large.webp`}
                         type="image/webp"
-                        width="1920"
-                        height="1080"
+                        width={imageDimensions.hero.large.width}
+                        height={imageDimensions.hero.large.height}
                       />
                       <source
                         media="(min-width: 768px)"
                         srcSet={`/images/hero/${slide.imageId}-medium.webp`}
                         type="image/webp"
-                        width="1280"
-                        height="720"
+                        width={imageDimensions.hero.medium.width}
+                        height={imageDimensions.hero.medium.height}
                       />
-                      <source
-                        srcSet={`/images/hero/${slide.imageId}-small.webp`}
-                        type="image/webp"
-                        width="640"
-                        height="360"
-                      />
+                      {/* WebP image only - no fallback */}
                       <img
-                        src={`/images/hero/fallback/${slide.imageId}-small.jpg`}
+                        src={`/images/hero/${slide.imageId}-small.webp`}
                         alt={slide.alt}
                         className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
-                        width="640"
-                        height="360"
+                        width={imageDimensions.hero.small.width}
+                        height={imageDimensions.hero.small.height}
                         style={{ minHeight: '100vh' }}
                         loading={index === 0 ? "eager" : "lazy"}
                         fetchPriority={index === 0 ? "high" : "auto"}
@@ -638,7 +635,7 @@ export default function App({ defaultLang }: AppProps) {
           className="py-24 relative" 
           aria-labelledby="services-title"
           style={{
-            backgroundImage: 'url("/background.jpg")',
+            backgroundImage: `url("${getImageUrl('/background.webp')}")`,
             backgroundRepeat: 'repeat',
             backgroundSize: '300px',
           }}
@@ -672,7 +669,7 @@ export default function App({ defaultLang }: AppProps) {
           id="portfolio" 
           className="py-24 relative" 
           style={{
-            backgroundImage: 'url("/background.jpg")',
+            backgroundImage: `url("${getImageUrl('/background.webp')}")`,
             backgroundRepeat: 'repeat',
             backgroundSize: '300px',
           }}
@@ -704,7 +701,7 @@ export default function App({ defaultLang }: AppProps) {
           id="contact" 
           className="py-24 relative"
           style={{
-            backgroundImage: 'url("/background.jpg")',
+            backgroundImage: `url("${getImageUrl('/background.webp')}")`,
             backgroundRepeat: 'repeat',
             backgroundSize: '300px',
           }}
