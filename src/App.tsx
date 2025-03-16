@@ -65,15 +65,15 @@ export default function App({ defaultLang }: AppProps) {
     dots: true,
     arrows: false,
     infinite: true,
-    speed: 2000,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 7500,
+    autoplaySpeed: 5000,
     fade: true,
     pauseOnHover: true,
     cssEase: "cubic-bezier(0.645, 0.045, 0.355, 1)",
-    lazyLoad: undefined,
+    lazyLoad: 'progressive' as const,
     responsive: [
       {
         breakpoint: 768,
@@ -108,13 +108,11 @@ export default function App({ defaultLang }: AppProps) {
       });
     },
     onInit: () => {
-      // Force initial zoom on first load with a slightly longer delay
-      setTimeout(() => {
-        const firstSlide = document.querySelector('.hero-carousel .slick-current img');
-        if (firstSlide) {
-          firstSlide.classList.add('zoom-active');
-        }
-      }, 100);  // Increased from 0 to 100ms
+      // Simplify initial load
+      const firstSlide = document.querySelector('.hero-carousel .slick-current img');
+      if (firstSlide) {
+        firstSlide.classList.add('zoom-active');
+      }
     },
     onReInit: () => {
       const currentSlide = document.querySelector('.hero-carousel .slick-current img');
@@ -557,7 +555,6 @@ export default function App({ defaultLang }: AppProps) {
                         style={{ minHeight: '100vh' }}
                         loading={index === 0 ? "eager" : "lazy"}
                         fetchPriority={index === 0 ? "high" : "auto"}
-                        decoding={index === 0 ? "sync" : "async"}
                         onLoad={() => index === 0 && setImageLoaded(true)}
                       />
                     </picture>
@@ -573,9 +570,9 @@ export default function App({ defaultLang }: AppProps) {
             <div className="flex-1 flex items-center justify-center">
               <AnimatedSection className="text-center w-full px-4">
                 <motion.div 
-                  initial={{ x: -100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
                   className="flex flex-col items-center"
                 >
                   <h1 className="text-2xl md:text-4xl font-light tracking-wider mb-2 text-white whitespace-normal">
@@ -585,7 +582,7 @@ export default function App({ defaultLang }: AppProps) {
                     <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80 text-white hidden md:block">
                       by
                     </span>
-                    <h2 className="text-3xl md:text-6xl font-light tracking-wider text-white whitespace-normal px-4 md:px-0">
+                    <h2 className="text-3xl md:text-6xl font-light tracking-wider text-white whitespace-normal px-4 md:px-0 will-change-auto">
                       {t.hero.subtitle}
                     </h2>
                   </div>
@@ -593,12 +590,11 @@ export default function App({ defaultLang }: AppProps) {
 
                 <motion.div
                   ref={ref}
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ 
-                    duration: 0.8,
-                    ease: "easeOut",
-                    delay: 0.4
+                    duration: 0.5,
+                    delay: 0.3
                   }}
                   className="mt-12"
                 >
