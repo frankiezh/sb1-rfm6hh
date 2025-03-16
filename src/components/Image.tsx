@@ -2,6 +2,8 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
   className?: string;
+  width?: number;
+  height?: number;
 }
 
 function ensureAbsolutePath(path: string) {
@@ -23,7 +25,7 @@ function ensureWebPExtension(path: string) {
   return path.replace(/\.(jpe?g|png)$/i, '.webp');
 }
 
-export const Image = ({ src, alt, className, loading = "lazy", ...props }: ImageProps) => {
+export const Image = ({ src, alt, className, loading = "lazy", width, height, ...props }: ImageProps) => {
   const absolutePath = ensureAbsolutePath(src);
   const webpSrc = ensureWebPExtension(absolutePath);
 
@@ -32,6 +34,8 @@ export const Image = ({ src, alt, className, loading = "lazy", ...props }: Image
       src={webpSrc}
       alt={alt}
       loading={loading}
+      width={width}
+      height={height}
       className={className}
       {...props}
     />

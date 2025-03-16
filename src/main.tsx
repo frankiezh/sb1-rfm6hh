@@ -45,17 +45,19 @@ const Loading = () => (
 // Prefetch critical resources
 const prefetchResources = () => {
   const resources = [
-    '/images/hero/upholstery-workshop-zurich-large.webp',
-    '/images/hero/upholstery-workshop-zurich-medium.webp',
-    '/background.webp'
+    { url: '/images/hero/upholstery-workshop-zurich-large.webp', type: 'image', as: 'image' },
+    { url: '/images/hero/upholstery-workshop-zurich-medium.webp', type: 'image', as: 'image' },
+    { url: '/background.webp', type: 'image', as: 'image' },
   ];
   
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(() => {
-      resources.forEach(url => {
+      resources.forEach(resource => {
         const link = document.createElement('link');
         link.rel = 'prefetch';
-        link.href = url;
+        link.href = resource.url;
+        if (resource.as) link.setAttribute('as', resource.as);
+        if (resource.type) link.setAttribute('type', resource.type);
         document.head.appendChild(link);
       });
     });

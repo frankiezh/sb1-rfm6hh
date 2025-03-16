@@ -581,7 +581,6 @@ export default function App({ defaultLang }: AppProps) {
                         width={imageDimensions.hero.medium.width}
                         height={imageDimensions.hero.medium.height}
                       />
-                      {/* WebP image only - no fallback */}
                       <img
                         src={`/images/hero/${slide.imageId}-small.webp`}
                         alt={slide.alt}
@@ -669,6 +668,7 @@ export default function App({ defaultLang }: AppProps) {
             backgroundImage: `url("${getImageUrl('/background.webp')}")`,
             backgroundRepeat: 'repeat',
             backgroundSize: '300px',
+            backgroundPosition: 'center',
           }}
         >
           {/* Light overlay - changed opacity to match portfolio */}
