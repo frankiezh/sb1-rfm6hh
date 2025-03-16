@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { Loader } from '@googlemaps/js-api-loader';
 
 declare global {
   interface Window {
@@ -10,204 +11,141 @@ declare global {
 interface GoogleMapProps {
   apiKey: string;
   placeId: string;
-  language: 'de' | 'en';
+  language: string;
 }
 
 export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const scriptId = 'google-maps-script';
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
-  }, [apiKey]);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const cleanup = () => {
-      const existingScript = document.getElementById(scriptId);
-      const verificationElement = document.querySelector('[name="gmp-internal-element-support-verification"]');
-      if (existingScript) existingScript.remove();
-      if (verificationElement) verificationElement.remove();
-      
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current = null;
-      }
-      if (window.google?.maps) {
-        window.google.maps = undefined;
-      }
-    };
-
-    const initializeMap = () => {
-      if (!mapContainerRef.current || !window.google?.maps) return;
-
+    if (!apiKey) {
+      setError("Google Maps API key is missing");
+      setIsLoading(false);
+      return;
+    }
+    
+    if (!mapContainerRef.current) return;
+    
+    const mapContainer = mapContainerRef.current;
+    let map: google.maps.Map | null = null;
+    let marker: google.maps.Marker | null = null;
+    
+    const initMap = async () => {
       try {
-        mapInstanceRef.current = new google.maps.Map(mapContainerRef.current, {
+        setIsLoading(true);
+        
+        // Load the Google Maps script using the Loader
+        const loader = new Loader({
+          apiKey,
+          version: "weekly",
+          language: language,
+        });
+        
+        // Wait for the API to load
+        await loader.load();
+        
+        // Now Google Maps should be available globally
+        if (!google || !google.maps) {
+          throw new Error("Google Maps API failed to load");
+        }
+        
+        // Initialize the map
+        map = new google.maps.Map(mapContainer, {
           zoom: 15,
           center: { lat: 47.380617, lng: 8.529662 },
           mapTypeControl: false,
           fullscreenControl: false,
           streetViewControl: true,
-          language: language as string,
+          // @ts-ignore - Language option is valid but not in the TypeScript types
+          language: language,
         });
-
-        const marker = new google.maps.Marker({
-          map: mapInstanceRef.current,
+        
+        // Add a marker
+        marker = new google.maps.Marker({
+          map,
           position: { lat: 47.379317, lng: 8.529662 },
           title: "Atelier Grünenwald",
         });
-
-        // Create info window with clickable logo
-        const infoWindow = new google.maps.InfoWindow({
-          content: `
-            <div style="padding: 8px; text-align: center;">
-              <a 
-                href="https://www.google.com/maps/place/Atelier+Gr%C3%BCnenwald/@47.3793172,8.5296619,17z/data=!3m1!4b1!4m6!3m5!1s0x3050b20ed8ad56f:0x5e280514f8c2c979!8m2!3d47.3793172!4d8.5296619!16s%2Fg%2F11y40d8j_d"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="
-                  display: inline-block;
-                  transition: transform 0.2s ease;
-                  cursor: pointer;
-                "
-                onmouseover="this.style.transform='scale(1.05)'"
-                onmouseout="this.style.transform='scale(1)'"
-              >
-                <img 
-                  src="${window.location.origin}/atelier-gruenenwald-logo.svg"
-                  alt="Atelier Grünenwald - ${language === 'de' ? 'Auf Google Maps öffnen' : 'Open in Google Maps'}"
-                  style="width: 100px; height: auto;"
-                />
-              </a>
-            </div>
-          `,
-          disableAutoPan: true
-        });
-
-        // Hide the close button using CSS
-        google.maps.event.addListener(infoWindow, 'domready', () => {
-          const closeButtons = document.querySelectorAll('.gm-ui-hover-effect');
-          closeButtons.forEach(button => {
-            (button as HTMLElement).style.display = 'none';
+        
+        // Wait for the map to be idle before adding the info window
+        google.maps.event.addListenerOnce(map, 'idle', () => {
+          // Create info window AFTER the map is ready
+          const infoWindow = new google.maps.InfoWindow({
+            content: `
+              <div style="padding: 8px; text-align: center;">
+                <a 
+                  href="https://www.google.com/maps/place/Atelier+Gr%C3%BCnenwald/@47.3793172,8.5296619,17z/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="display: inline-block; transition: transform 0.2s ease; cursor: pointer;"
+                >
+                  <img 
+                    src="${window.location.origin}/atelier-gruenenwald-logo.svg"
+                    alt="Atelier Grünenwald - ${language === 'de' ? 'Auf Google Maps öffnen' : 'Open in Google Maps'}"
+                    style="width: 100px; height: auto;"
+                  />
+                </a>
+              </div>
+            `,
+            disableAutoPan: true
+          });
+          
+          // Add click listener to marker
+          marker?.addListener('click', () => {
+            infoWindow.open({
+              anchor: marker,
+              map,
+            });
+          });
+          
+          // Open info window by default
+          infoWindow.open({
+            anchor: marker,
+            map,
           });
         });
-
-        // Create tooltip for hover state
-        const tooltip = new google.maps.InfoWindow({
-          content: `
-            <div style="padding: 4px; text-align: center; font-size: 14px;">
-              ${language === 'de' ? 'Auf Google Maps öffnen' : 'Open in Google Maps'}
-            </div>
-          `,
-          disableAutoPan: true
-        });
-
-        // Add hover listeners
-        marker.addListener('mouseover', () => {
-          if (!infoWindow.getMap()) {
-            tooltip.open(mapInstanceRef.current, marker);
-          }
-        });
-
-        marker.addListener('mouseout', () => {
-          tooltip.close();
-        });
-
-        // Click handler for marker
-        marker.addListener('click', () => {
-          tooltip.close(); // Close tooltip if open
-          infoWindow.open(mapInstanceRef.current, marker);
-        });
-
-        // Open info window by default
-        infoWindow.open(mapInstanceRef.current, marker);
-
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Map initialization error:', error);
-        setError('Error loading map');
+        
+        setIsLoading(false);
+      } catch (err) {
+        setError('Failed to load Google Maps');
+        setIsLoading(false);
       }
     };
-
-    const loadScript = () => {
-      cleanup();
-
-      window.initMap = initializeMap;
-
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&loading=async`;
-      script.async = true;
-      script.defer = true;
-      script.onerror = () => {
-        console.error('Failed to load Google Maps script');
-        setError('Failed to load map');
-      };
-
-      document.head.appendChild(script);
-    };
-
-    loadScript();
-
+    
+    initMap();
+    
+    // Clean up
     return () => {
-      isMounted = false;
-      cleanup();
-      window.initMap = undefined;
+      if (map) {
+        // No need to explicitly remove the map as React will handle DOM cleanup
+        // Just nullify our references
+        map = null;
+        marker = null;
+      }
     };
-  }, [apiKey, language]);
-
-  useEffect(() => {
-    const storedPermission = localStorage.getItem('geolocationPermission');
-
-    if (storedPermission) {
-    }
-
-    navigator.permissions.query({ name: 'geolocation' })
-      .then((permissionStatus) => {
-        localStorage.setItem('geolocationPermission', permissionStatus.state);
-
-        permissionStatus.onchange = () => {
-          localStorage.setItem('geolocationPermission', permissionStatus.state);
-        };
-
-        if (permissionStatus.state === "granted") {
-          // ... proceed with using geolocation (if needed) ...
-        } else if (permissionStatus.state === "denied") {
-          // ... handle denied state ...
-        } else {
-          // ... handle prompt state ...
-        }
-      })
-      .catch((error) => {
-        console.error("Error querying geolocation permission:", error);
-      });
-  }, []); // Empty dependency array: run this effect only once
-
-  if (error) {
-    return (
-      <div className="w-full h-[400px] flex items-center justify-center bg-gray-100 rounded-lg">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
+  }, [apiKey, language, placeId]);
+  
   return (
-    <div className="w-full h-[400px] relative rounded-lg">
-      <div 
-        ref={mapContainerRef}
-        className="w-full h-full rounded-lg"
-        role="region"
-        aria-label="Google Maps showing business location"
-      />
+    <div className="w-full h-full">
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600" />
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100/80">
+          <div className="animate-pulse w-12 h-12 rounded-full bg-gray-300"></div>
         </div>
       )}
+      
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100/80">
+          <div className="text-red-500">{error}</div>
+        </div>
+      )}
+      
+      <div 
+        ref={mapContainerRef} 
+        className="w-full h-full"
+        aria-hidden={isLoading || !!error}
+      ></div>
     </div>
   );
 } 

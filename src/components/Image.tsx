@@ -19,12 +19,17 @@ function ensureAbsolutePath(path: string) {
   return absolutePath;
 }
 
+function ensureWebPExtension(path: string) {
+  return path.replace(/\.(jpe?g|png)$/i, '.webp');
+}
+
 export const Image = ({ src, alt, className, loading = "lazy", ...props }: ImageProps) => {
   const absolutePath = ensureAbsolutePath(src);
+  const webpSrc = ensureWebPExtension(absolutePath);
 
   return (
     <img
-      src={absolutePath}
+      src={webpSrc}
       alt={alt}
       loading={loading}
       className={className}

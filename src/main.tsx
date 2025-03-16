@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { initializeGTM } from './lib/gtm'
 // Lazy load non-critical component
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
 
@@ -63,6 +64,9 @@ const prefetchResources = () => {
 
 // Execute prefetch
 prefetchResources();
+
+// After registering the service worker
+initializeGTM();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

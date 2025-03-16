@@ -374,6 +374,7 @@ export default function App({ defaultLang }: AppProps) {
         {/* Add PWA-related meta tags */}
         <meta name="theme-color" content="#334B40" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Polsterei HB Zürich" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -436,7 +437,7 @@ export default function App({ defaultLang }: AppProps) {
           href={`/images/hero/${t.hero.slides[0].imageId}-large.webp`}
           media="(min-width: 1280px)"
           imageSizes="100vw"
-          fetchPriority="high"
+          fetchpriority="high"
         />
         <link 
           rel="preload" 
@@ -445,7 +446,7 @@ export default function App({ defaultLang }: AppProps) {
           href={`/images/hero/${t.hero.slides[0].imageId}-medium.webp`}
           media="(min-width: 768px) and (max-width: 1279px)"
           imageSizes="100vw"
-          fetchPriority="high"
+          fetchpriority="high"
         />
         <link 
           rel="preload" 
@@ -454,27 +455,40 @@ export default function App({ defaultLang }: AppProps) {
           href={`/images/hero/${t.hero.slides[0].imageId}-small.webp`}
           media="(max-width: 767px)"
           imageSizes="100vw"
-          fetchPriority="high"
-        />
-        
-        {/* Optimize font loading */}
-        <link 
-          rel="preload" 
-          href="/fonts/inter-var.woff2" 
-          as="font" 
-          type="font/woff2" 
-          crossorigin="anonymous"
           fetchpriority="high"
         />
         
-        {/* Add font-display swap */}
+        {/* Optimize font loading with fallback */}
+        <link 
+          rel="preload" 
+          href="/fonts/Inter-Regular.woff2" 
+          as="font" 
+          type="font/woff2" 
+          crossOrigin="anonymous"
+          fetchpriority="high"
+        />
+        
+        {/* Add font-display swap with fallback */}
         <style>
           {`
             @font-face {
-              font-family: 'Inter var';
-              font-weight: 100 900;
+              font-family: 'Inter';
+              font-weight: 400;
+              font-style: normal;
               font-display: swap;
-              src: url('/fonts/inter-var.woff2') format('woff2');
+              src: url('/fonts/Inter-Regular.woff2') format('woff2');
+            }
+            
+            @font-face {
+              font-family: 'Inter';
+              font-weight: 700;
+              font-style: normal;
+              font-display: swap;
+              src: url('/fonts/Inter-Bold.woff2') format('woff2');
+            }
+            
+            body {
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             }
           `}
         </style>
@@ -576,7 +590,7 @@ export default function App({ defaultLang }: AppProps) {
                         height={imageDimensions.hero.small.height}
                         style={{ minHeight: '100vh' }}
                         loading={index === 0 ? "eager" : "lazy"}
-                        fetchPriority={index === 0 ? "high" : "auto"}
+                        fetchpriority={index === 0 ? "high" : "auto"}
                         onLoad={() => index === 0 && setImageLoaded(true)}
                       />
                     </picture>
