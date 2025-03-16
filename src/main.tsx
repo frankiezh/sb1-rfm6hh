@@ -46,8 +46,7 @@ const prefetchResources = () => {
   const resources = [
     '/images/hero/upholstery-workshop-zurich-large.webp',
     '/images/hero/upholstery-workshop-zurich-medium.webp',
-    '/images/hero/fallback/upholstery-workshop-zurich-small.jpg',
-    '/background.jpg'
+    '/background.webp'
   ];
   
   if ('requestIdleCallback' in window) {

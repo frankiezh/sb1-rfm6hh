@@ -456,6 +456,28 @@ export default function App({ defaultLang }: AppProps) {
           imageSizes="100vw"
           fetchPriority="high"
         />
+        
+        {/* Optimize font loading */}
+        <link 
+          rel="preload" 
+          href="/fonts/inter-var.woff2" 
+          as="font" 
+          type="font/woff2" 
+          crossorigin="anonymous"
+          fetchpriority="high"
+        />
+        
+        {/* Add font-display swap */}
+        <style>
+          {`
+            @font-face {
+              font-family: 'Inter var';
+              font-weight: 100 900;
+              font-display: swap;
+              src: url('/fonts/inter-var.woff2') format('woff2');
+            }
+          `}
+        </style>
       </Helmet>
       
       <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">
@@ -582,19 +604,18 @@ export default function App({ defaultLang }: AppProps) {
                     <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-sm md:text-base font-light tracking-wider opacity-80 text-white hidden md:block">
                       by
                     </span>
-                    <h2 className="text-3xl md:text-6xl font-light tracking-wider text-white whitespace-normal px-4 md:px-0 will-change-auto">
+                    <h2 className="text-3xl md:text-6xl font-light tracking-wider text-white whitespace-normal px-4 md:px-0">
                       {t.hero.subtitle}
                     </h2>
                   </div>
                 </motion.div>
 
                 <motion.div
-                  ref={ref}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ 
                     duration: 0.5,
-                    delay: 0.3
+                    delay: 0.5
                   }}
                   className="mt-12"
                 >
