@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { initializeGTM } from './lib/gtm'
+import { initializeGTM } from './lib/gtm.ts'
 // Lazy load non-critical component
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
 

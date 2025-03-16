@@ -464,7 +464,7 @@ export default function App({ defaultLang }: AppProps) {
           href="/fonts/Inter-Regular.woff2" 
           as="font" 
           type="font/woff2" 
-          crossOrigin="anonymous"
+          crossorigin="anonymous"
           fetchpriority="high"
         />
         

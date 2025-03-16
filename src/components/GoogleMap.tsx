@@ -58,7 +58,7 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
           mapTypeControl: false,
           fullscreenControl: false,
           streetViewControl: true,
-          // @ts-ignore - Language option is valid but not in the TypeScript types
+          // @ts-ignore - Language option is valid but not in TypeScript types
           language: language,
         });
         
