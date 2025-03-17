@@ -240,28 +240,6 @@ export default function App({ defaultLang }: AppProps) {
       });
   }, []);
 
-  // Load carousel styles dynamically ONLY when needed
-  useEffect(() => {
-    // Create link elements for slider CSS
-    const slickCssLink = document.createElement('link');
-    slickCssLink.rel = 'stylesheet';
-    slickCssLink.href = '/slick-carousel/slick/slick.css';
-    
-    const slickThemeCssLink = document.createElement('link');
-    slickThemeCssLink.rel = 'stylesheet';
-    slickThemeCssLink.href = '/slick-carousel/slick/slick-theme.css';
-    
-    // Append to document
-    document.head.appendChild(slickCssLink);
-    document.head.appendChild(slickThemeCssLink);
-    
-    return () => {
-      // Clean up
-      document.head.removeChild(slickCssLink);
-      document.head.removeChild(slickThemeCssLink);
-    };
-  }, []);
-
   return (
     <>
       <style>
@@ -432,7 +410,7 @@ export default function App({ defaultLang }: AppProps) {
           fetchpriority="high"
         />
         
-        {/* Optimize font loading with fallback */}
+        {/* Update font loading strategy */}
         <link 
           rel="preload" 
           href="/fonts/Inter-Regular.woff2" 
@@ -441,14 +419,14 @@ export default function App({ defaultLang }: AppProps) {
           crossorigin="anonymous"
         />
         
-        {/* Add font-display swap with fallback */}
+        {/* Update font-display for better performance */}
         <style type="text/css">{`
           @font-face {
             font-family: 'Inter';
             src: url('/fonts/Inter-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
-            font-display: optional;
+            font-display: swap; /* Changed from optional back to swap for better compatibility */
           }
           
           @font-face {
@@ -456,17 +434,9 @@ export default function App({ defaultLang }: AppProps) {
             src: url('/fonts/Inter-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
-            font-display: optional;
+            font-display: swap; /* Changed from optional back to swap */
           }
         `}</style>
-
-        {/* Move non-critical CSS to a separate style tag with media="print" and onload */}
-        <link 
-          rel="stylesheet" 
-          href="/styles/non-critical.css" 
-          media="print" 
-          onload="this.media='all'"
-        />
       </Helmet>
       
       <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">

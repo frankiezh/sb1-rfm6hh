@@ -133,7 +133,7 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
     const observer = new IntersectionObserver((entries) => {
       // Only load the map when it's about to be visible
       if (entries[0].isIntersecting) {
-        loadMap();
+        initMap();
         observer.disconnect();
       }
     }, { rootMargin: '200px' });
@@ -161,7 +161,6 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
         ref={mapContainerRef} 
         className="w-full h-full"
         aria-hidden={isLoading || !!error}
-        loading="lazy"
       ></div>
     </div>
   );

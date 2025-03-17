@@ -42,20 +42,18 @@ const Loading = () => (
   </div>
 );
 
-// Change prefetch function to this simpler version
+// Simplified critical resource loading
 const prefetchCriticalResources = () => {
-  // ONLY preload truly critical resources
+  // ONLY preload the truly critical hero image
   const link = document.createElement('link');
   link.rel = 'preload';
   link.href = '/images/hero/upholstery-workshop-zurich-large.webp';
   link.as = 'image';
   link.type = 'image/webp';
   document.head.appendChild(link);
-  
-  // Remove all other prefetching - it's causing performance issues
 };
 
-// Replace existing prefetch function with this one
+// Replace existing prefetch function with this simplified one
 prefetchCriticalResources();
 
 // After registering the service worker
