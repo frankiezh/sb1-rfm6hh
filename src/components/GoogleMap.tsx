@@ -127,6 +127,22 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
     };
   }, [apiKey, language, placeId]);
   
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      // Only load the map when it's about to be visible
+      if (entries[0].isIntersecting) {
+        loadMap();
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    
+    observer.observe(mapContainerRef.current);
+    
+    return () => observer.disconnect();
+  }, [mapContainerRef.current]);
+  
   return (
     <div className="w-full h-full">
       {isLoading && (
@@ -145,6 +161,7 @@ export function GoogleMap({ apiKey, placeId, language }: GoogleMapProps) {
         ref={mapContainerRef} 
         className="w-full h-full"
         aria-hidden={isLoading || !!error}
+        loading="lazy"
       ></div>
     </div>
   );

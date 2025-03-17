@@ -42,42 +42,21 @@ const Loading = () => (
   </div>
 );
 
-// Update prefetch function to properly prioritize
-const prefetchResources = () => {
-  // Critical resources should use preload, not prefetch
-  const criticalResources = [
-    { url: '/images/hero/upholstery-workshop-zurich-large.webp', type: 'image/webp', as: 'image' }
-  ];
+// Change prefetch function to this simpler version
+const prefetchCriticalResources = () => {
+  // ONLY preload truly critical resources
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.href = '/images/hero/upholstery-workshop-zurich-large.webp';
+  link.as = 'image';
+  link.type = 'image/webp';
+  document.head.appendChild(link);
   
-  criticalResources.forEach(resource => {
-    const link = document.createElement('link');
-    link.rel = 'preload'; // Use preload for critical, not prefetch
-    link.href = resource.url;
-    link.as = resource.as;
-    if (resource.type) link.type = resource.type;
-    document.head.appendChild(link);
-  });
-  
-  // Use prefetch for non-critical resources
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(() => {
-      const nonCriticalResources = [
-        '/images/hero/upholstery-workshop-zurich-medium.webp',
-        '/background.webp'
-      ];
-      
-      nonCriticalResources.forEach(url => {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = url;
-        document.head.appendChild(link);
-      });
-    });
-  }
+  // Remove all other prefetching - it's causing performance issues
 };
 
-// Execute prefetch
-prefetchResources();
+// Replace existing prefetch function with this one
+prefetchCriticalResources();
 
 // After registering the service worker
 initializeGTM();

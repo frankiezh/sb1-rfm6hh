@@ -62,7 +62,7 @@ export default function App({ defaultLang }: AppProps) {
 
   // Move settings here to access t
   const settings = {
-    dots: true,
+    dots: false,
     arrows: false,
     infinite: true,
     speed: 1000,
@@ -71,55 +71,7 @@ export default function App({ defaultLang }: AppProps) {
     autoplay: true,
     autoplaySpeed: 5000,
     fade: true,
-    pauseOnHover: true,
-    cssEase: "cubic-bezier(0.645, 0.045, 0.355, 1)",
     lazyLoad: 'progressive' as const,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          dots: false
-        }
-      }
-    ],
-    initialSlide: Math.floor(Math.random() * t.hero.slides.length),
-    beforeChange: (current: number, next: number) => {
-      // Current slide continues zooming
-      const currentSlide = document.querySelector(
-        `.slick-slide[data-index="${current}"] img`
-      );
-      if (currentSlide) {
-        currentSlide.classList.remove('zoom-active');
-        currentSlide.classList.add('zoom-next');
-      }
-
-      // Next slide starts from active state
-      const nextSlide = document.querySelector(
-        `.slick-slide[data-index="${next}"] img`
-      );
-      if (nextSlide) {
-        nextSlide.classList.add('zoom-active');
-      }
-    },
-    afterChange: (current: number) => {
-      // Clean up after transition
-      document.querySelectorAll('.hero-carousel .slick-slide img').forEach(img => {
-        img.classList.remove('zoom-next');
-      });
-    },
-    onInit: () => {
-      // Simplify initial load
-      const firstSlide = document.querySelector('.hero-carousel .slick-current img');
-      if (firstSlide) {
-        firstSlide.classList.add('zoom-active');
-      }
-    },
-    onReInit: () => {
-      const currentSlide = document.querySelector('.hero-carousel .slick-current img');
-      if (currentSlide) {
-        currentSlide.classList.add('zoom-active');
-      }
-    }
   };
 
   const portfolioItems = t.portfolio.items.map(item => {
@@ -286,6 +238,28 @@ export default function App({ defaultLang }: AppProps) {
         // Only log errors in any environment
         console.error('Health check failed:', error);
       });
+  }, []);
+
+  // Load carousel styles dynamically ONLY when needed
+  useEffect(() => {
+    // Create link elements for slider CSS
+    const slickCssLink = document.createElement('link');
+    slickCssLink.rel = 'stylesheet';
+    slickCssLink.href = '/slick-carousel/slick/slick.css';
+    
+    const slickThemeCssLink = document.createElement('link');
+    slickThemeCssLink.rel = 'stylesheet';
+    slickThemeCssLink.href = '/slick-carousel/slick/slick-theme.css';
+    
+    // Append to document
+    document.head.appendChild(slickCssLink);
+    document.head.appendChild(slickThemeCssLink);
+    
+    return () => {
+      // Clean up
+      document.head.removeChild(slickCssLink);
+      document.head.removeChild(slickThemeCssLink);
+    };
   }, []);
 
   return (
@@ -465,7 +439,6 @@ export default function App({ defaultLang }: AppProps) {
           as="font" 
           type="font/woff2" 
           crossorigin="anonymous"
-          fetchpriority="high"
         />
         
         {/* Add font-display swap with fallback */}
@@ -475,7 +448,7 @@ export default function App({ defaultLang }: AppProps) {
             src: url('/fonts/Inter-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
-            font-display: swap;
+            font-display: optional;
           }
           
           @font-face {
@@ -483,9 +456,17 @@ export default function App({ defaultLang }: AppProps) {
             src: url('/fonts/Inter-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
-            font-display: swap;
+            font-display: optional;
           }
         `}</style>
+
+        {/* Move non-critical CSS to a separate style tag with media="print" and onload */}
+        <link 
+          rel="stylesheet" 
+          href="/styles/non-critical.css" 
+          media="print" 
+          onload="this.media='all'"
+        />
       </Helmet>
       
       <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">
