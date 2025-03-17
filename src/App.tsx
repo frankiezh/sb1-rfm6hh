@@ -469,29 +469,23 @@ export default function App({ defaultLang }: AppProps) {
         />
         
         {/* Add font-display swap with fallback */}
-        <style>
-          {`
-            @font-face {
-              font-family: 'Inter';
-              font-weight: 400;
-              font-style: normal;
-              font-display: swap;
-              src: url('/fonts/Inter-Regular.woff2') format('woff2');
-            }
-            
-            @font-face {
-              font-family: 'Inter';
-              font-weight: 700;
-              font-style: normal;
-              font-display: swap;
-              src: url('/fonts/Inter-Bold.woff2') format('woff2');
-            }
-            
-            body {
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            }
-          `}
-        </style>
+        <style type="text/css">{`
+          @font-face {
+            font-family: 'Inter';
+            src: url('/fonts/Inter-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+          }
+          
+          @font-face {
+            font-family: 'Inter';
+            src: url('/fonts/Inter-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+          }
+        `}</style>
       </Helmet>
       
       <div className="min-h-screen bg-[#f8f8f8] text-[#2B1810]">
@@ -584,10 +578,9 @@ export default function App({ defaultLang }: AppProps) {
                       <img
                         src={`/images/hero/${slide.imageId}-small.webp`}
                         alt={slide.alt}
-                        className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
                         width={imageDimensions.hero.small.width}
                         height={imageDimensions.hero.small.height}
-                        style={{ minHeight: '100vh' }}
+                        className={`w-full h-full object-cover object-center ${index === 0 ? 'zoom-active' : ''}`}
                         loading={index === 0 ? "eager" : "lazy"}
                         fetchpriority={index === 0 ? "high" : "auto"}
                         onLoad={() => index === 0 && setImageLoaded(true)}

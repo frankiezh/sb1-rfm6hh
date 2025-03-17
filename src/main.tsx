@@ -42,22 +42,34 @@ const Loading = () => (
   </div>
 );
 
-// Prefetch critical resources
+// Update prefetch function to properly prioritize
 const prefetchResources = () => {
-  const resources = [
-    { url: '/images/hero/upholstery-workshop-zurich-large.webp', type: 'image', as: 'image' },
-    { url: '/images/hero/upholstery-workshop-zurich-medium.webp', type: 'image', as: 'image' },
-    { url: '/background.webp', type: 'image', as: 'image' },
+  // Critical resources should use preload, not prefetch
+  const criticalResources = [
+    { url: '/images/hero/upholstery-workshop-zurich-large.webp', type: 'image/webp', as: 'image' }
   ];
   
+  criticalResources.forEach(resource => {
+    const link = document.createElement('link');
+    link.rel = 'preload'; // Use preload for critical, not prefetch
+    link.href = resource.url;
+    link.as = resource.as;
+    if (resource.type) link.type = resource.type;
+    document.head.appendChild(link);
+  });
+  
+  // Use prefetch for non-critical resources
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(() => {
-      resources.forEach(resource => {
+      const nonCriticalResources = [
+        '/images/hero/upholstery-workshop-zurich-medium.webp',
+        '/background.webp'
+      ];
+      
+      nonCriticalResources.forEach(url => {
         const link = document.createElement('link');
         link.rel = 'prefetch';
-        link.href = resource.url;
-        if (resource.as) link.setAttribute('as', resource.as);
-        if (resource.type) link.setAttribute('type', resource.type);
+        link.href = url;
         document.head.appendChild(link);
       });
     });
